@@ -19,6 +19,23 @@ public/        — static assets
 - **[docs/STRUCTURE.md](docs/STRUCTURE.md)** — page-by-page structure for every page.
 - **[docs/CONTENT.md](docs/CONTENT.md)** — example copy (mock product "Focusly", to be replaced via CMS).
 - **[docs/HANDOFF-PROMPT.md](docs/HANDOFF-PROMPT.md)** — brief for the design/prototyping phase.
+- **[docs/ROADMAP.md](docs/ROADMAP.md)** — epics → features → subtasks with priorities.
+
+## Development
+
+```bash
+cp .env.local.example .env.local   # fill in values
+npm install
+npm run dev                        # http://localhost:3001
+```
+
+Checks (the same chain runs in GitHub Actions on every PR and push to `main`):
+
+```bash
+npm run lint && npm run typecheck && npm test && npm run build && npm run test:e2e
+```
+
+Working conventions for contributors and coding agents: **[CLAUDE.md](CLAUDE.md)**.
 
 ## Key decisions
 
