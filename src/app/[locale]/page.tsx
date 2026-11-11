@@ -179,7 +179,7 @@ export default async function LandingPage({
                   </div>
                 )}
                 <div className="ac-foot">
-                  <AppStoreBadge />
+                  <AppStoreBadge inert={!!resolveStoreUrl(app.appStoreUrl)} />
                   <span className="ac-more">
                     {t("apps.learnMore")} <span className="arr">→</span>
                   </span>

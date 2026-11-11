@@ -31,6 +31,8 @@ export async function generateMetadata({
   return {
     title: `${name} · ${brand.siteName}`,
     description: pick(app.heroSubtitle, lang) || undefined,
+    // Hidden apps stay previewable by direct URL but must never be indexed.
+    ...(app.hidden ? { robots: { index: false, follow: false } } : {}),
   };
 }
 

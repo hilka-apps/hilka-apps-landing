@@ -63,7 +63,8 @@
   },
   "appstore": {
     "small": "Завантажити в",
-    "big": "App Store"
+    "big": "App Store",
+    "soon": "Незабаром в App Store"
   },
   "about": {
     "meta": {

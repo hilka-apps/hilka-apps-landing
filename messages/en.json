@@ -63,7 +63,8 @@
   },
   "appstore": {
     "small": "Download on the",
-    "big": "App Store"
+    "big": "App Store",
+    "soon": "Coming soon to the App Store"
   },
   "about": {
     "meta": {
