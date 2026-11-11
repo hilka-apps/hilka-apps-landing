@@ -28,7 +28,9 @@ dist/
 .DS_Store
 *.pem
 Thumbs.db
-.claude/
+.claude/settings.local.json
+.claude/worktrees/
+.superpowers/
 
 # debug
 npm-debug.log*
@@ -38,3 +40,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# testing
+/coverage/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
