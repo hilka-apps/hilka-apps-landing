@@ -17,22 +17,22 @@ Audit date: 2026-11-11 (code at `chore/agent-setup`). **Plan only — nothing he
 
 ### F1.1 Brand rename Hylka → Hilka · P0
 Visible on the live site: footer copyright and the home `<title>`/description.
-- [ ] P0 `messages/en.json`, `messages/uk.json`: `footer.copyright`, `home.meta.title`, `home.meta.description` → Hilka
-- [ ] P0 `src/config/site.ts`: `brand.name`, `emailFrom` display name; `src/sanity/schemaTypes/siteSettings.ts` `initialValue`
-- [ ] P1 Bundled legal fallbacks `src/content/terms.md`, `privacy.md`; `scripts/seed-pages.mjs`; `globals.css` header comment
-- [ ] P1 Check Sanity `siteSettings.siteName` value in Studio (content, not code)
-- [ ] P1 Decide domain (`hylkaapps.com` vs a Hilka domain) — blocks F2.1
+- [x] P0 `messages/en.json`, `messages/uk.json`: `footer.copyright`, `home.meta.title`, `home.meta.description` → Hilka
+- [x] P0 `src/config/site.ts`: `brand.name`, `emailFrom` display name; `src/sanity/schemaTypes/siteSettings.ts` `initialValue`
+- [x] P1 Bundled legal fallbacks (deleted), `scripts/seed-pages.mjs`, `globals.css` header comment, docs
+- [ ] P0 Apply the CMS rename: `node scripts/rename-brand.mjs` (dry run) → `--apply` after the owner's yes (6 docs: home, about, more, site settings, 2 legal docs)
+- [ ] P1 Decide the studio domain (none owned in Vercel; `hilka.app` belongs to another developer) — blocks F2.1
 
-### F1.2 Cyrillic typography · P1
+### F1.2 Cyrillic typography · P0 (audience is Ukrainian)
 `Bricolage_Grotesque` and `Instrument_Serif` are loaded with `subsets: ["latin"]` in
 `src/app/[locale]/layout.tsx`. Confirmed from next/font data: Bricolage Grotesque has
 latin/latin-ext/vietnamese, Instrument Serif latin/latin-ext — no Cyrillic, so `/uk` headings
 fall back to system fonts and look different from `/en`.
-- [ ] P1 Pick display + serif fonts with Cyrillic (or a per-locale pairing), update layout + `DESIGN.md`
-- [ ] P1 Add a Playwright check that `/uk` `h1` computed `font-family` resolves to the display font
+- [ ] P0 Pick display + serif fonts with Cyrillic (or a per-locale pairing), update layout + `DESIGN.md`
+- [ ] P0 Add a Playwright check that `/uk` `h1` computed `font-family` resolves to the display font
 
 ### F1.3 Small UI defects · P1
-- [ ] P1 `AppSections.tsx` `statSection`: download button renders `<a>` without `href` when the App Store URL is unset — use the inert `AppStoreBadge` pattern
+- [x] P1 `AppSections.tsx` `statSection`: download button renders `<a>` without `href` when the App Store URL is unset — now a "Coming soon" pill
 - [ ] P1 Testimonials always show ★★★★★ (hardcoded) — make rating a CMS field or drop stars
 - [ ] P2 `global-error.tsx` is English-only — localise via `navigator.language` or neutral bilingual copy
 - [ ] P2 Header has no primary CTA ("Get the App") that `STRUCTURE.md §A.1` specifies — decide: add or update the spec
@@ -40,7 +40,7 @@ fall back to system fonts and look different from `/en`.
 ### F1.4 Content still in code instead of Sanity · P1
 - [ ] P1 More page link groups other than apps/legal come from `messages/*.json` (`more.sections`) — move to `morePage` schema
 - [ ] P1 Home `<title>`/description come from `messages` — add SEO fields to `homeContent`/`siteSettings` (ties into E3)
-- [ ] P2 Legal pages: UK falls back to the English bundled Markdown when `contentUk` is empty — show a "translation pending" note or require both
+- [x] P2 Legal pages: empty docs are 404; one filled language serves both locales
 
 ---
 
@@ -143,5 +143,20 @@ fall back to system fonts and look different from `/en`.
 - [ ] P2 Newsletter / "notify me" for upcoming apps (teaser card)
 - [ ] P2 Press kit page (icons, screenshots, short bios)
 
-## E9 · Owner's new features
-_To be added after discussion with the owner._
+## E9 · First official app launch (Ukrainian driving-theory test prep, iOS)
+
+### F9.1 Launch readiness · P0 — done in `feat/launch-readiness`
+- [x] P0 Brand Hylka → Hilka in code/docs; contact email `hilka.apps@gmail.com`
+- [x] P0 Hidden apps: `noindex`; "Coming soon to the App Store" instead of Apple's badge without a store link
+- [x] P0 Per-app Support page `/apps/<app>/support` (FAQ + preselected contact form)
+- [x] P0 Per-app legal docs `/apps/<app>/<slug>` via `legalDoc.app`; empty → 404, no placeholders
+
+### F9.2 Owner / content tasks · P0
+- [ ] P0 Hide Arttick and Focusly in Studio (eye toggle) once the new app is added
+- [ ] P0 Add the new app in Studio (EN + UK), its FAQ section, then Privacy/Terms docs with `App` set
+- [ ] P0 Check the "Hilka" name conflict (another Apple developer at `hilka.app`) before Apple Developer enrollment
+
+### F9.3 Follow-ups
+- [ ] P1 "Unofficial app, not affiliated with MVS/HSC" disclaimer field on the app page (+ source of rules/questions)
+- [ ] P2 Smart App Banner (`apple-itunes-app` meta) once the app has a store ID
+- [ ] P2 Store links in the support page header once live
