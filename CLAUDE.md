@@ -47,9 +47,9 @@ messages/{en,uk}.json  UI strings + fallbacks when a CMS field is empty
 e2e/                   Playwright specs
 ```
 
-Unit tests live next to the code as `*.test.ts(x)`. E2E reads **live published Sanity content**:
-app-specific specs use the first visible app card and skip when every app is hidden; an empty
-`heroH1` on the first visible app still turns e2e red — check the CMS before debugging code.
+Unit tests live next to the code as `*.test.ts(x)`. E2E reads **live published Sanity content** (`e2e/cms.ts` queries the public dataset): home
+expects one card per visible app, support/doc specs use the first app even if hidden. Editing
+content in Studio can turn e2e red without a code change — check the CMS before debugging code.
 
 ## Docs
 

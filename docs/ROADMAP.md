@@ -20,7 +20,7 @@ Visible on the live site: footer copyright and the home `<title>`/description.
 - [x] P0 `messages/en.json`, `messages/uk.json`: `footer.copyright`, `home.meta.title`, `home.meta.description` → Hilka
 - [x] P0 `src/config/site.ts`: `brand.name`, `emailFrom` display name; `src/sanity/schemaTypes/siteSettings.ts` `initialValue`
 - [x] P1 Bundled legal fallbacks (deleted), `scripts/seed-pages.mjs`, `globals.css` header comment, docs
-- [ ] P0 Apply the CMS rename: `node scripts/rename-brand.mjs` (dry run) → `--apply` after the owner's yes (6 docs: home, about, more, site settings, 2 legal docs)
+- [ ] P0 Apply the CMS rename: `node scripts/rename-brand.mjs` (dry run shows before/after) → `--apply` after the owner's yes (7 docs incl. the open `drafts.homeContent`)
 - [ ] P1 Decide the studio domain (none owned in Vercel; `hilka.app` belongs to another developer) — blocks F2.1
 
 ### F1.2 Cyrillic typography · P0 (audience is Ukrainian)
@@ -154,6 +154,7 @@ fall back to system fonts and look different from `/en`.
 ### F9.2 Owner / content tasks · P0
 - [ ] P0 Hide Arttick and Focusly in Studio (eye toggle) once the new app is added
 - [ ] P0 Add the new app in Studio (EN + UK), its FAQ section, then Privacy/Terms docs with `App` set
+- [ ] P0 Site legal docs in Studio (`/legal/privacy`, `/legal/terms`, `App` empty) still hold prototype placeholder text ("This is placeholder text…", "Focusly stores…") and are linked in every footer — replace with real text or clear both languages (empty → 404 and the footer link disappears) before App Review
 - [ ] P0 Check the "Hilka" name conflict (another Apple developer at `hilka.app`) before Apple Developer enrollment
 
 ### F9.3 Follow-ups
