@@ -1,4 +1,4 @@
-# Hylka Apps Landing — DESIGN.md
+# Hilka Apps Landing — DESIGN.md
 
 > Step-2 deliverable. Defines the design system (from **pasteapp.io**) and the page
 > structure/layout (from **nomly.space** + **dream.nomly.space/en**) for the apps
@@ -162,7 +162,7 @@ Reusable product-page template. Sections in live order:
 - **Company** — About, More, Contact
 - **Legal** — Terms of Use, Privacy Policy
 - *(No "Follow"/social column — no social media in scope.)*
-- Contact email surfaced in the footer: `hello@hylkaapps.com` (mock — replace with real).
+- Contact email surfaced in the footer: `hilka.apps@gmail.com` (mock — replace with real).
 
 ---
 
@@ -176,7 +176,7 @@ Reusable product-page template. Sections in live order:
 
 ### 3.2 Contact form
 - Two intents (feature suggestion / complaint), one shared form style.
-- Delivers submissions to a **dedicated feedback email address** (mock: `hello@hylkaapps.com`).
+- Delivers submissions to a **dedicated feedback email address** (mock: `hilka.apps@gmail.com`).
 - Needs spam protection (honeypot / lightweight challenge — **not** a CAPTCHA the user must solve on our behalf) and a server endpoint or form service.
 
 ### 3.3 Content customisation (no redeploy)
@@ -197,7 +197,7 @@ framework-agnostic.
 ## 5. Decisions locked + open items
 
 **Locked (2026-06-08):**
-- Brand name: **Hylka Apps**.
+- Brand name: **Hilka Apps**.
 - Theme: light "Paste" system only (no dark variant).
 - Locales: EN (default) + UK.
 - Scope: **one app** — currently the **mock example "Focusly"** (placeholder content, to be replaced). Landing card + one full product page. More apps later.
@@ -206,8 +206,8 @@ framework-agnostic.
 
 **Mock placeholders to replace with real content later** (all example copy lives in [CONTENT.md](CONTENT.md)):
 1. The real product (replaces "Focusly"): name, icon, promo screenshots, descriptions, App Store link.
-2. Real feedback email (mock used: `hello@hylkaapps.com`).
-3. Logo asset for "Hylka Apps".
+2. Real feedback email (mock used: `hilka.apps@gmail.com`).
+3. Logo asset for "Hilka Apps".
 4. Final Terms / Privacy markdown text.
 
 ---

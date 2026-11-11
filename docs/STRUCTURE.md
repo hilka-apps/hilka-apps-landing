@@ -1,4 +1,4 @@
-# Hylka Apps Landing — STRUCTURE.md (page-by-page build spec)
+# Hilka Apps Landing — STRUCTURE.md (page-by-page build spec)
 
 > Companion to [DESIGN.md](DESIGN.md). DESIGN.md = the visual system (colors, type,
 > components). **This file = the concrete, unambiguous structure of every page**, section
@@ -22,7 +22,7 @@
 
 ### A.1 Header (identical on every page, sticky)
 - Height ~64–72px. Background: white with `backdrop-blur`, 80% opacity, 1px bottom border (`#F5F5F7` tone). Sticky to top, z-index above content.
-- **Left:** logo mark (rounded square) + wordmark **"Hylka Apps"** (dark `#101010`). Links to `/`.
+- **Left:** logo mark (rounded square) + wordmark **"Hilka Apps"** (dark `#101010`). Links to `/`.
 - **Center (desktop):** nav links, horizontal, evenly spaced:
   `Apps` · `More` · `About` · `Contact`
 - **Right:** language switcher (flag + locale code, dropdown) **+** primary pill button **"Get the Apps"** (solid `#0088FF`, white text, 100px radius) that scrolls to the apps grid on the landing page (or links to `/#apps` from other pages).
@@ -35,9 +35,9 @@
   - **Company** — About, More, Contact
   - **Legal** — Terms of Use, Privacy Policy
   - *(No social column — no social media in scope.)*
-- Contact email shown as a text link: `hello@hylkaapps.com`.
+- Contact email shown as a text link: `hilka.apps@gmail.com`.
 - Thin 1px divider (`#222`) above the bottom row.
-- **Bottom row:** left = `© 2026 Hylka Apps · All rights reserved.` · right = small legal note / locale switch (optional).
+- **Bottom row:** left = `© 2026 Hilka Apps · All rights reserved.` · right = small legal note / locale switch (optional).
 
 ### A.3 App Card (reused in the landing apps grid)
 A single card, 16px radius, light surface, subtle shadow, hover lift. Contains, top→bottom:
@@ -65,7 +65,7 @@ Apps-grid **layout** modeled on nomly.space (layout only — not their apps/cont
 
 1. **[Header]**
 2. **Hero** (white bg)
-   - Centered. Eyebrow `INDIE iOS STUDIO`. H1 **"Small apps, made with care."** Sub (Body L, muted) "Hylka Apps builds focused, beautifully simple iOS apps that do one thing well — no clutter, no noise." Primary pill CTA "Explore the App" (scrolls to §3) + secondary "About us". *(full copy: CONTENT.md §1)*
+   - Centered. Eyebrow `INDIE iOS STUDIO`. H1 **"Small apps, made with care."** Sub (Body L, muted) "Hilka Apps builds focused, beautifully simple iOS apps that do one thing well — no clutter, no noise." Primary pill CTA "Explore the App" (scrolls to §3) + secondary "About us". *(full copy: CONTENT.md §1)*
    - Optional: a hero visual (app mockup/icon).
 3. **Apps grid**  *(the core section — id `#apps`)* (`#F5F5F7` bg)
    - Eyebrow `OUR APPS` + H2 **"One app, done right."**
@@ -112,7 +112,7 @@ template**, content driven by data so future apps reuse it. Built for the mock a
 ### PAGE 3 — More  (`/more`)
 Simple index/overflow page.
 1. **[Header]**
-2. **Page header** (white bg) — eyebrow `MORE` + H1 **"More from Hylka Apps"** + short intro paragraph. (CONTENT.md §3)
+2. **Page header** (white bg) — eyebrow `MORE` + H1 **"More from Hilka Apps"** + short intro paragraph. (CONTENT.md §3)
 3. **Link blocks** (`#F5F5F7` bg) — a set of grouped cards/links: extra apps, resources, open-source tools, press/links. Each block = small heading + list of links. (Use 2–3 column card grid.)
 4. **[Footer]**
 
@@ -145,9 +145,9 @@ Two intents, **one shared form style**.
    - **Submit** (primary `#0088FF` pill button)
    - Hidden field: `type` = suggestion | complaint (from §3 selector)
    - **Anti-spam:** hidden honeypot field (no user-facing CAPTCHA).
-   - On submit → POST to form endpoint; deliver to `hello@hylkaapps.com` (mock).
+   - On submit → POST to form endpoint; deliver to `hilka.apps@gmail.com` (mock).
    - Success + error states (inline message below the button).
-5. **(Optional) Direct email** — line under the form: "Or email us at `hello@hylkaapps.com`".
+5. **(Optional) Direct email** — line under the form: "Or email us at `hilka.apps@gmail.com`".
 6. **[Footer]**
 
 > **Modal variant:** the same intent selector + form rendered inside a centered modal
@@ -201,11 +201,11 @@ Identical mechanism to Page 6, different Markdown source.
 | Privacy | `/{locale}/privacy` | Markdown render |
 
 ## F. Locked decisions + mock content
-**Locked:** brand **Hylka Apps** · light "Paste" theme only · locales EN + UK · one app ·
+**Locked:** brand **Hilka Apps** · light "Paste" theme only · locales EN + UK · one app ·
 no social media · no build-in-public / metrics / open-source sections.
 
 **Mock content (placeholder — replace later):** the app is the example **Focusly**; mock
-email `hello@hylkaapps.com`; full example copy for every page is in [CONTENT.md](CONTENT.md).
+email `hilka.apps@gmail.com`; full example copy for every page is in [CONTENT.md](CONTENT.md).
 
 **To replace with real assets later:** real product (name/icon/screenshots/descriptions/
-App Store link), real feedback email, Hylka Apps logo, final Terms/Privacy markdown.
+App Store link), real feedback email, Hilka Apps logo, final Terms/Privacy markdown.

@@ -30,17 +30,17 @@
       "terms": "Terms of Use",
       "privacy": "Privacy Policy"
     },
-    "copyright": "© 2026 Hylka Apps · All rights reserved.",
+    "copyright": "© 2026 Hilka Apps · All rights reserved.",
     "legalnote": "Made with care for the things that matter."
   },
   "home": {
     "meta": {
-      "title": "Hylka Apps — Small, considered iOS apps.",
-      "description": "Hylka Apps — small, considered iOS apps."
+      "title": "Hilka Apps — Small, considered iOS apps.",
+      "description": "Hilka Apps — small, considered iOS apps."
     },
     "eyebrow": "Indie iOS studio",
     "h1": "Small apps, made with <serif>care</serif>.",
-    "sub": "Hylka Apps builds focused, beautifully simple iOS apps that do one thing well — no clutter, no noise.",
+    "sub": "Hilka Apps builds focused, beautifully simple iOS apps that do one thing well — no clutter, no noise.",
     "cta1": "Explore the App",
     "cta2": "About us",
     "scrollCue": "Our apps",
@@ -67,13 +67,13 @@
   },
   "about": {
     "meta": {
-      "title": "About · Hylka Apps",
-      "description": "Hylka Apps is a tiny studio making focused iOS apps for everyday life."
+      "title": "About · Hilka Apps",
+      "description": "Hilka Apps is a tiny studio making focused iOS apps for everyday life."
     },
     "eyebrow": "About",
     "h1": "An indie iOS <serif>studio.</serif>",
-    "lead": "Hylka Apps is a tiny studio making focused iOS apps for everyday life.",
-    "story": "We believe the best software does less, better. Every Hylka app starts with one clear job and a calm, uncluttered interface — then we sweat the details until it feels effortless. No dark patterns, no noise, no upsell maze. Just small, honest tools we'd want to use ourselves.",
+    "lead": "Hilka Apps is a tiny studio making focused iOS apps for everyday life.",
+    "story": "We believe the best software does less, better. Every Hilka app starts with one clear job and a calm, uncluttered interface — then we sweat the details until it feels effortless. No dark patterns, no noise, no upsell maze. Just small, honest tools we'd want to use ourselves.",
     "values": {
       "h2": "What we stand for.",
       "items": [
@@ -103,11 +103,11 @@
   },
   "more": {
     "meta": {
-      "title": "More · Hylka Apps",
-      "description": "More from Hylka Apps — apps, company, legal."
+      "title": "More · Hilka Apps",
+      "description": "More from Hilka Apps — apps, company, legal."
     },
     "eyebrow": "More",
-    "h1": "More from Hylka Apps.",
+    "h1": "More from Hilka Apps.",
     "intro": "A few extra things — what we're working on and how to reach us.",
     "sections": {
       "apps": {
@@ -149,8 +149,8 @@
   },
   "contact": {
     "meta": {
-      "title": "Contact · Hylka Apps",
-      "description": "Get in touch with Hylka Apps — we'd love your feedback."
+      "title": "Contact · Hilka Apps",
+      "description": "Get in touch with Hilka Apps — we'd love your feedback."
     },
     "eyebrow": "Get in touch",
     "h1": "We'd love your <serif>feedback.</serif>",

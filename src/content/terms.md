@@ -1,4 +1,4 @@
-These Terms of Use ("Terms") govern your use of Hylka Apps applications and website
+These Terms of Use ("Terms") govern your use of Hilka Apps applications and website
 (the "Services"). This is placeholder text for the prototype — replace with the final
 legal document before launch.
 
@@ -20,4 +20,4 @@ The Services are provided "as is" without warranties of any kind.
 
 ## 5. Contact
 
-Questions? Email [hello@hylkaapps.com](mailto:hello@hylkaapps.com).
+Questions? Email [hilka.apps@gmail.com](mailto:hilka.apps@gmail.com).

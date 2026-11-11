@@ -4,13 +4,13 @@ export const siteConfig = {
   notifyEmails: ["milagalko1@gmail.com"],
 
   // Resend sender — must be a verified address/domain in Resend.
-  // TODO: switch to "Hylka Apps <noreply@hylkaapps.com>" once the domain is verified.
-  emailFrom: "Hylka Apps <onboarding@resend.dev>",
+  // TODO: switch to a branded sender once a domain is verified in Resend.
+  emailFrom: "Hilka Apps <onboarding@resend.dev>",
 
   // Brand fallbacks — used only when Sanity siteSettings is empty.
   brand: {
-    name: "Hylka Apps",
-    email: "hello@hylkaapps.com",
+    name: "Hilka Apps",
+    email: "hilka.apps@gmail.com",
   },
 
   // Shared App Store link for apps with no `appStoreUrl` in Sanity.
