@@ -18,3 +18,15 @@ export function pickDocContent(doc: DocContent | null | undefined, lang: Lang): 
 export function hasContent(doc: DocContent | null | undefined): boolean {
   return pickDocContent(doc, "en") !== null;
 }
+
+/** Keep only documents that would actually render — the single "has content" rule (GROQ can't trim). */
+export function onlyFilled<T extends DocContent>(docs: T[]): T[] {
+  return docs.filter(hasContent);
+}
+
+// Static routes under /apps/<app>/ win over the [doc] route, so these slugs could never be opened.
+const RESERVED_APP_DOC_SLUGS = new Set(["support"]);
+
+export function isReservedAppDocSlug(slug: string): boolean {
+  return RESERVED_APP_DOC_SLUGS.has(slug);
+}

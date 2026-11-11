@@ -2,6 +2,7 @@ import type { PortableTextBlock } from "@portabletext/types";
 import { getSanityClient, isSanityConfigured } from "./client";
 import { urlFor } from "./image";
 import { siteConfig } from "@/config/site";
+import { onlyFilled } from "@/lib/legal";
 
 export type Loc = { en?: string; uk?: string };
 export type LocRichText = { en?: PortableTextBlock[]; uk?: PortableTextBlock[] };
@@ -146,7 +147,11 @@ export async function getAllApps(): Promise<SanityAppCard[]> {
 // A legal doc with neither language filled is treated as non-existent (404, no link).
 const HAS_CONTENT = `(length(coalesce(contentEn, "")) > 0 || length(coalesce(contentUk, "")) > 0)`;
 const LEGAL_DOC_FIELDS = `{title, updatedAt, contentEn, contentUk}`;
-const LEGAL_LINK_FIELDS = `{ "slug": slug.current, title }`;
+// Content is fetched for links too, so whitespace-only docs can be dropped in JS (onlyFilled).
+const LEGAL_LINK_FIELDS = `{ "slug": slug.current, title, contentEn, contentUk }`;
+
+const toLinks = (docs: (SanityLegalLink & { contentEn?: string; contentUk?: string })[]): SanityLegalLink[] =>
+  onlyFilled(docs).map(({ slug, title }) => ({ slug, title }));
 
 // Site-wide documents (no app) — /legal/<slug>, footer, More page.
 export async function getLegalDoc(
@@ -162,10 +167,12 @@ export async function getLegalDoc(
 
 export async function getAllLegalDocs(): Promise<SanityLegalLink[]> {
   if (!isSanityConfigured()) return [];
-  return getSanityClient().fetch(
-    `*[_type == "legalDoc" && !defined(app) && defined(slug.current) && ${HAS_CONTENT}] | order(title.en asc)${LEGAL_LINK_FIELDS}`,
-    {},
-    REVALIDATE
+  return toLinks(
+    await getSanityClient().fetch(
+      `*[_type == "legalDoc" && !defined(app) && defined(slug.current) && ${HAS_CONTENT}] | order(title.en asc)${LEGAL_LINK_FIELDS}`,
+      {},
+      REVALIDATE
+    )
   );
 }
 
@@ -184,10 +191,12 @@ export async function getAppLegalDoc(
 
 export async function getAppLegalDocs(appSlug: string): Promise<SanityLegalLink[]> {
   if (!isSanityConfigured()) return [];
-  return getSanityClient().fetch(
-    `*[_type == "legalDoc" && app->slug.current == $appSlug && defined(slug.current) && ${HAS_CONTENT}] | order(title.en asc)${LEGAL_LINK_FIELDS}`,
-    { appSlug },
-    REVALIDATE
+  return toLinks(
+    await getSanityClient().fetch(
+      `*[_type == "legalDoc" && app->slug.current == $appSlug && defined(slug.current) && ${HAS_CONTENT}] | order(title.en asc)${LEGAL_LINK_FIELDS}`,
+      { appSlug },
+      REVALIDATE
+    )
   );
 }
 
