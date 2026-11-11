@@ -11,12 +11,9 @@ out/
 build/
 dist/
 
-# env files
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# env files (everything except the committed example)
+.env*
+!.env.local.example
 
 # vercel
 .vercel
@@ -28,7 +25,9 @@ dist/
 .DS_Store
 *.pem
 Thumbs.db
-.claude/
+.claude/settings.local.json
+.claude/worktrees/
+.superpowers/
 
 # debug
 npm-debug.log*
@@ -38,3 +37,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# testing
+/coverage/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

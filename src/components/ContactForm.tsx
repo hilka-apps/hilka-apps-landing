@@ -1,5 +1,11 @@
 "use client";
 import { useState, useRef } from "react";
+import {
+  MESSAGE_MAX,
+  validateContact,
+  type ContactErrorCode,
+  type ContactField,
+} from "@/lib/contact";
 import "./ContactForm.css";
 
 type Strings = {
@@ -22,8 +28,6 @@ type Strings = {
 
 type FieldErrors = { name?: string; email?: string; message?: string };
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
 export default function ContactForm({
   strings,
   email,
@@ -38,15 +42,14 @@ export default function ContactForm({
   const [charCount, setCharCount] = useState(0);
   const [errors, setErrors] = useState<FieldErrors>({});
   const honeypotRef = useRef<HTMLInputElement>(null);
-  const MAX_CHARS = 500;
 
+  // Map shared validation codes to this locale's messages.
   function validate(data: Record<string, FormDataEntryValue>): FieldErrors {
     const next: FieldErrors = {};
-    if (!String(data.name ?? "").trim()) next.name = strings.form.required;
-    const em = String(data.email ?? "").trim();
-    if (!em) next.email = strings.form.required;
-    else if (!EMAIL_RE.test(em)) next.email = strings.form.invalidEmail;
-    if (!String(data.message ?? "").trim()) next.message = strings.form.required;
+    const codes = Object.entries(validateContact(data)) as [ContactField, ContactErrorCode][];
+    for (const [field, code] of codes) {
+      next[field] = strings.form[code];
+    }
     return next;
   }
 
@@ -187,8 +190,8 @@ export default function ContactForm({
               <label htmlFor="cf-message">
                 {strings.form.message} <span className="cf-req" aria-hidden="true">*</span>
               </label>
-              <span className={`cf-counter${charCount > MAX_CHARS ? " over" : ""}`}>
-                {charCount}/{MAX_CHARS}
+              <span className={`cf-counter${charCount > MESSAGE_MAX ? " over" : ""}`}>
+                {charCount}/{MESSAGE_MAX}
               </span>
             </div>
             <textarea
@@ -197,7 +200,7 @@ export default function ContactForm({
               rows={5}
               placeholder={strings.form.messagePlaceholder}
               required
-              maxLength={MAX_CHARS}
+              maxLength={MESSAGE_MAX}
               aria-invalid={errors.message ? true : undefined}
               onChange={(e) => {
                 setCharCount(e.target.value.length);

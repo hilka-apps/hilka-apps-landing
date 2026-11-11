@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import * as Sentry from "@sentry/nextjs";
 import { siteConfig } from "@/config/site";
+import { validateContact } from "@/lib/contact";
 
 type ContactPayload = {
   name: string;
@@ -12,19 +13,18 @@ type ContactPayload = {
   type: "suggestion" | "complaint";
 };
 
-// Pragmatic email shape check — not RFC-perfect, just enough to reject typos.
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
 export async function POST(request: Request) {
   const body = (await request.json()) as ContactPayload;
 
-  if (!body.name || !body.email || !body.message) {
+  const errors = Object.values(validateContact(body));
+  if (errors.includes("required")) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
   }
-
-  if (!EMAIL_RE.test(body.email)) {
+  if (errors.includes("invalidEmail")) {
     return NextResponse.json({ error: "Invalid email address" }, { status: 400 });
   }
+  const name = String(body.name).trim();
+  const email = String(body.email).trim();
 
   if (!process.env.RESEND_API_KEY) {
     return NextResponse.json({ error: "Email service not configured" }, { status: 503 });
@@ -36,15 +36,15 @@ export async function POST(request: Request) {
   const appTag = body.app ? ` · ${body.app}` : "";
   const subject = body.subject
     ? `[${label}${appTag}] ${body.subject}`
-    : `[${label}${appTag}] from ${body.name}`;
+    : `[${label}${appTag}] from ${name}`;
 
   const { error } = await resend.emails.send({
     from: siteConfig.emailFrom,
     to: siteConfig.notifyEmails,
-    replyTo: body.email,
+    replyTo: email,
     subject,
     text:
-      `From: ${body.name} <${body.email}>\n` +
+      `From: ${name} <${email}>\n` +
       `Type: ${label}\n` +
       `App: ${body.app || "General"}\n\n` +
       body.message,
