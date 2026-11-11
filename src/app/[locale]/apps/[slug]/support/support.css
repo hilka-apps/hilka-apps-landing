@@ -12,3 +12,6 @@
   margin: 0 auto clamp(20px, 3vw, 32px);
   text-align: center;
 }
+.support-faq > .h2 {
+  text-align: center;
+}
