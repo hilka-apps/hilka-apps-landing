@@ -11,6 +11,7 @@ const sections: AppSection[] = [
     items: [
       { q: { en: "Q2" }, a: { en: "A2" } },
       { q: { en: "  " }, a: { en: "dropped" } },
+      { q: { en: "No answer yet" }, a: { en: " " } },
     ],
   },
 ];

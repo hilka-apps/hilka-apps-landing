@@ -52,7 +52,7 @@ export default async function AppPage({
   const t = await getTranslations("appPage");
   const tHeader = await getTranslations("header");
 
-  // No real URL → undefined → the badge renders inert instead of a dead link.
+  // No real URL → undefined → "Coming soon" instead of Apple's badge.
   const appStoreUrl = resolveStoreUrl(app.appStoreUrl);
   const heroH1 = pick(app.heroH1, lang);
 

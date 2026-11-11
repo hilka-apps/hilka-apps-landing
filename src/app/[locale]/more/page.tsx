@@ -44,13 +44,17 @@ export default async function MorePage({
   const lang = locale as Lang;
   const moreHeading = pick(more?.heroHeading, lang);
   if (sections.apps) {
-    sections.apps = {
-      ...sections.apps,
-      links: apps.map((app) => ({
-        label: pick(app.name, locale as Lang),
-        href: `/apps/${app.slug}`,
-      })),
-    };
+    if (apps.length > 0) {
+      sections.apps = {
+        ...sections.apps,
+        links: apps.map((app) => ({
+          label: pick(app.name, locale as Lang),
+          href: `/apps/${app.slug}`,
+        })),
+      };
+    } else {
+      delete sections.apps; // pre-launch: no empty "Apps" block
+    }
   }
   // Only real, filled-in site documents are linked — never a placeholder URL.
   if (sections.legal) {

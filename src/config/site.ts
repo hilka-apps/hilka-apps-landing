@@ -14,13 +14,13 @@ export const siteConfig = {
   },
 
   // Shared App Store link for apps with no `appStoreUrl` in Sanity.
-  // null → the badge renders inert instead of pointing at a dead link.
+  // null → "Coming soon" instead of Apple's badge.
   appStoreFallbackUrl: null as string | null,
 };
 
 /**
  * Resolves an App Store URL from Sanity. The `id000000000` placeholder and any
- * empty value count as "not set" → the badge renders inert.
+ * empty value count as "not set" → the page shows "Coming soon to the App Store".
  */
 export function resolveStoreUrl(url?: string | null): string | undefined {
   if (!url || url.includes("id000000000")) {
