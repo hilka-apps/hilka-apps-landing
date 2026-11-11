@@ -35,16 +35,19 @@ export default async function Footer({
             <p>{tagline ?? t("tagline")}</p>
           </div>
 
-          <div className="footer-col">
-            <h4>{t("cols.apps")}</h4>
-            <ul>
-              {apps.map((app) => (
-                <li key={app.slug}>
-                  <Link href={`/apps/${app.slug}`}>{pick(app.name, locale)}</Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* No visible apps yet (pre-launch) → no empty "Apps" heading. */}
+          {apps.length > 0 && (
+            <div className="footer-col">
+              <h4>{t("cols.apps")}</h4>
+              <ul>
+                {apps.map((app) => (
+                  <li key={app.slug}>
+                    <Link href={`/apps/${app.slug}`}>{pick(app.name, locale)}</Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           <div className="footer-col">
             <h4>{t("cols.company")}</h4>
@@ -64,22 +67,11 @@ export default async function Footer({
           <div className="footer-col">
             <h4>{t("cols.legal")}</h4>
             <ul>
-              {legalDocs.length > 0 ? (
-                legalDocs.map((doc) => (
-                  <li key={doc.slug}>
-                    <Link href={`/legal/${doc.slug}`}>{pick(doc.title, locale)}</Link>
-                  </li>
-                ))
-              ) : (
-                <>
-                  <li>
-                    <Link href="/legal/terms">{t("links.terms")}</Link>
-                  </li>
-                  <li>
-                    <Link href="/legal/privacy">{t("links.privacy")}</Link>
-                  </li>
-                </>
-              )}
+              {legalDocs.map((doc) => (
+                <li key={doc.slug}>
+                  <Link href={`/legal/${doc.slug}`}>{pick(doc.title, locale)}</Link>
+                </li>
+              ))}
               <li>
                 <a href={`mailto:${email}`}>{email}</a>
               </li>

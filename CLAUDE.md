@@ -32,7 +32,8 @@ Full local gate (same as CI):
 
 ```
 src/
-  app/[locale]/        pages: home (page.tsx), about, more, contact, apps/[slug], legal/[slug]
+  app/[locale]/        pages: home, about, more, contact, legal/[slug] (site docs),
+                       apps/[slug] + apps/[slug]/support + apps/[slug]/[doc] (per-app legal)
   app/api/contact      contact form → Resend
   app/api/revalidate   Sanity webhook → revalidateTag("sanity")
   app/studio           embedded Sanity Studio
@@ -46,9 +47,9 @@ messages/{en,uk}.json  UI strings + fallbacks when a CMS field is empty
 e2e/                   Playwright specs
 ```
 
-Unit tests live next to the code as `*.test.ts(x)`. E2E reads **live published Sanity content**
-(home grid, first app page): an unpublished/hidden-only app set or an empty `heroH1` turns e2e red
-without a code change — check the CMS before debugging code.
+Unit tests live next to the code as `*.test.ts(x)`. E2E reads **live published Sanity content** (`e2e/cms.ts` queries the public dataset): home
+expects one card per visible app, support/doc specs use the first app even if hidden. Editing
+content in Studio can turn e2e red without a code change — check the CMS before debugging code.
 
 ## Docs
 

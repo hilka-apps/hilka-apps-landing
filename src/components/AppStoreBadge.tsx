@@ -7,11 +7,17 @@ const AppleGlyph = () => (
 );
 
 /**
- * App Store badge. Pass `href` to render a link; omit it to render an inert
- * span (used inside another link, e.g. the whole app card).
+ * App Store badge, three states:
+ * - `href`  → Apple's badge as a link to the store;
+ * - `inert` → Apple's badge as a plain span (inside another link, e.g. the app card);
+ * - neither → a "coming soon" pill. Apple's badge is never shown for an app that
+ *   is not in the store yet.
  */
-export default function AppStoreBadge({ href }: { href?: string }) {
+export default function AppStoreBadge({ href, inert }: { href?: string; inert?: boolean }) {
   const t = useTranslations("appstore");
+  if (!href && !inert) {
+    return <span className="appstore-soon">{t("soon")}</span>;
+  }
   const inner = (
     <>
       <AppleGlyph />

@@ -443,6 +443,29 @@
   align-items: start;
 }
 
+/* Support · Privacy · Terms row at the bottom of the app page */
+.fp-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 0;
+  padding: 28px 24px 40px;
+  font-size: 14px;
+  color: var(--muted);
+}
+.fp-links a {
+  color: inherit;
+  text-decoration: none;
+}
+.fp-links a:hover {
+  color: var(--blue);
+}
+.fp-links a + a::before {
+  content: "·";
+  margin: 0 12px;
+  color: var(--muted-2);
+}
+
 /* ── Responsive ── */
 @media (max-width: 980px) {
   .fp-hero-grid {

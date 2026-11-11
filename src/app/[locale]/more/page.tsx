@@ -30,7 +30,8 @@ export default async function MorePage({
   setRequestLocale(locale);
   const t = await getTranslations("more");
 
-  const sections = t.raw("sections") as Record<string, SectionData>;
+  // Copy: t.raw() returns the shared messages object — never mutate it in place.
+  const sections = { ...(t.raw("sections") as Record<string, SectionData>) };
 
   // Apps and legal docs are the single source of truth in Sanity — keep the
   // section titles from translations but build their links from the live data,
@@ -43,22 +44,31 @@ export default async function MorePage({
   const lang = locale as Lang;
   const moreHeading = pick(more?.heroHeading, lang);
   if (sections.apps) {
-    sections.apps = {
-      ...sections.apps,
-      links: apps.map((app) => ({
-        label: pick(app.name, locale as Lang),
-        href: `/apps/${app.slug}`,
-      })),
-    };
+    if (apps.length > 0) {
+      sections.apps = {
+        ...sections.apps,
+        links: apps.map((app) => ({
+          label: pick(app.name, locale as Lang),
+          href: `/apps/${app.slug}`,
+        })),
+      };
+    } else {
+      delete sections.apps; // pre-launch: no empty "Apps" block
+    }
   }
-  if (sections.legal && legalDocs.length > 0) {
-    sections.legal = {
-      ...sections.legal,
-      links: legalDocs.map((doc) => ({
-        label: pick(doc.title, locale as Lang),
-        href: `/legal/${doc.slug}`,
-      })),
-    };
+  // Only real, filled-in site documents are linked — never a placeholder URL.
+  if (sections.legal) {
+    if (legalDocs.length > 0) {
+      sections.legal = {
+        ...sections.legal,
+        links: legalDocs.map((doc) => ({
+          label: pick(doc.title, locale as Lang),
+          href: `/legal/${doc.slug}`,
+        })),
+      };
+    } else {
+      delete sections.legal;
+    }
   }
 
   return (

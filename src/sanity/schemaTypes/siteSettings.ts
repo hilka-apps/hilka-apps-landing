@@ -9,8 +9,8 @@ export const siteSettings = defineType({
   type: "document",
   icon: CogIcon,
   fields: [
-    { name: "siteName", title: "Site name", type: "string", initialValue: "Hylka Apps" },
-    { name: "email", title: "Contact email", type: "string", initialValue: "hello@hylkaapps.com" },
+    { name: "siteName", title: "Site name", type: "string", initialValue: "Hilka Apps" },
+    { name: "email", title: "Contact email", type: "string", initialValue: "hilka.apps@gmail.com" },
     { name: "footerTagline", title: "Footer tagline", type: "string" },
     {
       name: "logo",

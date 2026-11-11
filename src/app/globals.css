@@ -1,5 +1,5 @@
 /* ============================================================
-   Hylka Apps — shared design system (Paste / Apple-style, light)
+   Hilka Apps — shared design system (Paste / Apple-style, light)
    Source of truth: docs/DESIGN.md
    ============================================================ */
 
@@ -395,6 +395,21 @@ h4 {
   font-size: 19px;
   font-weight: 600;
   letter-spacing: 0.2px;
+}
+/* Shown instead of Apple's badge until the app is live in the store. Same footprint as
+   the badge so layouts don't shift when the store link is added. */
+.appstore-soon {
+  display: inline-flex;
+  align-items: center;
+  min-height: 50px;
+  padding: 10px 18px;
+  border-radius: 12px;
+  background: var(--surface);
+  color: #1d1d1f;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.1px;
+  white-space: nowrap;
 }
 
 .btn-row {

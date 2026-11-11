@@ -60,9 +60,13 @@ export default function AppSections({
                   <div className="fp-stat-band">
                     <div className="fp-stat-number">{s.number}</div>
                     <p className="fp-stat-label">{pick(s.label, lang)}</p>
-                    <a className="btn btn-primary" href={appStoreUrl}>
-                      {downloadLabel}
-                    </a>
+                    {appStoreUrl ? (
+                      <a className="btn btn-primary" href={appStoreUrl} target="_blank" rel="noopener noreferrer">
+                        {downloadLabel}
+                      </a>
+                    ) : (
+                      <AppStoreBadge />
+                    )}
                   </div>
                 </div>
               </section>

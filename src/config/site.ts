@@ -4,23 +4,23 @@ export const siteConfig = {
   notifyEmails: ["milagalko1@gmail.com"],
 
   // Resend sender — must be a verified address/domain in Resend.
-  // TODO: switch to "Hylka Apps <noreply@hylkaapps.com>" once the domain is verified.
-  emailFrom: "Hylka Apps <onboarding@resend.dev>",
+  // TODO: switch to a branded sender once a domain is verified in Resend.
+  emailFrom: "Hilka Apps <onboarding@resend.dev>",
 
   // Brand fallbacks — used only when Sanity siteSettings is empty.
   brand: {
-    name: "Hylka Apps",
-    email: "hello@hylkaapps.com",
+    name: "Hilka Apps",
+    email: "hilka.apps@gmail.com",
   },
 
   // Shared App Store link for apps with no `appStoreUrl` in Sanity.
-  // null → the badge renders inert instead of pointing at a dead link.
+  // null → "Coming soon" instead of Apple's badge.
   appStoreFallbackUrl: null as string | null,
 };
 
 /**
  * Resolves an App Store URL from Sanity. The `id000000000` placeholder and any
- * empty value count as "not set" → the badge renders inert.
+ * empty value count as "not set" → the page shows "Coming soon to the App Store".
  */
 export function resolveStoreUrl(url?: string | null): string | undefined {
   if (!url || url.includes("id000000000")) {

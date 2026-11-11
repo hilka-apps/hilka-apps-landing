@@ -27,7 +27,7 @@ export default async function LandingPage({
   const lang = locale as "en" | "uk";
 
   const [apps, home] = await Promise.all([getAllApps(), getHomeContent()]);
-  // No real URL → undefined → the badge renders inert instead of a dead link.
+  // No real URL → undefined → "Coming soon" instead of Apple's badge.
   const APP_STORE_URL = resolveStoreUrl(apps[0]?.appStoreUrl);
 
   // Floating hero plates — only render the ones configured in the CMS.
@@ -151,7 +151,8 @@ export default async function LandingPage({
                       CARD_GRADIENTS[i % CARD_GRADIENTS.length],
                   }}
                 />
-                <span className="ac-live">{t("apps.live")}</span>
+                {/* "Live" only once the app is actually in the store. */}
+                {resolveStoreUrl(app.appStoreUrl) && <span className="ac-live">{t("apps.live")}</span>}
                 {app.iconUrl ? (
                   <div className="ac-scene">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -179,7 +180,7 @@ export default async function LandingPage({
                   </div>
                 )}
                 <div className="ac-foot">
-                  <AppStoreBadge />
+                  <AppStoreBadge inert={!!resolveStoreUrl(app.appStoreUrl)} />
                   <span className="ac-more">
                     {t("apps.learnMore")} <span className="arr">→</span>
                   </span>
