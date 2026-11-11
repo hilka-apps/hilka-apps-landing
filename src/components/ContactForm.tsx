@@ -8,7 +8,7 @@ import {
 } from "@/lib/contact";
 import "./ContactForm.css";
 
-type Strings = {
+export type ContactStrings = {
   tabs: { suggestion: string; complaint: string };
   form: {
     name: string; namePlaceholder: string;
@@ -32,10 +32,13 @@ export default function ContactForm({
   strings,
   email,
   appOptions,
+  defaultApp,
 }: {
-  strings: Strings;
+  strings: ContactStrings;
   email: string;
   appOptions: string[];
+  /** Preselect this app (support page); ignored if it is not one of `appOptions`. */
+  defaultApp?: string;
 }) {
   const [tab, setTab] = useState<"suggestion" | "complaint">("suggestion");
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
@@ -165,7 +168,11 @@ export default function ContactForm({
 
           <div className="cf-field">
             <label htmlFor="cf-app">{strings.form.app}</label>
-            <select id="cf-app" name="app" defaultValue="">
+            <select
+              id="cf-app"
+              name="app"
+              defaultValue={defaultApp && appOptions.includes(defaultApp) ? defaultApp : ""}
+            >
               <option value="">{strings.form.appPlaceholder}</option>
               {appOptions.map((name) => (
                 <option key={name} value={name}>

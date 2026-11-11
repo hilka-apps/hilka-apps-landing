@@ -4,7 +4,8 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import AppStoreBadge from "@/components/AppStoreBadge";
 import AppSections from "@/components/AppSections";
 import AnchorLink from "@/components/AnchorLink";
-import { getApp, getAllApps, getBrand } from "@/sanity/lib/queries";
+import { getApp, getAllApps, getAppLegalDocs, getBrand } from "@/sanity/lib/queries";
+import { Link } from "@/i18n/navigation";
 import { preserveCase } from "@/lib/text";
 import { pick } from "@/lib/i18n";
 import { accentGradient } from "@/lib/accent";
@@ -45,7 +46,7 @@ export default async function AppPage({
   setRequestLocale(locale);
   const lang = locale as "en" | "uk";
 
-  const app = await getApp(slug);
+  const [app, legalDocs] = await Promise.all([getApp(slug), getAppLegalDocs(slug)]);
   if (!app) notFound();
 
   const t = await getTranslations("appPage");
@@ -143,6 +144,16 @@ export default async function AppPage({
         downloadLabel={tHeader("cta")}
         contactLabel={t("contact")}
       />
+
+      {/* Support + this app's own legal docs (only filled-in ones are linked). */}
+      <nav className="fp-links" aria-label={t("linksLabel")}>
+        <Link href={`/apps/${slug}/support`}>{t("support")}</Link>
+        {legalDocs.map((doc) => (
+          <Link key={doc.slug} href={`/apps/${slug}/${doc.slug}`}>
+            {pick(doc.title, lang)}
+          </Link>
+        ))}
+      </nav>
     </div>
   );
 }

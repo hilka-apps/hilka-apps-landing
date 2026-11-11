@@ -8,7 +8,9 @@
   "appPage": {
     "howItWorks": "How it works",
     "contact": "Contact us",
-    "hiddenPreview": "Preview — this app is hidden from the site."
+    "hiddenPreview": "Preview — this app is hidden from the site.",
+    "support": "Support",
+    "linksLabel": "App information"
   },
   "header": {
     "cta": "Get the App",
@@ -181,5 +183,15 @@
   },
   "legal": {
     "updated": "Last updated:"
+  },
+  "support": {
+    "meta": {
+      "title": "Support · {app}",
+      "description": "Answers and help for {app}."
+    },
+    "title": "Support",
+    "intro": "Answers to common questions, and a direct line to us if you need more help.",
+    "faqHeading": "Frequently asked questions",
+    "contactHeading": "Still need help? Write to us."
   }
 }

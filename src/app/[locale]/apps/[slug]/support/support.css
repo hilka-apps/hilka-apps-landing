@@ -1,0 +1,14 @@
+.support-intro {
+  max-width: 560px;
+  margin-top: 16px;
+}
+.support-faq {
+  max-width: 760px;
+  display: grid;
+  gap: clamp(20px, 3vw, 32px);
+}
+.support-contact-h {
+  max-width: 560px;
+  margin: 0 auto clamp(20px, 3vw, 32px);
+  text-align: center;
+}

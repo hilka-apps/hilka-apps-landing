@@ -21,9 +21,11 @@ const strings = {
   sendAnother: "Send another",
 };
 
-function setup() {
+function setup(defaultApp?: string) {
   const user = userEvent.setup();
-  render(<ContactForm strings={strings} email="hello@x.com" appOptions={["Arttick"]} />);
+  render(
+    <ContactForm strings={strings} email="hello@x.com" appOptions={["Arttick"]} defaultApp={defaultApp} />
+  );
   return user;
 }
 
@@ -94,6 +96,16 @@ describe("ContactForm", () => {
     await user.type(screen.getByLabelText(/Message/), "Hi");
     await user.click(screen.getByRole("button", { name: "Send" }));
     expect(await screen.findByText(strings.error)).toBeInTheDocument();
+  });
+
+  it("preselects the app it was opened for (support page)", () => {
+    setup("Arttick");
+    expect(screen.getByLabelText("App")).toHaveValue("Arttick");
+  });
+
+  it("falls back to General when the preselected app is not an option", () => {
+    setup("Ghost");
+    expect(screen.getByLabelText("App")).toHaveValue("");
   });
 
   it("caps the message at 500 characters", () => {

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import ContactForm from "@/components/ContactForm";
+import { getContactStrings } from "@/components/contactStrings";
 import { getBrand, getAllApps, getContactContent } from "@/sanity/lib/queries";
 import { pick, pickOr } from "@/lib/i18n";
 import { renderAccent } from "@/lib/accentText";
@@ -30,31 +31,7 @@ export default async function ContactPage({
   const appOptions = apps.map((a) => pick(a.name, lang));
   const contactHeading = pick(contact?.heroHeading, lang);
 
-  const strings = {
-    tabs: {
-      suggestion: t("tabs.suggestion"),
-      complaint: t("tabs.complaint"),
-    },
-    form: {
-      name: t("form.name"),
-      namePlaceholder: t("form.namePlaceholder"),
-      email: t("form.email"),
-      emailPlaceholder: t("form.emailPlaceholder"),
-      subject: t("form.subject"),
-      subjectPlaceholder: t("form.subjectPlaceholder"),
-      app: t("form.app"),
-      appPlaceholder: t("form.appPlaceholder"),
-      message: t("form.message"),
-      messagePlaceholder: t("form.messagePlaceholder"),
-      submit: t("form.submit"),
-      required: t("form.required"),
-      invalidEmail: t("form.invalidEmail"),
-    },
-    success: t("success"),
-    error: t("error", { email }),
-    emailLine: t("emailLine"),
-    sendAnother: t("sendAnother"),
-  };
+  const strings = await getContactStrings(email);
 
   return (
     <div>
