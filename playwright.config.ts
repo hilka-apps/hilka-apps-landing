@@ -4,8 +4,9 @@ const CI = !!process.env.CI;
 const PORT = 3001;
 const baseURL = `http://localhost:${PORT}`;
 
-// Smoke tests run against the production build (`next start`).
-// Locally: `npm run build` first, or keep a server running on :3001 and it is reused.
+// Smoke tests run against the production build (`next start`). Run `npm run build`
+// first. A server already on :3001 is NOT reused: e2e always starts its own with
+// RESEND_API_KEY blanked, so no test can ever send real email.
 export default defineConfig({
   testDir: "e2e",
   fullyParallel: true,
@@ -24,7 +25,9 @@ export default defineConfig({
   webServer: {
     command: "npm run start",
     url: `${baseURL}/en`,
-    reuseExistingServer: !CI,
+    reuseExistingServer: false,
     timeout: 120_000,
+    // Empty string wins over .env.local (Next only fills undefined vars).
+    env: { RESEND_API_KEY: "" },
   },
 });

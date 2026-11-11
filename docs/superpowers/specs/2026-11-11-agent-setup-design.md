@@ -56,7 +56,7 @@ bad email shows invalid-email, valid submit POSTs payload with `type`).
 ### 3. E2E smoke (Playwright)
 
 Runs against `next build && next start -p 3001` (`webServer` in config; reuses a
-running server locally). Projects: `desktop-chromium`, `mobile-chromium` (Pixel 7).
+running server locally). Projects: `desktop` (Desktop Chrome), `mobile` (Pixel 7).
 Specs:
 - home renders on `/en` and `/uk` (`<html lang>`, hero `h1`, apps grid);
 - app page: open the first app card from home (no hardcoded slug), `h1` visible, EN and UK;

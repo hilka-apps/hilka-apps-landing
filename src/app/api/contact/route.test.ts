@@ -59,9 +59,10 @@ describe("POST /api/contact", () => {
     );
   });
 
-  it("does not crash on a non-string name", async () => {
+  it("rejects a non-string name with 400 instead of crashing", async () => {
     const res = await post({ ...valid, name: 42 });
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(400);
+    expect(send).not.toHaveBeenCalled();
   });
 
   it("returns 500 when Resend reports an error", async () => {

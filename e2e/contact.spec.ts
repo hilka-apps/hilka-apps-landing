@@ -33,3 +33,12 @@ test.describe("contact form", () => {
     expect(payload).toMatchObject({ name: "Mila", email: "mila@example.com", type: "suggestion" });
   });
 });
+
+// Guard: the e2e server runs with RESEND_API_KEY blanked, so a real submission
+// must stop at "not configured" — proves no test can send real email.
+test("e2e server cannot send real email", async ({ request }) => {
+  const res = await request.post("/api/contact", {
+    data: { name: "e2e", email: "e2e@example.com", message: "guard", type: "suggestion" },
+  });
+  expect(res.status()).toBe(503);
+});

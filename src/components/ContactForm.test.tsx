@@ -43,6 +43,16 @@ describe("ContactForm", () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
+  it("treats whitespace-only name and message as missing", async () => {
+    const user = setup();
+    await user.type(screen.getByLabelText(/Name/), "   ");
+    await user.type(screen.getByLabelText(/Email/), "mila@example.com");
+    await user.type(screen.getByLabelText(/Message/), "   ");
+    await user.click(screen.getByRole("button", { name: "Send" }));
+    expect(screen.getAllByText(strings.form.required)).toHaveLength(2);
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
   it("shows the invalid-email error for a malformed address", async () => {
     const user = setup();
     await user.type(screen.getByLabelText(/Name/), "Mila");

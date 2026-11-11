@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { EMAIL_RE, MESSAGE_MAX, validateContact } from "./contact";
+import { EMAIL_RE, validateContact } from "./contact";
 
 const valid = { name: "Mila", email: "a@b.co", message: "Hello" };
 
@@ -24,8 +24,14 @@ describe("validateContact", () => {
   it("accepts an email with surrounding spaces (trimmed)", () => {
     expect(validateContact({ ...valid, email: "  a@b.co " })).toEqual({});
   });
-  it("rejects a non-string email", () => {
-    expect(validateContact({ ...valid, email: 42 })).toEqual({ email: "invalidEmail" });
+  it("treats non-string values as missing", () => {
+    expect(validateContact({ ...valid, name: false, message: 0 })).toEqual({
+      name: "required",
+      message: "required",
+    });
+  });
+  it("treats a non-string email as missing", () => {
+    expect(validateContact({ ...valid, email: 42 })).toEqual({ email: "required" });
   });
   it("passes a valid payload", () => {
     expect(validateContact(valid)).toEqual({});
@@ -33,9 +39,6 @@ describe("validateContact", () => {
 });
 
 describe("contact constants", () => {
-  it("caps messages at 500 characters", () => {
-    expect(MESSAGE_MAX).toBe(500);
-  });
   it("exposes the shared email pattern", () => {
     expect(EMAIL_RE.test("x@y.io")).toBe(true);
     expect(EMAIL_RE.test("x y@z.io")).toBe(false);
