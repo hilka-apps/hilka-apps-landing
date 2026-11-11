@@ -1,22 +1,7 @@
 import { getRequestConfig } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { routing } from "./routing";
-
-type Messages = Record<string, unknown>;
-
-// Deep-merge so any key missing in a non-default locale falls back to English.
-function deepMerge(base: Messages, override: Messages): Messages {
-  const out: Messages = { ...base };
-  for (const key of Object.keys(override)) {
-    const b = base[key];
-    const o = override[key];
-    out[key] =
-      b && o && typeof b === "object" && typeof o === "object" && !Array.isArray(o)
-        ? deepMerge(b as Messages, o as Messages)
-        : o;
-  }
-  return out;
-}
+import { deepMerge, type Messages } from "./merge";
 
 export default getRequestConfig(async ({ requestLocale }) => {
   const requested = await requestLocale;
