@@ -97,7 +97,6 @@ test-prep app. The app is not on the site yet. Apple App Review opens the app's 
   and that have content.
 - `getAppLegalDoc(appSlug, docSlug): Promise<SanityLegalDoc | null>`.
 - `getAllLegalDocs()` / `getLegalDoc()` filter to `!defined(app)`.
-- `getApp` also returns the app's `_id`, needed for the form preselect by name.
 
 **Pure helpers** (unit-tested)
 - `src/lib/legal.ts`:
