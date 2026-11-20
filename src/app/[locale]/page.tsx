@@ -56,7 +56,6 @@ export default async function LandingPage({
                     <HeroMedia url={p.media.url} mime={p.media.mime} className="plate-media" />
                   ) : style === "icon" ? (
                     <div className="pl-pad">
-                      <div className="live-chip">LIVE</div>
                       <div className="app-tile-emoji">{value}</div>
                     </div>
                   ) : (

@@ -294,18 +294,6 @@
   font-size: 56px;
   filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.2));
 }
-.plate .live-chip {
-  align-self: flex-start;
-  font-family: var(--display);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.4px;
-  background: rgba(255, 255, 255, 0.95);
-  color: #0a8a3a;
-  padding: 3px 10px;
-  border-radius: 100px;
-}
-
 .scroll-cue {
   position: relative;
   z-index: 3;
