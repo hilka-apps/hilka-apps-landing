@@ -2,7 +2,7 @@ import { defineField } from "sanity";
 
 // Hint shown under any headline field that supports the *asterisk* accent marker.
 export const ACCENT_HINT =
-  "Wrap any part in *asterisks* to render it in italic serif.";
+  "Wrap a word or two in *asterisks* to mark them with the lime highlighter (one per heading).";
 
 // ── shared field builders (used by app + siteSettings) ────────────────
 

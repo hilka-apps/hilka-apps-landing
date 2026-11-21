@@ -63,7 +63,8 @@ export const homeContent = defineType({
       ...defineField({
         name: "heroPlates",
         title: "Floating plates",
-        description: "Up to four cards floating around the hero. Empty → none shown.",
+        description:
+          "Not displayed in the current design (the hero is text only). Kept so the content isn't lost.",
         type: "array",
         validation: (r) => r.max(4),
         of: [heroPlate],
