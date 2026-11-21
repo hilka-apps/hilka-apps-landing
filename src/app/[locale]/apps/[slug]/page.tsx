@@ -52,7 +52,7 @@ export default async function AppPage({
   const t = await getTranslations("appPage");
   const tHeader = await getTranslations("header");
 
-  // No real URL → undefined → "Coming soon" instead of Apple's badge.
+  // No real URL → undefined → a "Coming soon" tag and launch CTAs, never Apple's badge.
   const appStoreUrl = resolveStoreUrl(app.appStoreUrl);
   const heroH1 = pick(app.heroH1, lang);
 
@@ -86,18 +86,25 @@ export default async function AppPage({
                 <span className="fp-name">{pick(app.name, lang)}</span>
                 <span className="fp-kicker">{preserveCase(pick(app.kicker, lang))}</span>
               </span>
+              {!appStoreUrl && <span className="status-tag">{t("comingSoon")}</span>}
             </p>
             <h1 className="fp-h1">{renderAccent(heroH1)}</h1>
             <p className="fp-sub">{pick(app.heroSubtitle, lang)}</p>
-            <div className="fp-cta-row">
-              <AppStoreBadge href={appStoreUrl} />
-              {/* only when the target exists, or the link would go nowhere */}
-              {hasHowItWorks && (
-                <AnchorLink className="btn btn-secondary" href="#how-it-works">
-                  {t("howItWorks")}
-                </AnchorLink>
-              )}
-            </div>
+            {(appStoreUrl || hasHowItWorks) && (
+              <div className="fp-cta-row">
+                <AppStoreBadge href={appStoreUrl} />
+                {/* only when the target exists, or the link would go nowhere; it is the
+                    main action until the app is in the store */}
+                {hasHowItWorks && (
+                  <AnchorLink
+                    className={`btn ${appStoreUrl ? "btn-secondary" : "btn-primary"}`}
+                    href="#how-it-works"
+                  >
+                    {t("howItWorks")}
+                  </AnchorLink>
+                )}
+              </div>
+            )}
           </div>
 
           <div className="fp-stage">
@@ -137,6 +144,7 @@ export default async function AppPage({
         appStoreUrl={appStoreUrl}
         downloadLabel={tHeader("cta")}
         contactLabel={t("contact")}
+        launchLabel={t("launch")}
       />
     </div>
   );

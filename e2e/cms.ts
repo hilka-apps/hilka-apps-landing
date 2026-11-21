@@ -3,7 +3,17 @@ import { readFileSync } from "node:fs";
 // Reads the public (published, no token) Sanity dataset so specs know what content
 // exists — including hidden apps — instead of guessing from the rendered page.
 // `docs`: slugs of the app's filled-in legal docs, in the order the site lists them.
-export type CmsApp = { slug: string; hidden: boolean; hasFaq: boolean; docs: string[] };
+// `released`: has a real App Store URL (not empty, not the id000000000 placeholder).
+// `hasScreenMedia`: a screenshot/video for the hero phone.
+export type CmsApp = {
+  slug: string;
+  hidden: boolean;
+  hasFaq: boolean;
+  docs: string[];
+  released: boolean;
+  hasHowItWorks: boolean;
+  hasScreenMedia: boolean;
+};
 
 function publicSanityEnv(): { projectId?: string; dataset: string } {
   let { NEXT_PUBLIC_SANITY_PROJECT_ID: projectId, NEXT_PUBLIC_SANITY_DATASET: dataset } = process.env;
@@ -55,12 +65,19 @@ export function cmsApps(): Promise<CmsApp[]> {
       "hasFaq": count(sections[_type == "faqSection"].items[]) > 0,
       "docs": coalesce(*[_type == "legalDoc" && app._ref == ^._id && defined(slug.current)
         && (length(coalesce(contentEn, "")) > 0 || length(coalesce(contentUk, "")) > 0)
-      ] | order(title.en asc).slug.current, [])
+      ] | order(title.en asc).slug.current, []),
+      appStoreUrl,
+      "hasHowItWorks": count(sections[_type == "howItWorksSection"]) > 0,
+      "hasScreenMedia": defined(screenMedia.asset)
     }`;
     const url = `https://${projectId}.apicdn.sanity.io/v2024-01-01/data/query/${dataset}?query=${encodeURIComponent(query)}`;
     const res = await fetch(url);
     if (!res.ok) throw new Error(`Sanity query failed: ${res.status}`);
-    return (await res.json()).result as CmsApp[];
+    const rows = (await res.json()).result as (Omit<CmsApp, "released"> & { appStoreUrl?: string })[];
+    return rows.map(({ appStoreUrl, ...app }) => ({
+      ...app,
+      released: !!appStoreUrl && !appStoreUrl.includes("id000000000"),
+    }));
   })();
   return cache;
 }

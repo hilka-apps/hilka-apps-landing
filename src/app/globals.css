@@ -413,18 +413,20 @@ a.appstore:hover {
   font-size: 18px;
   font-weight: 600;
 }
-/* Until an app is in the store: a status, not a button. Same height as the badge. */
-.appstore-soon {
+/* Until an app is in the store: a small status tag by its name, not a button. */
+.status-tag {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  min-height: 48px;
-  padding: 10px 16px;
-  border-radius: var(--r-btn);
-  border: 1.5px dashed var(--line-strong);
+  min-height: auto;
+  padding: 4px 10px;
+  border: 0;
+  border-radius: var(--r-chip);
+  background: var(--paper-2);
   color: var(--ink-2);
-  font-size: 15px;
+  font-family: var(--sans);
+  font-size: 14px;
   font-weight: 600;
+  line-height: 1.3;
   white-space: nowrap;
 }
 

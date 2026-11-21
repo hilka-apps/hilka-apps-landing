@@ -10,7 +10,9 @@
     "hiddenPreview": "Превʼю — цю апку приховано із сайту.",
     "support": "Підтримка",
     "linksLabel": "Інформація про застосунок",
-    "overview": "Огляд"
+    "overview": "Огляд",
+    "comingSoon": "Незабаром",
+    "launch": "Дізнатися про запуск"
   },
   "header": {
     "cta": "Завантажити",
@@ -66,8 +68,7 @@
   },
   "appstore": {
     "small": "Завантажити в",
-    "big": "App Store",
-    "soon": "Незабаром в App Store"
+    "big": "App Store"
   },
   "about": {
     "meta": {

@@ -7,16 +7,13 @@ const AppleGlyph = () => (
 );
 
 /**
- * App Store badge, two states:
- * - `href`  → Apple's badge as a link to the store;
- * - no href → a "coming soon" status. Apple's badge is never shown for an app that
- *   is not in the store yet.
+ * Apple's App Store badge, linking to the store. Renders nothing without a link:
+ * Apple's badge is never shown for an app that is not in the store yet (callers show
+ * a "Coming soon" tag or a launch CTA instead).
  */
 export default function AppStoreBadge({ href }: { href?: string }) {
   const t = useTranslations("appstore");
-  if (!href) {
-    return <span className="appstore-soon">{t("soon")}</span>;
-  }
+  if (!href) return null;
   return (
     <a className="appstore" href={href} target="_blank" rel="noopener noreferrer">
       <AppleGlyph />

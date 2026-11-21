@@ -19,11 +19,8 @@ describe("AppStoreBadge", () => {
     expect(a).toHaveAttribute("target", "_blank");
   });
 
-  it("shows a coming-soon pill — never Apple's badge — without a store link", () => {
+  it("renders nothing without a store link — never Apple's badge for an unreleased app", () => {
     const { container } = renderBadge({});
-    const soon = container.querySelector(".appstore-soon");
-    expect(soon).toHaveTextContent("Coming soon to the App Store");
-    expect(container.querySelector(".appstore")).toBeNull();
-    expect(container.querySelector("svg")).toBeNull();
+    expect(container).toBeEmptyDOMElement();
   });
 });

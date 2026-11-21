@@ -10,7 +10,9 @@
     "hiddenPreview": "Preview — this app is hidden from the site.",
     "support": "Support",
     "linksLabel": "App information",
-    "overview": "Overview"
+    "overview": "Overview",
+    "comingSoon": "Coming soon",
+    "launch": "Hear about the launch"
   },
   "header": {
     "cta": "Get the App",
@@ -66,8 +68,7 @@
   },
   "appstore": {
     "small": "Download on the",
-    "big": "App Store",
-    "soon": "Coming soon to the App Store"
+    "big": "App Store"
   },
   "about": {
     "meta": {

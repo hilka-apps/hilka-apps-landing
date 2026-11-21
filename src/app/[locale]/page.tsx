@@ -17,10 +17,11 @@ export default async function LandingPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("home");
+  const tApp = await getTranslations("appPage");
   const lang = locale as "en" | "uk";
 
   const [apps, home] = await Promise.all([getAllApps(), getHomeContent()]);
-  // No real URL → undefined → "Coming soon" instead of Apple's badge.
+  // No real URL → undefined → a launch CTA instead of Apple's badge.
   const APP_STORE_URL = resolveStoreUrl(apps[0]?.appStoreUrl);
 
   // Hero plates (home.heroPlates) are intentionally not rendered: they were pure
@@ -144,7 +145,13 @@ export default async function LandingPage({
               <h2 className="h2">{renderAccent(pickOr(home?.ctaHeading, lang, t("cta.h2")))}</h2>
               <p className="lead">{pickOr(home?.ctaSub, lang, t("cta.sub"))}</p>
             </div>
-            <AppStoreBadge href={APP_STORE_URL} />
+            {APP_STORE_URL ? (
+              <AppStoreBadge href={APP_STORE_URL} />
+            ) : (
+              <Link className="btn btn-primary" href="/contact">
+                {tApp("launch")}
+              </Link>
+            )}
           </div>
         </div>
       </section>

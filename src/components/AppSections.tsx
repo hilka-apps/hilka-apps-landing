@@ -27,12 +27,16 @@ export default function AppSections({
   appStoreUrl,
   downloadLabel,
   contactLabel,
+  launchLabel,
 }: {
   sections: AppSection[];
   lang: "en" | "uk";
+  /** Undefined until the app is released: no store actions, launch CTA instead. */
   appStoreUrl?: string;
   downloadLabel: string;
   contactLabel: string;
+  /** "Hear about the launch" — the closing CTA before release. */
+  launchLabel: string;
 }) {
   return (
     <>
@@ -70,7 +74,7 @@ export default function AppSections({
                         <div className="fp-stat-number">{formatStat(s.number ?? "", lang)}</div>
                         <p className="fp-stat-label">{pick(s.label, lang)}</p>
                       </div>
-                      {appStoreUrl ? (
+                      {appStoreUrl && (
                         <a
                           className="btn btn-primary"
                           href={appStoreUrl}
@@ -79,8 +83,6 @@ export default function AppSections({
                         >
                           {downloadLabel}
                         </a>
-                      ) : (
-                        <AppStoreBadge />
                       )}
                     </div>
                   </div>
@@ -126,26 +128,27 @@ export default function AppSections({
               </section>
             );
 
-          case "testimonialsSection":
+          case "testimonialsSection": {
+            // One large quote reads as a voice; a grid of three reads as filler.
+            // Only the first CMS testimonial is shown (see the visual-refresh spec).
+            const first = (s.items ?? [])[0];
+            if (!first) return null;
             return (
               <section key={s._key} className="section white">
                 <div className="wrap">
                   <SectionHead eyebrow={pick(s.eyebrow, lang)} heading={pick(s.heading, lang)} />
                   <div className="indent">
-                    <div className="grid grid-3 fp-grid">
-                      {(s.items ?? []).map((item, i) => (
-                        <figure key={i} className="fp-quote">
-                          <blockquote className="fp-quote-text">
-                            &ldquo;{pick(item.quote, lang)}&rdquo;
-                          </blockquote>
-                          {item.name ? <figcaption className="fp-quote-who">{item.name}</figcaption> : null}
-                        </figure>
-                      ))}
-                    </div>
+                    <figure className="fp-quote-big">
+                      <blockquote className="fp-quote-big-text">
+                        &ldquo;{pick(first.quote, lang)}&rdquo;
+                      </blockquote>
+                      {first.name ? <figcaption className="fp-quote-who">{first.name}</figcaption> : null}
+                    </figure>
                   </div>
                 </div>
               </section>
             );
+          }
 
           case "faqSection":
             return (
@@ -168,10 +171,18 @@ export default function AppSections({
                   <div className="cta-band">
                     <h2 className="h2">{renderAccent(pick(s.heading, lang))}</h2>
                     <div className="btn-row">
-                      <AppStoreBadge href={appStoreUrl} />
-                      <Link className="btn btn-ghost" href="/contact">
-                        {contactLabel}
-                      </Link>
+                      {appStoreUrl ? (
+                        <>
+                          <AppStoreBadge href={appStoreUrl} />
+                          <Link className="btn btn-ghost" href="/contact">
+                            {contactLabel}
+                          </Link>
+                        </>
+                      ) : (
+                        <Link className="btn btn-primary" href="/contact">
+                          {launchLabel}
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </div>
