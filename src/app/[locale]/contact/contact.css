@@ -1,9 +1,0 @@
-.contact-intro {
-  max-width: 48ch;
-}
-.contact-serif {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-style: italic;
-  color: var(--acc-green);
-}

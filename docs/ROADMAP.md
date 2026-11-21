@@ -28,12 +28,12 @@ Visible on the live site: footer copyright and the home `<title>`/description.
 `src/app/[locale]/layout.tsx`. Confirmed from next/font data: Bricolage Grotesque has
 latin/latin-ext/vietnamese, Instrument Serif latin/latin-ext — no Cyrillic, so `/uk` headings
 fall back to system fonts and look different from `/en`.
-- [ ] P0 Pick display + serif fonts with Cyrillic (or a per-locale pairing), update layout + `DESIGN.md`
-- [ ] P0 Add a Playwright check that `/uk` `h1` computed `font-family` resolves to the display font
+- [x] P0 Pick display + serif fonts with Cyrillic (or a per-locale pairing), update layout + `DESIGN.md` — Literata + Commissioner in `src/app/fonts.ts`
+- [x] P0 Add a Playwright check that `/uk` `h1` computed `font-family` resolves to the display font — `e2e/fonts.spec.ts`
 
 ### F1.3 Small UI defects · P1
 - [x] P1 `AppSections.tsx` `statSection`: download button renders `<a>` without `href` when the App Store URL is unset — now a "Coming soon" pill
-- [ ] P1 Testimonials always show ★★★★★ (hardcoded) — make rating a CMS field or drop stars
+- [x] P1 Testimonials always show ★★★★★ (hardcoded) — make rating a CMS field or drop stars — dropped (visual refresh)
 - [ ] P2 `global-error.tsx` is English-only — localise via `navigator.language` or neutral bilingual copy
 - [ ] P2 Header has no primary CTA ("Get the App") that `STRUCTURE.md §A.1` specifies — decide: add or update the spec
 
