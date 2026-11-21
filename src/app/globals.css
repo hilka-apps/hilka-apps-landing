@@ -338,7 +338,7 @@ h4 {
 .btn-secondary {
   background: transparent;
   color: var(--ink);
-  border-color: var(--ink);
+  border-color: var(--line-strong);
 }
 .btn-secondary:hover {
   background: var(--paper-2);
