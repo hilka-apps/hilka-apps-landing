@@ -43,7 +43,8 @@ Both families cover Ukrainian Cyrillic (ґ є і ї). Loaded via `next/font/goog
 
 Rules: sentence case everywhere (no uppercase labels), tracking only on the biggest
 sizes (≤ −0.025em), leads ≤ 34em, documents ≤ 68ch. Headings (h1–h4) use
-`overflow-wrap: break-word; hyphens: auto` so long Ukrainian words wrap at 320px.
+`overflow-wrap: break-word; hyphens: manual` so long Ukrainian words wrap at 320px
+(no automatic hyphenation — it splits Ukrainian words in odd places).
 
 ### 1.2 Color
 

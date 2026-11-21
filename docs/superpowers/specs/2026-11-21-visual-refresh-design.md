@@ -174,6 +174,6 @@ keeps the left-aligned layout (the form follows a left-aligned FAQ there).
 
 **Review fixes in the same batch.** `--line-input` (#7D8270, 3.96:1) for form-field
 borders; non-colour cues on every selected state (header nav, drawer, contact intent
-tabs); h1–h4 wrap long words (`overflow-wrap: break-word; hyphens: auto`); header
+tabs); h1–h4 wrap long words (`overflow-wrap: break-word`, `hyphens: manual`); header
 language toggle hidden under 360px (the drawer has it); translated nav label; Literata
 italic no longer loaded; home app cards read in full with one store status.

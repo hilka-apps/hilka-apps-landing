@@ -84,9 +84,39 @@ test.describe("320px wide screens", () => {
     for (const path of paths) {
       const res = await page.goto(path);
       if (res?.status() === 404) continue; // site doc not published
-      await expect(page.locator("h1").first()).toHaveCSS("overflow-wrap", "break-word");
+      const h1 = page.locator("h1").first();
+      await expect(h1).toHaveCSS("overflow-wrap", "break-word");
+      // no automatic hyphenation: Ukrainian auto-hyphens break words in odd places
+      await expect(h1).toHaveCSS("hyphens", "manual");
       expect(await hasNoPageScrollX(page), path).toBe(true);
     }
+  });
+
+  test("the /uk contact heading has no hyphenated line breaks", async ({ page }) => {
+    await page.goto("/uk/contact");
+    // each rendered line of the h1 ends with a whole word, never an inserted "-"
+    const lineEnds = await page.locator("h1").first().evaluate((h1) => {
+      const walker = document.createTreeWalker(h1, NodeFilter.SHOW_TEXT);
+      const chars: { ch: string; top: number }[] = [];
+      for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+        const text = n.textContent ?? "";
+        for (let i = 0; i < text.length; i++) {
+          const r = document.createRange();
+          r.setStart(n, i);
+          r.setEnd(n, i + 1);
+          const rect = r.getClientRects()[0];
+          if (rect) chars.push({ ch: text[i], top: Math.round(rect.top) });
+        }
+      }
+      const ends: string[] = [];
+      chars.forEach((c, i) => {
+        const next = chars[i + 1];
+        if (next && next.top > c.top + 4 && c.ch.trim()) ends.push(c.ch + next.ch);
+      });
+      return ends;
+    });
+    // a word broken across lines would show as letter→letter with no space between
+    for (const pair of lineEnds) expect(pair, `mid-word break at "${pair}"`).not.toMatch(/^\p{L}\p{L}$/u);
   });
 });
 
