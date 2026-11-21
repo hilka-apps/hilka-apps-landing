@@ -1,0 +1,17 @@
+/* Contact page: the intro and the form share one centred column.
+   Field labels inside the form stay left-aligned. */
+.contact-hero .wrap {
+  text-align: center;
+}
+.contact-hero .page-h1,
+.contact-hero .lead {
+  margin-left: auto;
+  margin-right: auto;
+}
+.contact-form-col {
+  max-width: 640px;
+  margin: 0 auto;
+}
+.contact-form-col .cf-wrap {
+  max-width: none;
+}

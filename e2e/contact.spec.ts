@@ -42,3 +42,24 @@ test("e2e server cannot send real email", async ({ request }) => {
   });
   expect(res.status()).toBe(503);
 });
+
+test.describe("contact page layout", () => {
+  for (const locale of ["en", "uk"] as const) {
+    test(`form and intro are centred in ${locale}`, async ({ page }) => {
+      await page.goto(`/${locale}/contact`);
+      const viewportCentre = page.viewportSize()!.width / 2;
+      const centreOf = async (selector: string) => {
+        const box = (await page.locator(selector).first().boundingBox())!;
+        return box.x + box.width / 2;
+      };
+      expect(Math.abs((await centreOf(".cf-form")) - viewportCentre)).toBeLessThanOrEqual(8);
+      expect(Math.abs((await centreOf(".cf-tabs")) - viewportCentre)).toBeLessThanOrEqual(8);
+      expect(Math.abs((await centreOf("h1")) - viewportCentre)).toBeLessThanOrEqual(8);
+      await expect(page.locator("h1")).toHaveCSS("text-align", "center");
+      // the form is a column, not the full content width
+      expect((await page.locator(".cf-form").boundingBox())!.width).toBeLessThanOrEqual(640);
+      // field labels stay left-aligned
+      await expect(page.locator(".cf-field label").first()).toHaveCSS("text-align", /start|left/);
+    });
+  }
+});
