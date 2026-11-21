@@ -36,13 +36,14 @@ Both families cover Ukrainian Cyrillic (ґ є і ї). Loaded via `next/font/goog
 | App hero `.fp-h1` | 64 → 38 | 600 serif | 1.06 |
 | `.h1` (page titles) | 56 → 36 | 600 serif | 1.08 |
 | `.h2` | 40 → 28 | 600 serif | 1.12 |
-| `.h3` / card titles | 20–22 | 600 serif | 1.25–1.3 |
+| Card / item titles (`.info-card h3`, `.ac-name`) | 20–22 | 600 serif | 1.25–1.3 |
 | `.lead` | 20 → 18 | 400 sans, `--ink-2` | 1.55 |
 | Body | 17 | 400 sans | 1.6 |
 | `.eyebrow` (caption) | 15 | 600 sans, `--ink-2` | 1.4 |
 
 Rules: sentence case everywhere (no uppercase labels), tracking only on the biggest
-sizes (≤ −0.025em), leads ≤ 34em, documents ≤ 68ch.
+sizes (≤ −0.025em), leads ≤ 34em, documents ≤ 68ch. Headings (h1–h4) use
+`overflow-wrap: break-word; hyphens: auto` so long Ukrainian words wrap at 320px.
 
 ### 1.2 Color
 
@@ -52,13 +53,16 @@ sizes (≤ −0.025em), leads ≤ 34em, documents ≤ 68ch.
 | `--paper-2` | `#F3F4EE` | Alternate bands, chips, CTA panels |
 | `--ink` | `#23261A` | Text, primary buttons, footer, focus ring |
 | `--ink-2` | `#565B48` | Secondary text (7:1 on white) |
-| `--line` / `--line-strong` | `#DCDFD2` / `#B9BDAB` | Hairlines / input borders, dashed outlines |
-| `--lime` | `#E3EF7E` | Highlighter, selection, active nav mark, "On the App Store" tag |
+| `--line` / `--line-strong` | `#DCDFD2` / `#B9BDAB` | Hairlines / FAQ dividers, dashed outlines (decorative only) |
+| `--line-input` | `#7D8270` | Form-field borders (3.96:1 on white — WCAG 1.4.11 needs 3:1) |
+| `--lime` | `#E3EF7E` | Highlighter, selection, "On the App Store" tag |
 | `--link` | `#3D5A12` | Inline links (8:1 on white) |
 | `--danger` / `--ok` | `#B3261E` / `#2F6B2F` | Form states |
 | `--on-ink` / `--on-ink-2` | `#F1F2EA` / `#B4B8A4` | Text on the ink footer |
 
-Lime is never text and never a focus colour (too light on white).
+Lime is never text, never a focus colour and never the only mark of a selected
+state (too light on white). Selected / current states always add a non-colour cue:
+weight 600, an ink underline or an ink outline.
 Per-app accent (Sanity) → `accentTint()` in `src/lib/accent.ts`: a **solid** tint used
 on the home icon tile and the app-page phone screen.
 
@@ -95,19 +99,33 @@ Shadows: none, except under app icons and the phone mockup.
 - **Lists of items** (features, values, steps, articles): `.info-card` = 2px ink rule on
   top + serif title + text. No card box, no icon. Steps are numbered (they are a sequence).
 - **App card (home):** `a.appcard` — tinted icon tile | name, status tag, kicker,
-  description, chips, "Learn more". `.teaser` = dashed empty slot.
+  description, chips, "Learn more". One link, no `aria-label` override (its whole text
+  is read); the store status appears once (the tag — no badge inside the card). `.teaser` = dashed empty slot.
 - **CTA panel:** `.cta-band` — `--paper-2` panel, heading left, action right.
 - **FAQ:** hairline accordion, ink plus/minus.
-- **Forms:** segmented control for intent, 48px inputs with `--line-strong` borders,
-  ink focus outline, errors in `--danger` text under the field.
+- **Forms:** segmented control for intent (selected = white tile with a 1.5px ink
+  outline), 48px inputs with `--line-input` borders, ink focus outline, errors in
+  `--danger` text under the field. On `/contact` the intro and the form share one
+  centred 640px column; field labels stay left-aligned.
+- **App tabs** (`AppTabs`): on every per-app page (overview, legal docs, support), right
+  under the header: `<App name>:  Overview  <doc titles…>  Support`. Each tab is a real
+  link to its own page (URLs are fixed — they are entered in App Store Connect). Doc
+  tabs are the app's filled-in legal docs (`getAppLegalDocs`). White band, hairline
+  bottom, 15px sans in `--ink-2`, 48px targets; current tab = `aria-current="page"`,
+  ink text, weight 600 and a 2px ink underline sitting on the hairline. Under ~768px
+  the row scrolls sideways inside itself (no wrap, no page scroll) and the current tab
+  is scrolled into view. Wrapped in `<nav>` labelled `appPage.linksLabel`.
 - **Focus:** `:focus-visible` → 2px ink outline, 2px offset (lime on the dark footer).
 
 ### 1.6 Header & footer
 
 - **Header:** sticky, solid white, hairline bottom, 64px. Logo + name left; nav right in
-  `--ink-2`, current page in `--ink` with a lime bar; language toggle **EN / УКР**
-  (each label in its own language, no flags). Under 920px: toggle + menu button; the
-  full-screen drawer lists the nav in the serif and the two languages by full name.
+  `--ink-2`, current page in `--ink`, weight 600, with a 2px ink underline; nav
+  labelled `header.navLabel`. Language toggle **EN / УКР** (each label in its own
+  language, no flags; the accessible name is the visible label, the group label and
+  `lang` give context). Under 920px: toggle + menu button; under 360px the toggle is
+  hidden so the header fits 320px. The full-screen drawer lists the nav in the serif
+  (current item underlined in ink) and the two languages by full name.
 - **Footer:** ink background, logo + tagline, columns Apps / Company / Legal
   (sentence-case titles), bottom row with copyright and note.
 

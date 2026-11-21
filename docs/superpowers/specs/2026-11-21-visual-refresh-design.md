@@ -70,12 +70,12 @@ home card and the phone screen on the app page. No accent → neutral `--paper-2
 - No drop shadows except a small one under app icons (that's how icons look on a phone).
 - Spacing scale 4 / 8 / 12 / 16 / 24 / 32 / 48 / 72 / 112. Sections 72px (mobile 48px).
 - Content width 1120px; reading width 34em for leads, 68ch for documents.
-- Layout is left-aligned. Centred text only for nothing.
+- Layout is left-aligned. The one exception is the contact page's form column (§7).
 
 ### Components
 
 - **Header:** solid white, hairline under it, no blur. Nav in `--ink-2`, current page in
-  `--ink` with a lime underline. Language switch is a two-button toggle
+  `--ink`, weight 600, with an ink underline (was a lime bar — colour alone, see §7). Language switch is a two-button toggle
   **EN / УКР** (was a flag-emoji dropdown labelled "UK", which also reads as
   "United Kingdom"). One click instead of two. Mobile drawer kept, restyled.
 - **Buttons:** primary = ink fill, white text, 10px radius. Secondary = ink outline.
@@ -146,3 +146,34 @@ Schema is untouched; nothing in Sanity was edited.
 - Replace the placeholder apps (Focusly, Arttick) with the driving-theory app when ready;
   set its accent colour — it tints the icon tile and phone screen.
 - Upload a real screenshot as the app's "screen media"; the phone mockup is designed for it.
+
+## 7. App tabs + contact centring (follow-up, same day)
+
+**App tabs.** Every per-app page (`/apps/[slug]`, `/apps/[slug]/[doc]`,
+`/apps/[slug]/support`) gets a tab row directly under the site header:
+`<App name>:  Overview  <doc titles…>  Support`. It replaces the underlined
+Support / legal links row at the bottom of the overview page.
+
+- Each tab is a real link to its existing page; no URL changed (they are in App Store
+  Connect). Doc tabs = `getAppLegalDocs(slug)` (filled-in docs only, same order),
+  labelled `pick(doc.title, lang)`.
+- Current tab: `aria-current="page"` plus ink text, weight 600 and a 2px ink underline,
+  so it never relies on colour. Quiet band: white, hairline bottom, no pills.
+- Narrow screens: one row that scrolls sideways inside itself; the page never scrolls
+  horizontally; the current tab is scrolled into view on load.
+- `<nav aria-label>` reuses `appPage.linksLabel`; the new string is `appPage.overview`
+  (Overview / Огляд).
+- Component: `src/components/AppTabs.tsx` (+ `AppTabs.css`, unit test). E2E:
+  `e2e/app-tabs.spec.ts`; doc-tab checks run only when the CMS has filled-in docs.
+
+**Contact centring.** On `/contact` the intro (caption, h1, lead) and the form sit in
+one centred column (form max 640px). This is the one centred layout on the site: a
+single form reads better as a centred column than as a narrow block hugging the left
+edge of a wide page. Field labels inside the form stay left-aligned. The support page
+keeps the left-aligned layout (the form follows a left-aligned FAQ there).
+
+**Review fixes in the same batch.** `--line-input` (#7D8270, 3.96:1) for form-field
+borders; non-colour cues on every selected state (header nav, drawer, contact intent
+tabs); h1–h4 wrap long words (`overflow-wrap: break-word; hyphens: auto`); header
+language toggle hidden under 360px (the drawer has it); translated nav label; Literata
+italic no longer loaded; home app cards read in full with one store status.
