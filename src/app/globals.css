@@ -115,6 +115,25 @@ a {
   color: var(--ink);
 }
 
+/* "Skip to content": off-screen until it receives keyboard focus */
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -100px;
+  z-index: 300;
+  padding: 10px 16px;
+  border-radius: var(--r-btn);
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 600;
+}
+.skip-link:focus {
+  top: 12px;
+}
+main:focus {
+  outline: none;
+}
+
 /* keyboard focus — one ring for every interactive element */
 :focus-visible {
   outline: 2px solid var(--ink);

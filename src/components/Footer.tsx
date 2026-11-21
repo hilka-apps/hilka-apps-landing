@@ -15,6 +15,7 @@ export default async function Footer({
   logoUrl: string | null;
 }) {
   const t = await getTranslations("footer");
+  const tHeader = await getTranslations("header");
   const locale = (await getLocale()) as "en" | "uk";
   const [apps, legalDocs] = await Promise.all([getAllApps(), getAllLegalDocs()]);
 
@@ -23,7 +24,7 @@ export default async function Footer({
       <div className="wrap">
         <div className="footer-grid">
           <div className="footer-brand">
-            <Link className="brand" href="/" aria-label={`${siteName} home`}>
+            <Link className="brand" href="/" aria-label={tHeader("home", { site: siteName })}>
               {logoUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img className="logo-mark" src={logoUrl} alt="" width={28} height={28} />

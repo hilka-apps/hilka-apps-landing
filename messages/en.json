@@ -18,7 +18,9 @@
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "language": "Language",
-    "navLabel": "Main menu"
+    "navLabel": "Main menu",
+    "skip": "Skip to content",
+    "home": "{site} home"
   },
   "footer": {
     "tagline": "Small, considered iOS apps.",

@@ -42,13 +42,20 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
 
   const brand = await getBrand();
+  const t = await getTranslations("header");
 
   return (
     <html lang={locale} className={`${sans.variable} ${serif.variable}`} suppressHydrationWarning>
       <body>
         <NextIntlClientProvider>
+          {/* first focusable element on every page */}
+          <a className="skip-link" href="#main">
+            {t("skip")}
+          </a>
           <Header siteName={brand.siteName} logoUrl={brand.logoUrl} />
-          <main>{children}</main>
+          <main id="main" tabIndex={-1}>
+            {children}
+          </main>
           <Footer
             siteName={brand.siteName}
             email={brand.email}

@@ -130,3 +130,21 @@ test("home app cards are read in full and show the store status once", async ({ 
     await expect(card.locator(".appstore")).toHaveCount(0);
   }
 });
+
+for (const [locale, skip, home] of [
+  ["en", "Skip to content", "Hilka Apps home"],
+  ["uk", "Перейти до змісту", "Hilka Apps — головна"],
+] as const) {
+  test(`skip link is the first stop and the logo is labelled in ${locale}`, async ({ page }) => {
+    await page.goto(`/${locale}/about`);
+    await page.keyboard.press("Tab");
+    const focused = page.locator(":focus");
+    await expect(focused).toHaveText(skip);
+    await expect(focused).toHaveAttribute("href", "#main");
+    await expect(focused).toBeVisible();
+    await expect(page.locator("main#main")).toHaveCount(1);
+    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL(/#main$/);
+    await expect(page.locator(".site-header a.brand")).toHaveAttribute("aria-label", home);
+  });
+}

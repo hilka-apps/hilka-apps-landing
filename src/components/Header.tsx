@@ -28,8 +28,9 @@ function Brand({
   logoUrl: string | null;
   onClick?: () => void;
 }) {
+  const t = useTranslations("header");
   return (
-    <Link className="brand" href="/" aria-label={`${siteName} home`} onClick={onClick}>
+    <Link className="brand" href="/" aria-label={t("home", { site: siteName })} onClick={onClick}>
       {logoUrl ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img className="logo-mark" src={logoUrl} alt="" width={28} height={28} />
@@ -55,6 +56,14 @@ export default function Header({
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const drawerRef = useRef<HTMLElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const wasOpen = useRef(false);
+
+  // closing the drawer (Esc, ✕, a link, a language) returns focus to the menu button
+  useEffect(() => {
+    if (wasOpen.current && !drawerOpen) menuButtonRef.current?.focus();
+    wasOpen.current = drawerOpen;
+  }, [drawerOpen]);
 
   // lock scroll while the drawer is open
   useEffect(() => {
@@ -154,9 +163,12 @@ export default function Header({
           </div>
 
           <button
+            ref={menuButtonRef}
             type="button"
             className="hamburger"
             aria-label={t("header.openMenu")}
+            aria-expanded={drawerOpen}
+            aria-controls="site-drawer"
             onClick={() => setDrawerOpen(true)}
           >
             <span></span>
@@ -173,6 +185,7 @@ export default function Header({
         onClick={() => setDrawerOpen(false)}
       />
       <aside
+        id="site-drawer"
         ref={drawerRef}
         className={`drawer${drawerOpen ? " open" : ""}`}
         aria-hidden={!drawerOpen}
