@@ -12,7 +12,7 @@ for (const locale of ["en", "uk"] as const) {
     // Every visible CMS app has a card; with none (pre-launch) only the teaser shows.
     await expect(page.locator("a.appcard:not(.teaser)")).toHaveCount(visible.length);
     // Hero decoration must not claim a release: no hardcoded, untranslated "LIVE" badge.
-    await expect(page.locator(".plates").getByText("LIVE", { exact: true })).toHaveCount(0);
+    await expect(page.locator("main").getByText("LIVE", { exact: true })).toHaveCount(0);
   });
 }
 

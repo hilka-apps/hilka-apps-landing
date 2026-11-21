@@ -33,7 +33,7 @@ fall back to system fonts and look different from `/en`.
 
 ### F1.3 Small UI defects · P1
 - [x] P1 `AppSections.tsx` `statSection`: download button renders `<a>` without `href` when the App Store URL is unset — now a "Coming soon" pill
-- [x] P1 Testimonials always show ★★★★★ (hardcoded) — make rating a CMS field or drop stars — dropped (visual refresh)
+- [ ] P1 Testimonials show ★★★★★ (hardcoded) — the owner asked for star cards back (2026-11-22). Make rating a CMS field, or remove stars/testimonials for an unreleased app before App Review (fake reviews)
 - [ ] P2 `global-error.tsx` is English-only — localise via `navigator.language` or neutral bilingual copy
 - [ ] P2 Header has no primary CTA ("Get the App") that `STRUCTURE.md §A.1` specifies — decide: add or update the spec
 
@@ -78,7 +78,7 @@ fall back to system fonts and look different from `/en`.
 - [ ] P2 JSON-LD `SoftwareApplication` on app pages, `Organization` on home
 
 ### F3.3 Not found · P1
-- [ ] P1 Localised `src/app/[locale]/not-found.tsx` (today Next's default 404)
+- [x] P1 Localised `src/app/[locale]/not-found.tsx` (today Next's default 404) — visual refresh
 
 ---
 
@@ -86,8 +86,8 @@ fall back to system fonts and look different from `/en`.
 
 ### F4.1 Accessibility · P1
 - [ ] P1 Add `@axe-core/playwright` scan to e2e for home, app, contact (both locales)
-- [ ] P1 Language dropdown: `role="menu"` without `menuitem`s, no Esc / arrow-key support (`Header.tsx`)
-- [ ] P2 Respect `prefers-reduced-motion` for floating plates and autoplay videos (`HeroMedia`)
+- [x] P1 Language dropdown: `role="menu"` without `menuitem`s, no Esc / arrow-key support (`Header.tsx`) — replaced by an EN/УКР toggle
+- [ ] P2 Respect `prefers-reduced-motion` for autoplay videos (`HeroMedia`); floating plates are no longer rendered
 
 ### F4.2 Performance · P1
 - [ ] P1 Replace raw `<img>` (eslint-disabled) with `next/image` for Sanity assets (icons, logos, plates)
@@ -162,6 +162,9 @@ fall back to system fonts and look different from `/en`.
 - [ ] P2 "Hilka" name conflict (another developer at `hilka.app`): owner enrolls in Apple Developer as an individual (2026-11-21), so the App Store seller is her own name and Hilka is only the site brand — low risk, revisit if registering a company
 
 ### F9.3 Follow-ups
+- [x] P1 Visual refresh (`feat/visual-refresh`): Literata + Commissioner, olive/lime palette, EN/УКР toggle, app tab row (Overview · legal docs · Support), centred contact form, soft borders — owner-approved 2026-11-22
+- [ ] P1 Remove the orphaned `/more` page (no longer linked from header or footer) or give it real content
+- [ ] P2 Form field borders are softer than WCAG 1.4.11 (3:1) by owner choice; focus state is ink + lime ring
 - [ ] ~~P1 "Unofficial app, not affiliated with MVS/HSC" disclaimer field on the app page~~ — owner declined (2026-11-21)
 - [ ] P2 Smart App Banner (`apple-itunes-app` meta) once the app has a store ID
 - [ ] P2 Store links in the support page header once live
