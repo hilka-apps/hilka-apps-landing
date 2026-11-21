@@ -15,7 +15,7 @@
     "launch": "Hear about the launch"
   },
   "header": {
-    "cta": "Get the App",
+    "cta": "Get the app",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "language": "Language",
@@ -45,7 +45,7 @@
     },
     "eyebrow": "Indie iOS studio",
     "h1": "Small apps, made with <hl>care</hl>.",
-    "sub": "Hilka Apps builds focused, beautifully simple iOS apps that do one thing well — no clutter, no noise.",
+    "sub": "Hilka Apps makes focused, simple iOS apps that do one thing well — no clutter, no noise.",
     "cta1": "See the apps",
     "cta2": "About us",
     "apps": {
@@ -80,7 +80,7 @@
     "lead": "Hilka Apps is a tiny studio making focused iOS apps for everyday life.",
     "story": "We believe the best software does less, better. Every Hilka app starts with one clear job and a calm, uncluttered interface — then we sweat the details until it feels effortless. No dark patterns, no noise, no upsell maze. Just small, honest tools we'd want to use ourselves.",
     "values": {
-      "h2": "What we stand for.",
+      "h2": "What we stand for",
       "items": [
         {
           "icon": "✦",
@@ -95,7 +95,7 @@
         {
           "icon": "🤍",
           "title": "Made with care",
-          "desc": "Every detail sweated until it feels effortless."
+          "desc": "We sweat every detail until it feels effortless."
         }
       ],
       "eyebrow": "Our values"
@@ -103,7 +103,7 @@
     "cta": {
       "h2": "See what we've built.",
       "cta": "Explore Focusly",
-      "sub": "One focused app, already live. More on the way."
+      "sub": "One focused app so far, with more on the way."
     }
   },
   "more": {
@@ -173,7 +173,7 @@
       "subject": "Subject",
       "subjectPlaceholder": "Short summary (optional)",
       "app": "App",
-      "appPlaceholder": "General — not app-specific",
+      "appPlaceholder": "General (not about a specific app)",
       "message": "Message",
       "messagePlaceholder": "Tell us more…",
       "submit": "Send message",
@@ -182,7 +182,7 @@
       "required": "Required",
       "invalidEmail": "Enter a valid email address"
     },
-    "success": "Thanks! Your message is on its way to us.",
+    "success": "Thanks! Your message is on its way.",
     "error": "Something went wrong — please try again or email {email}.",
     "emailLine": "Prefer email? Reach us at",
     "sendAnother": "Send another"
@@ -195,7 +195,7 @@
   "support": {
     "meta": {
       "title": "Support · {app}",
-      "description": "Answers and help for {app}."
+      "description": "Help and answers for {app}."
     },
     "title": "Support",
     "intro": "Answers to common questions, and a direct line to us if you need more help.",
