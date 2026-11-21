@@ -50,10 +50,15 @@
   outline-offset: 2px;
 }
 /* selected: white tile with an ink outline — not colour alone */
+/* Selected segment: a raised white chip, bolder text — soft, but not colour alone. */
+.cf-tab {
+  font-weight: 500;
+}
 .cf-tab.sel {
   background: var(--paper);
   color: var(--ink);
-  box-shadow: 0 0 0 1.5px var(--ink);
+  font-weight: 650;
+  box-shadow: 0 1px 3px rgba(35, 38, 26, 0.1), 0 0 0 1px var(--line);
 }
 
 .cf-form {
@@ -115,7 +120,8 @@
 .cf-field textarea,
 .cf-field select {
   background: var(--paper);
-  border: 1px solid var(--line-input);
+  /* Soft hairline at rest; the field turns ink with a lime ring on focus. */
+  border: 1px solid var(--line-strong);
   border-radius: var(--r-input);
   font-family: var(--sans);
   font-size: 17px;
@@ -123,13 +129,13 @@
   color: var(--ink);
   min-height: 48px;
   padding: 11px 14px;
-  transition: border-color 0.15s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
   resize: vertical;
 }
 .cf-field input:hover,
 .cf-field textarea:hover,
 .cf-field select:hover {
-  border-color: var(--ink-2);
+  border-color: var(--line-input);
 }
 .cf-field select {
   resize: none;
@@ -145,8 +151,8 @@
 .cf-field textarea:focus-visible,
 .cf-field select:focus-visible {
   border-color: var(--ink);
-  outline: 2px solid var(--ink);
-  outline-offset: 0;
+  outline: none;
+  box-shadow: 0 0 0 3px var(--lime, #e3ef7e);
 }
 .cf-field input::placeholder,
 .cf-field textarea::placeholder {

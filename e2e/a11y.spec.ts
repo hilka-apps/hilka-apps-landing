@@ -16,19 +16,30 @@ function contrastOnWhite(rgb: string): number {
 const hasNoPageScrollX = (page: Page) =>
   page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth);
 
-test("form inputs have a thin 3:1 boundary against white (WCAG 1.4.11)", async ({ page }) => {
+// Owner decision: soft hairline borders at rest (not 3:1); the field is clearly
+// marked when focused — ink border plus a lime ring.
+test("form inputs have a soft 1px border and an ink border when focused", async ({ page }) => {
   await page.goto("/en/contact");
   for (const id of ["#cf-name", "#cf-email", "#cf-message"]) {
-    const border = await page.locator(id).evaluate((el) => getComputedStyle(el).borderTopColor);
-    expect(contrastOnWhite(border), `${id} border ${border}`).toBeGreaterThanOrEqual(3);
-    expect(await page.locator(id).evaluate((el) => getComputedStyle(el).borderTopWidth)).toBe("1px");
+    const field = page.locator(id);
+    const rest = await field.evaluate((el) => getComputedStyle(el).borderTopColor);
+    expect(contrastOnWhite(rest), `${id} border ${rest}`).toBeLessThan(2.5);
+    expect(await field.evaluate((el) => getComputedStyle(el).borderTopWidth)).toBe("1px");
+    await field.focus();
+    await page.keyboard.press("Shift+Tab");
+    await page.keyboard.press("Tab");
+    await expect(field).toBeFocused();
+    // toHaveCSS retries, so the 0.15s border transition can finish
+    await expect(field).toHaveCSS("border-top-color", INK);
   }
 });
 
-test("the selected contact intent is marked by an ink outline, not colour alone", async ({ page }) => {
+test("the selected contact intent is bolder than the other, not marked by colour alone", async ({ page }) => {
   await page.goto("/en/contact");
+  const weight = (sel: string) => page.locator(sel).first().evaluate((el) => Number(getComputedStyle(el).fontWeight));
+  expect(await weight(".cf-tab.sel")).toBeGreaterThan(await weight(".cf-tab:not(.sel)"));
   const shadow = await page.locator(".cf-tab.sel").evaluate((el) => getComputedStyle(el).boxShadow);
-  expect(shadow).toContain(INK);
+  expect(shadow).not.toContain(INK);
 });
 
 test("the current page in the desktop nav is bold and underlined in ink", async ({ page }, testInfo) => {
