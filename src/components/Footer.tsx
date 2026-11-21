@@ -62,22 +62,27 @@ export default async function Footer({
               <li>
                 <Link href="/contact">{t("links.contact")}</Link>
               </li>
-            </ul>
-          </div>
-
-          <div className="footer-col">
-            <h4>{t("cols.legal")}</h4>
-            <ul>
-              {legalDocs.map((doc) => (
-                <li key={doc.slug}>
-                  <Link href={`/legal/${doc.slug}`}>{pick(doc.title, locale)}</Link>
-                </li>
-              ))}
               <li>
-                <a href={`mailto:${email}`}>{email}</a>
+                <a className="footer-email" href={`mailto:${email}`}>
+                  {email}
+                </a>
               </li>
             </ul>
           </div>
+
+          {/* No published site documents → no empty "Legal" heading. */}
+          {legalDocs.length > 0 && (
+            <div className="footer-col">
+              <h4>{t("cols.legal")}</h4>
+              <ul>
+                {legalDocs.map((doc) => (
+                  <li key={doc.slug}>
+                    <Link href={`/legal/${doc.slug}`}>{pick(doc.title, locale)}</Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
 

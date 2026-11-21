@@ -749,6 +749,17 @@ a.appstore:hover {
   font-size: 15px;
   overflow-wrap: anywhere;
 }
+/* an address must never break in the middle */
+.footer-col a.footer-email {
+  overflow-wrap: normal;
+  white-space: nowrap;
+}
+/* two columns are too narrow for the address on the smallest phones */
+@media (max-width: 400px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+}
 .footer-col a:hover {
   text-decoration: underline;
   text-decoration-color: var(--lime);

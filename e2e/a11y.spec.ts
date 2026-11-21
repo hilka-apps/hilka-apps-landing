@@ -148,3 +148,22 @@ for (const [locale, skip, home] of [
     await expect(page.locator(".site-header a.brand")).toHaveAttribute("aria-label", home);
   });
 }
+
+for (const width of [320, 390, 1280]) {
+  test(`footer email sits in the Company column on one line at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 800 });
+    await page.goto("/uk");
+    const email = page.locator(".site-footer a[href^='mailto:']");
+    await expect(email).toHaveCount(1);
+    // same column as the About link
+    const col = page.locator(".footer-col", { has: page.locator("a[href$='/about']") });
+    await expect(col.locator("a[href^='mailto:']")).toHaveCount(1);
+    const lines = await email.evaluate((el) => {
+      const r = document.createRange();
+      r.selectNodeContents(el);
+      return new Set([...r.getClientRects()].map((x) => Math.round(x.top))).size;
+    });
+    expect(lines).toBe(1);
+    expect(await hasNoPageScrollX(page)).toBe(true);
+  });
+}
