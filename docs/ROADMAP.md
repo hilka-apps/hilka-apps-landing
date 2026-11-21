@@ -21,7 +21,7 @@ Visible on the live site: footer copyright and the home `<title>`/description.
 - [x] P0 `src/config/site.ts`: `brand.name`, `emailFrom` display name; `src/sanity/schemaTypes/siteSettings.ts` `initialValue`
 - [x] P1 Bundled legal fallbacks (deleted), `scripts/seed-pages.mjs`, `globals.css` header comment, docs
 - [ ] P0 Apply the CMS rename: `node scripts/rename-brand.mjs` (dry run shows before/after) → `--apply` after the owner's yes (7 docs incl. the open `drafts.homeContent`)
-- [ ] P1 Decide the studio domain (none owned in Vercel; `hilka.app` belongs to another developer) — blocks F2.1
+- [ ] P1 Studio domain: owner is buying one (decision 2026-11-21) — connect it in Vercel before App Store Connect URLs are entered; blocks F2.1
 
 ### F1.2 Cyrillic typography · P0 (audience is Ukrainian)
 `Bricolage_Grotesque` and `Instrument_Serif` are loaded with `subsets: ["latin"]` in
@@ -48,6 +48,7 @@ fall back to system fonts and look different from `/en`.
 
 ### F2.1 Production email sending · P0
 - [ ] P0 Verify the sending domain in Resend; switch `emailFrom` off `onboarding@resend.dev` (test sender only delivers to the Resend account owner)
+- [ ] P0 Contact/support messages must reach `hilka.apps@gmail.com` (owner decision 2026-11-21); today they go to a personal inbox. Needs the domain above verified first — with the test sender a different recipient is rejected
 - [ ] P0 Move `notifyEmails` (personal address, public repo) to env `CONTACT_NOTIFY_EMAILS`; document in `.env.local.example`
 
 ### F2.2 `/api/contact` hardening · P0
@@ -104,7 +105,8 @@ fall back to system fonts and look different from `/en`.
 
 ### F5.2 Editor experience · P2
 - [ ] P2 Live preview / draft mode for Studio editors
-- [ ] P2 Clean up the hidden mock app `focusly` in the dataset (content task)
+- [ ] P2 Delete the hidden mock apps `focusly` and `arttick` from the dataset once the real app is published (content task; e2e support/doc specs use the first app until then)
+- [x] P1 Legal documents grouped per app in Studio: Apps → <app> → App details / Legal documents (`app` pre-filled and read-only); Site content → Legal documents holds site docs only; no Legal document in the top-bar "+"
 
 ---
 
@@ -152,12 +154,14 @@ fall back to system fonts and look different from `/en`.
 - [x] P0 Per-app legal docs `/apps/<app>/<slug>` via `legalDoc.app`; empty → 404, no placeholders
 
 ### F9.2 Owner / content tasks · P0
-- [ ] P0 Hide Arttick and Focusly in Studio (eye toggle) once the new app is added
-- [ ] P0 Add the new app in Studio (EN + UK), its FAQ section, then Privacy/Terms docs with `App` set
-- [ ] P0 Site legal docs in Studio (`/legal/privacy`, `/legal/terms`, `App` empty) still hold prototype placeholder text ("This is placeholder text…", "Focusly stores…") and are linked in every footer — replace with real text or clear both languages (empty → 404 and the footer link disappears) before App Review
-- [ ] P0 Check the "Hilka" name conflict (another Apple developer at `hilka.app`) before Apple Developer enrollment
+- [x] P0 Hide Arttick and Focusly in Studio (both mock apps, never released)
+- [ ] P0 Add the new app in Studio (EN + UK), its FAQ section, then Privacy/Terms in Apps → <app> → Legal documents
+- [x] P0 Site Terms of Use dropped (no accounts or purchases on the site): body cleared → `/legal/terms` is 404, footer link gone
+- [ ] P0 Site Privacy (`/legal/privacy`) still holds prototype placeholder text and is linked in every footer — replace with the site's real policy (contact form: name, email, message → email via Resend) before App Review
+- [ ] P0 Studio copy still promises a released app: Home hero plates (Arttick sketching theme + the 🎨 plate's hardcoded "LIVE"), Home `ctaSub` "One focused app live today", About `ctaLabel` "Explore Focusly" / `ctaSub` "already live"
+- [ ] P2 "Hilka" name conflict (another developer at `hilka.app`): owner enrolls in Apple Developer as an individual (2026-11-21), so the App Store seller is her own name and Hilka is only the site brand — low risk, revisit if registering a company
 
 ### F9.3 Follow-ups
-- [ ] P1 "Unofficial app, not affiliated with MVS/HSC" disclaimer field on the app page (+ source of rules/questions)
+- [ ] ~~P1 "Unofficial app, not affiliated with MVS/HSC" disclaimer field on the app page~~ — owner declined (2026-11-21)
 - [ ] P2 Smart App Banner (`apple-itunes-app` meta) once the app has a store ID
 - [ ] P2 Store links in the support page header once live
