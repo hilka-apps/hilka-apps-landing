@@ -73,7 +73,6 @@ export default async function LandingPage({
                       key={app.slug}
                       className="appcard"
                       href={`/apps/${app.slug}`}
-                      aria-label={`${name} — ${t("apps.learnMore")}`}
                     >
                       <div
                         className="ac-media"
@@ -107,7 +106,6 @@ export default async function LandingPage({
                           </ul>
                         )}
                         <div className="ac-foot">
-                          {live && <AppStoreBadge inert />}
                           <span className="ac-more">{t("apps.learnMore")}</span>
                         </div>
                       </div>
@@ -116,7 +114,7 @@ export default async function LandingPage({
                 })}
 
                 {/* What's next — honest teaser */}
-                <Link className="appcard teaser" href="/contact" aria-label={t("apps.teaser.more")}>
+                <Link className="appcard teaser" href="/contact">
                   <div className="ac-body">
                     <p className="ac-kicker">
                       {pickOr(home?.teaserKicker, lang, t("apps.teaser.kicker"))}

@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 import en from "../../messages/en.json";
 import AppStoreBadge from "./AppStoreBadge";
 
-const renderBadge = (props: { href?: string; inert?: boolean }) =>
+const renderBadge = (props: { href?: string }) =>
   render(
     <NextIntlClientProvider locale="en" messages={en}>
       <AppStoreBadge {...props} />
@@ -17,12 +17,6 @@ describe("AppStoreBadge", () => {
     const a = container.querySelector("a.appstore");
     expect(a).toHaveAttribute("href", "https://apps.apple.com/app/id1");
     expect(a).toHaveAttribute("target", "_blank");
-  });
-
-  it("renders a non-link badge when inert (inside a card link)", () => {
-    const { container } = renderBadge({ inert: true });
-    expect(container.querySelector("a")).toBeNull();
-    expect(container.querySelector("span.appstore")).toHaveAttribute("aria-label");
   });
 
   it("shows a coming-soon pill — never Apple's badge — without a store link", () => {
