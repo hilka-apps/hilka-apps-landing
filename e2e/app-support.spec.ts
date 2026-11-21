@@ -12,6 +12,8 @@ for (const locale of ["en", "uk"] as const) {
     await expect(page.locator("h1")).toBeVisible();
     await expect(page.locator(".cf-form")).toBeVisible();
     await expect(page.locator("#cf-app")).not.toHaveValue("");
+    // a support page is mostly for problems: that intent is preselected
+    await expect(page.locator('.cf-tabs input[value="complaint"]')).toBeChecked();
     if (app.hasFaq) await expect(page.locator(".faq-accordion")).toBeVisible();
     const robots = page.locator('meta[name="robots"]');
     if (app.hidden) await expect(robots).toHaveAttribute("content", /noindex/);

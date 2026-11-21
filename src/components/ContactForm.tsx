@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   MESSAGE_MAX,
   validateContact,
@@ -9,7 +9,7 @@ import {
 import "./ContactForm.css";
 
 export type ContactStrings = {
-  tabs: { suggestion: string; complaint: string };
+  tabs: { label: string; suggestion: string; complaint: string };
   form: {
     name: string; namePlaceholder: string;
     email: string; emailPlaceholder: string;
@@ -17,6 +17,7 @@ export type ContactStrings = {
     app: string; appPlaceholder: string;
     message: string; messagePlaceholder: string;
     submit: string;
+    sending: string;
     required: string;
     invalidEmail: string;
   };
@@ -27,24 +28,43 @@ export type ContactStrings = {
 };
 
 type FieldErrors = { name?: string; email?: string; message?: string };
+export type ContactIntent = "suggestion" | "complaint";
+
+const INTENTS: ContactIntent[] = ["suggestion", "complaint"];
+// Focus order for the first invalid field after a failed submit.
+const FIELD_ORDER: (keyof FieldErrors)[] = ["name", "email", "message"];
+const errorId = (field: keyof FieldErrors) => `cf-${field}-error`;
 
 export default function ContactForm({
   strings,
   email,
   appOptions,
   defaultApp,
+  defaultIntent = "suggestion",
 }: {
   strings: ContactStrings;
   email: string;
   appOptions: string[];
   /** Preselect this app (support page); ignored if it is not one of `appOptions`. */
   defaultApp?: string;
+  /** Preselected intent: an idea on /contact, a problem on an app's support page. */
+  defaultIntent?: ContactIntent;
 }) {
-  const [tab, setTab] = useState<"suggestion" | "complaint">("suggestion");
+  const [tab, setTab] = useState<ContactIntent>(defaultIntent);
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [charCount, setCharCount] = useState(0);
   const [errors, setErrors] = useState<FieldErrors>({});
   const honeypotRef = useRef<HTMLInputElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const successRef = useRef<HTMLDivElement>(null);
+  // where focus goes after the form is swapped for the success message, or back
+  const focusAfterRender = useRef<"success" | "form" | null>(null);
+
+  useEffect(() => {
+    if (focusAfterRender.current === "success") successRef.current?.focus();
+    if (focusAfterRender.current === "form") formRef.current?.querySelector<HTMLElement>("#cf-name")?.focus();
+    focusAfterRender.current = null;
+  }, [status]);
 
   // Map shared validation codes to this locale's messages.
   function validate(data: Record<string, FormDataEntryValue>): FieldErrors {
@@ -61,10 +81,22 @@ export default function ContactForm({
   }
 
   function resetForm() {
+    focusAfterRender.current = "form";
+    setTab(defaultIntent);
     setStatus("idle");
     setCharCount(0);
     setErrors({});
   }
+
+  // aria-invalid + aria-describedby for a field's error message
+  const errorProps = (field: keyof FieldErrors) =>
+    errors[field] ? { "aria-invalid": true, "aria-describedby": errorId(field) } : {};
+  const errorText = (field: keyof FieldErrors) =>
+    errors[field] ? (
+      <span className="cf-error" id={errorId(field)}>
+        {errors[field]}
+      </span>
+    ) : null;
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -76,6 +108,8 @@ export default function ContactForm({
     const fieldErrors = validate(data);
     if (Object.keys(fieldErrors).length > 0) {
       setErrors(fieldErrors);
+      const first = FIELD_ORDER.find((f) => fieldErrors[f]);
+      if (first) form.querySelector<HTMLElement>(`[name="${first}"]`)?.focus();
       return;
     }
     setErrors({});
@@ -87,6 +121,7 @@ export default function ContactForm({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...data, type: tab }),
       });
+      if (res.ok) focusAfterRender.current = "success";
       setStatus(res.ok ? "success" : "error");
     } catch {
       setStatus("error");
@@ -95,33 +130,40 @@ export default function ContactForm({
 
   return (
     <div className="cf-wrap">
-      {/* Intent tabs */}
-      <div className="cf-tabs" role="tablist">
-        {(["suggestion", "complaint"] as const).map((t) => (
-          <button
-            key={t}
-            role="tab"
-            aria-selected={tab === t}
-            className={`cf-tab${tab === t ? " sel" : ""}`}
-            onClick={() => setTab(t)}
-            type="button"
-          >
+      {/* Intent: a native radio group (arrow keys, one tab stop), styled as a
+          segmented control. */}
+      <div className="cf-tabs" role="radiogroup" aria-label={strings.tabs.label}>
+        {INTENTS.map((t) => (
+          <label key={t} className={`cf-tab${tab === t ? " sel" : ""}`}>
+            <input
+              type="radio"
+              name="cf-intent"
+              value={t}
+              checked={tab === t}
+              onChange={() => setTab(t)}
+            />
             {strings.tabs[t]}
-          </button>
+          </label>
         ))}
       </div>
 
       {status === "success" ? (
         <div className="cf-success">
-          <div className="cf-status success">
-            <span>✓</span> {strings.success}
+          <div className="cf-status success" role="status" tabIndex={-1} ref={successRef}>
+            <span aria-hidden="true">✓</span> {strings.success}
           </div>
           <button type="button" className="textlink cf-again" onClick={resetForm}>
             {strings.sendAnother}
           </button>
         </div>
       ) : (
-        <form className="cf-form" onSubmit={handleSubmit} noValidate>
+        <form
+          ref={formRef}
+          className="cf-form"
+          onSubmit={handleSubmit}
+          noValidate
+          aria-busy={status === "sending" || undefined}
+        >
           {/* Honeypot */}
           <input
             ref={honeypotRef}
@@ -143,10 +185,10 @@ export default function ContactForm({
               placeholder={strings.form.namePlaceholder}
               required
               autoComplete="name"
-              aria-invalid={errors.name ? true : undefined}
+              {...errorProps("name")}
               onChange={() => clearError("name")}
             />
-            {errors.name && <span className="cf-error">{errors.name}</span>}
+            {errorText("name")}
           </div>
 
           <div className="cf-field">
@@ -160,10 +202,10 @@ export default function ContactForm({
               placeholder={strings.form.emailPlaceholder}
               required
               autoComplete="email"
-              aria-invalid={errors.email ? true : undefined}
+              {...errorProps("email")}
               onChange={() => clearError("email")}
             />
-            {errors.email && <span className="cf-error">{errors.email}</span>}
+            {errorText("email")}
           </div>
 
           <div className="cf-field">
@@ -208,17 +250,19 @@ export default function ContactForm({
               placeholder={strings.form.messagePlaceholder}
               required
               maxLength={MESSAGE_MAX}
-              aria-invalid={errors.message ? true : undefined}
+              {...errorProps("message")}
               onChange={(e) => {
                 setCharCount(e.target.value.length);
                 clearError("message");
               }}
             />
-            {errors.message && <span className="cf-error">{errors.message}</span>}
+            {errorText("message")}
           </div>
 
           {status === "error" && (
-            <div className="cf-status error">{strings.error}</div>
+            <div className="cf-status error" role="alert">
+              {strings.error}
+            </div>
           )}
 
           <div className="cf-foot">
@@ -227,7 +271,7 @@ export default function ContactForm({
               className="btn btn-primary btn-lg"
               disabled={status === "sending"}
             >
-              {status === "sending" ? "…" : strings.form.submit}
+              {status === "sending" ? strings.form.sending : strings.form.submit}
             </button>
             <p className="cf-email-line">
               {strings.emailLine}{" "}

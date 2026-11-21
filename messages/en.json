@@ -161,14 +161,15 @@
     "h1": "We'd love your <hl>feedback.</hl>",
     "intro": "Have an idea or hit a snag? Tell us — we read everything.",
     "tabs": {
-      "suggestion": "Suggest a feature",
-      "complaint": "Report a problem"
+      "label": "Type of message",
+      "suggestion": "Idea",
+      "complaint": "Problem"
     },
     "form": {
       "name": "Name",
       "namePlaceholder": "Your name",
       "email": "Email",
-      "emailPlaceholder": "you@example.com",
+      "emailPlaceholder": "name@example.com",
       "subject": "Subject",
       "subjectPlaceholder": "Short summary (optional)",
       "app": "App",
@@ -176,6 +177,7 @@
       "message": "Message",
       "messagePlaceholder": "Tell us more…",
       "submit": "Send message",
+      "sending": "Sending…",
       "charCount": "{count}/500",
       "required": "Required",
       "invalidEmail": "Enter a valid email address"

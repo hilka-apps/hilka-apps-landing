@@ -5,9 +5,11 @@ test.describe("contact form", () => {
     await page.goto("/en/contact");
   });
 
-  test("shows required errors on empty submit", async ({ page }) => {
+  test("shows required errors on empty submit and focuses the first field", async ({ page }) => {
+    await expect(page.locator('.cf-tabs input[value="suggestion"]')).toBeChecked();
     await page.locator(".cf-form button[type=submit]").click();
     await expect(page.locator(".cf-error")).toHaveCount(3);
+    await expect(page.locator("#cf-name")).toBeFocused();
   });
 
   test("flags a malformed email", async ({ page }) => {

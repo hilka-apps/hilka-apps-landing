@@ -161,14 +161,15 @@
     "h1": "Ми раді вашому <hl>відгуку.</hl>",
     "intro": "Є ідея або щось пішло не так? Напишіть нам — ми читаємо все.",
     "tabs": {
-      "suggestion": "Запропонувати функцію",
-      "complaint": "Повідомити про проблему"
+      "label": "Тип повідомлення",
+      "suggestion": "Ідея",
+      "complaint": "Проблема"
     },
     "form": {
       "name": "Ім'я",
       "namePlaceholder": "Ваше ім'я",
-      "email": "Email",
-      "emailPlaceholder": "ви@приклад.com",
+      "email": "Ел. пошта",
+      "emailPlaceholder": "name@example.com",
       "subject": "Тема",
       "subjectPlaceholder": "Коротко про суть (необов'язково)",
       "app": "Застосунок",
@@ -176,9 +177,10 @@
       "message": "Повідомлення",
       "messagePlaceholder": "Розкажіть докладніше…",
       "submit": "Надіслати",
+      "sending": "Надсилаємо…",
       "charCount": "{count}/500",
       "required": "Обов’язкове поле",
-      "invalidEmail": "Введіть коректний email"
+      "invalidEmail": "Введіть коректну адресу ел. пошти"
     },
     "success": "Дякуємо! Ваше повідомлення вже летить до нас.",
     "error": "Щось пішло не так — спробуйте ще раз або напишіть на {email}.",

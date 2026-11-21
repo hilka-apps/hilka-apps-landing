@@ -72,7 +72,13 @@ export default async function SupportPage({ params }: { params: Params }) {
       <section className={`section ${faq.length > 0 ? "white" : "surface"}`}>
         <div className="wrap">
           <h2 className="h2 section-head">{t("contactHeading")}</h2>
-          <ContactForm strings={strings} email={brand.email} appOptions={appOptions} defaultApp={appName} />
+          <ContactForm
+            strings={strings}
+            email={brand.email}
+            appOptions={appOptions}
+            defaultApp={appName}
+            defaultIntent="complaint"
+          />
         </div>
       </section>
     </div>
