@@ -114,8 +114,9 @@ export default function Header({
   const switchLocale = (next: string) => {
     setDrawerOpen(false);
     if (next === locale) return;
-    // preserve the current path, swap the locale
-    router.replace(pathname, { locale: next });
+    // preserve the current path, query and #hash; swap the locale
+    const { search, hash } = window.location;
+    router.replace(`${pathname}${search}${hash}`, { locale: next });
   };
 
   // highlight the nav item for the current page (pathname is locale-stripped)

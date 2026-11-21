@@ -8,3 +8,10 @@ test("language switch keeps the current path", async ({ page }) => {
   await expect(page.locator("html")).toHaveAttribute("lang", "uk");
   await expect(page.locator(".lang-switch button[aria-pressed='true']")).toHaveText("УКР");
 });
+
+test("language switch keeps the #hash", async ({ page }) => {
+  await page.goto("/en#apps");
+  await page.locator(".lang-switch button", { hasText: "УКР" }).click();
+  await expect(page).toHaveURL(/\/uk#apps$/);
+  await expect(page.locator("html")).toHaveAttribute("lang", "uk");
+});
