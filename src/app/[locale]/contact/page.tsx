@@ -5,7 +5,6 @@ import { getContactStrings } from "@/components/contactStrings";
 import { getBrand, getAllApps, getContactContent } from "@/sanity/lib/queries";
 import { pick, pickOr } from "@/lib/i18n";
 import { renderAccent } from "@/lib/accentText";
-import "./contact.css";
 
 export async function generateMetadata({
   params,
@@ -38,15 +37,15 @@ export default async function ContactPage({
       {/* ── HEADER ── */}
       <section className="section white page-hero">
         <div className="wrap">
-          <p className="eyebrow green">{pickOr(contact?.heroEyebrow, lang, t("eyebrow"))}</p>
+          <p className="eyebrow">{pickOr(contact?.heroEyebrow, lang, t("eyebrow"))}</p>
           <h1 className="h1 page-h1">
             {contactHeading
-              ? renderAccent(contactHeading, "contact-serif")
+              ? renderAccent(contactHeading)
               : t.rich("h1", {
-                  serif: (chunks) => <span className="contact-serif">{chunks}</span>,
+                  hl: (chunks) => <span className="hl">{chunks}</span>,
                 })}
           </h1>
-          <p className="lead contact-intro">{pickOr(contact?.heroIntro, lang, t("intro"))}</p>
+          <p className="lead">{pickOr(contact?.heroIntro, lang, t("intro"))}</p>
         </div>
       </section>
 

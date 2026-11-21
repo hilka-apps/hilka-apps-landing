@@ -1,39 +1,10 @@
-.about-h1 {
-  max-width: 16ch;
-}
-.about-serif {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-style: italic;
-  color: var(--acc-coral);
-}
-.about-lead {
-  max-width: 52ch;
-}
-
+/* The story is the human voice of the site: set it as reading text, in the serif. */
 .about-story {
-  max-width: 720px;
-  margin: 0 auto;
-  text-align: center;
-}
-/* slim coral accent rule instead of a free-floating quote glyph */
-.about-story::before {
-  content: "";
-  display: block;
-  width: 44px;
-  height: 3px;
-  border-radius: 2px;
-  margin: 0 auto 28px;
-  background: var(--acc-coral);
-  opacity: 0.85;
-}
-.about-story-sec {
-  padding-bottom: 72px;
-}
-.about-story-text {
-  font-size: clamp(17px, 1.5vw, 21px);
-  line-height: 1.65;
-  color: var(--muted);
+  max-width: 34em;
   margin: 0;
-  font-style: italic;
+  font-family: var(--serif);
+  font-size: clamp(20px, 2.2vw, 26px);
+  line-height: 1.55;
+  font-weight: 400;
+  text-wrap: pretty;
 }

@@ -8,7 +8,7 @@ import { getApp, getAllApps, getAppLegalDocs, getBrand } from "@/sanity/lib/quer
 import { Link } from "@/i18n/navigation";
 import { preserveCase } from "@/lib/text";
 import { pick } from "@/lib/i18n";
-import { accentGradient } from "@/lib/accent";
+import { accentTint } from "@/lib/accent";
 import { renderAccent } from "@/lib/accentText";
 import HeroMedia from "@/components/HeroMedia";
 import { resolveStoreUrl } from "@/config/site";
@@ -56,13 +56,13 @@ export default async function AppPage({
   const appStoreUrl = resolveStoreUrl(app.appStoreUrl);
   const heroH1 = pick(app.heroH1, lang);
 
-  // Hero phone mockup + floating chips — each part renders only when filled in.
+  // Hero phone mockup — each part renders only when filled in. The floating
+  // heroChips are intentionally not rendered (decorative; see the visual-refresh spec).
   const screenLabel = pick(app.screenLabel, lang);
   const screenValue = pick(app.screenValue, lang);
   const screenSub = pick(app.screenSub, lang);
-  const chips = (app.heroChips ?? []).slice(0, 2);
-  const CHIP_POS = ["fp-float-streak", "fp-float-today"] as const;
-  const screenBg = accentGradient(app.accent, 172);
+  const screenBg = accentTint(app.accent, 30);
+  const hasHowItWorks = (app.sections ?? []).some((s) => s._type === "howItWorksSection");
 
   return (
     <div className="fp-page">
@@ -76,24 +76,26 @@ export default async function AppPage({
       <section className="fp-hero">
         <div className="fp-hero-grid wrap">
           <div className="fp-copy">
-            <span className="fp-eyebrow">
-              <span
-                className="fp-dot"
-                style={
-                  app.accent
-                    ? { background: app.accent, boxShadow: `0 0 0 4px ${app.accent}2e` }
-                    : undefined
-                }
-              />
-              {preserveCase(pick(app.kicker, lang))}
-            </span>
-            <h1 className="fp-h1">{renderAccent(heroH1, "fp-serif")}</h1>
+            <p className="eyebrow fp-eyebrow">
+              {app.iconUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img className="fp-icon" src={app.iconUrl} alt="" width={40} height={40} />
+              ) : null}
+              <span>
+                <span className="fp-name">{pick(app.name, lang)}</span>
+                <span className="fp-kicker">{preserveCase(pick(app.kicker, lang))}</span>
+              </span>
+            </p>
+            <h1 className="fp-h1">{renderAccent(heroH1)}</h1>
             <p className="fp-sub">{pick(app.heroSubtitle, lang)}</p>
             <div className="fp-cta-row">
               <AppStoreBadge href={appStoreUrl} />
-              <AnchorLink className="btn btn-secondary" href="#how-it-works">
-                {t("howItWorks")} ↓
-              </AnchorLink>
+              {/* only when the target exists, or the link would go nowhere */}
+              {hasHowItWorks && (
+                <AnchorLink className="btn btn-secondary" href="#how-it-works">
+                  {t("howItWorks")}
+                </AnchorLink>
+              )}
             </div>
           </div>
 
@@ -110,28 +112,19 @@ export default async function AppPage({
                     mime={app.screenMedia.mime}
                     className="fp-screen-media"
                   />
-                ) : (
+                ) : screenLabel || screenValue || screenSub ? (
                   <div className="fp-phone-inner">
                     {screenLabel && <div className="fp-phone-label">{screenLabel}</div>}
                     {screenValue && <div className="fp-phone-time">{screenValue}</div>}
                     {screenSub && <div className="fp-phone-sub">{screenSub}</div>}
                   </div>
-                )}
+                ) : app.iconUrl ? (
+                  // Nothing for the screen yet → the app icon, like a launch screen.
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img className="fp-screen-icon" src={app.iconUrl} alt="" width={96} height={96} />
+                ) : null}
               </div>
             </div>
-            {chips.map((c, i) => {
-              const bg = accentGradient(c.accent, 150);
-              return (
-                <div
-                  key={i}
-                  className={`fp-float ${CHIP_POS[i]}`}
-                  style={bg ? { background: bg } : undefined}
-                >
-                  <div className="fk">{pick(c.label, lang)}</div>
-                  <div className="fv">{pick(c.value, lang)}</div>
-                </div>
-              );
-            })}
           </div>
         </div>
       </section>

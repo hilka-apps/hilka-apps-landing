@@ -6,34 +6,6 @@ import { pick, pickOr } from "@/lib/i18n";
 import { renderAccent } from "@/lib/accentText";
 import "./about.css";
 
-// Monochrome line icons for the three value cards, picked by index.
-const ICON_SVG = {
-  width: 26,
-  height: 26,
-  viewBox: "0 0 24 24",
-  fill: "none",
-  stroke: "currentColor",
-  strokeWidth: 1.8,
-  strokeLinecap: "round" as const,
-  strokeLinejoin: "round" as const,
-  "aria-hidden": true,
-};
-const VALUE_ICONS = [
-  // Simple — a clean check (blue)
-  <svg key="simple" {...ICON_SVG} stroke="var(--acc-blue)">
-    <path d="M4 12.5l5 5L20 6.5" />
-  </svg>,
-  // Private by default — a lock (green)
-  <svg key="private" {...ICON_SVG} stroke="var(--acc-green)">
-    <rect x="5" y="11" width="14" height="9" rx="2" />
-    <path d="M8 11V8a4 4 0 0 1 8 0v3" />
-  </svg>,
-  // Made with care — a heart (coral)
-  <svg key="care" {...ICON_SVG} stroke="var(--acc-coral)">
-    <path d="M12 20.3C12 20.3 4 15.5 4 9.8 4 7.4 5.9 5.7 8.1 5.7 9.6 5.7 11 6.5 12 7.9 13 6.5 14.4 5.7 15.9 5.7 18.1 5.7 20 7.4 20 9.8 20 15.5 12 20.3 12 20.3Z" />
-  </svg>,
-];
-
 export async function generateMetadata({
   params,
 }: {
@@ -72,40 +44,37 @@ export default async function AboutPage({
       {/* ── HERO ── */}
       <section className="section white page-hero about-hero">
         <div className="wrap">
-          <p className="eyebrow coral">{pickOr(about?.heroEyebrow, lang, t("eyebrow"))}</p>
-          <h1 className="h1 page-h1 about-h1">
+          <p className="eyebrow">{pickOr(about?.heroEyebrow, lang, t("eyebrow"))}</p>
+          <h1 className="h1 page-h1">
             {heroHeading
-              ? renderAccent(heroHeading, "about-serif")
+              ? renderAccent(heroHeading)
               : t.rich("h1", {
-                  serif: (chunks) => <span className="about-serif">{chunks}</span>,
+                  hl: (chunks) => <span className="hl">{chunks}</span>,
                 })}
           </h1>
-          <p className="lead about-lead">{pickOr(about?.heroLead, lang, t("lead"))}</p>
+          <p className="lead">{pickOr(about?.heroLead, lang, t("lead"))}</p>
         </div>
       </section>
 
       {/* ── STORY ── */}
-      <section className="section surface about-story-sec">
+      <section className="section surface">
         <div className="wrap">
-          <div className="about-story">
-            <p className="about-story-text">{pickOr(about?.story, lang, t("story"))}</p>
-          </div>
+          <p className="about-story">{pickOr(about?.story, lang, t("story"))}</p>
         </div>
       </section>
 
       {/* ── VALUES ── */}
       <section className="section white">
         <div className="wrap">
-          <div className="section-head center">
-            <p className="eyebrow green">{pickOr(about?.valuesEyebrow, lang, t("values.eyebrow"))}</p>
-            <h2 className="h2">{pickOr(about?.valuesHeading, lang, t("values.h2"))}</h2>
+          <div className="section-split">
+            <p className="eyebrow">{pickOr(about?.valuesEyebrow, lang, t("values.eyebrow"))}</p>
+            <h2 className="h2 section-head">
+              {renderAccent(pickOr(about?.valuesHeading, lang, t("values.h2")))}
+            </h2>
           </div>
-          <div className="grid grid-3 mt-32">
+          <div className="indent grid grid-3">
             {values.map((v, i) => (
               <div key={i} className="info-card">
-                <div className="ic" style={{ background: "var(--surface)" }}>
-                  {VALUE_ICONS[i % VALUE_ICONS.length]}
-                </div>
                 <h3>{v.title}</h3>
                 <p>{v.desc}</p>
               </div>
@@ -117,16 +86,14 @@ export default async function AboutPage({
       {/* ── CTA ── */}
       <section className="section white">
         <div className="wrap">
-          <div className="cta-band soft center">
-            <h2 className="h2">{pickOr(about?.ctaHeading, lang, t("cta.h2"))}</h2>
-            <p className="lead" style={{ marginTop: 14, color: "var(--muted)" }}>
-              {pickOr(about?.ctaSub, lang, t("cta.sub"))}
-            </p>
-            <div className="btn-row center mt-32">
-              <Link className="btn btn-primary" href={ctaHref}>
-                {pickOr(about?.ctaLabel, lang, t("cta.cta"))} →
-              </Link>
+          <div className="cta-band">
+            <div>
+              <h2 className="h2">{renderAccent(pickOr(about?.ctaHeading, lang, t("cta.h2")))}</h2>
+              <p className="lead">{pickOr(about?.ctaSub, lang, t("cta.sub"))}</p>
             </div>
+            <Link className="btn btn-primary" href={ctaHref}>
+              {pickOr(about?.ctaLabel, lang, t("cta.cta"))}
+            </Link>
           </div>
         </div>
       </section>

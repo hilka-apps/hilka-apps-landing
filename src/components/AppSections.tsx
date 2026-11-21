@@ -7,12 +7,19 @@ import type { AppSection } from "@/sanity/lib/queries";
 import { pick } from "@/lib/i18n";
 import { renderAccent } from "@/lib/accentText";
 
-const STEP_COLORS = [
-  "linear-gradient(150deg,#0A84FF,#5AA9FF)",
-  "linear-gradient(150deg,#9B4DEB,#C77DFF)",
-  "linear-gradient(150deg,#19B559,#5FE08A)",
-];
+/** Caption in the margin + heading. Renders nothing for empty CMS fields. */
+function SectionHead({ eyebrow, heading }: { eyebrow?: string; heading?: string }) {
+  if (!eyebrow && !heading) return null;
+  return (
+    <div className="section-split">
+      {eyebrow ? <p className="eyebrow">{eyebrow}</p> : <span />}
+      {heading ? <h2 className="h2 section-head">{renderAccent(heading)}</h2> : <span />}
+    </div>
+  );
+}
 
+// Emoji icons (features / articles) and star ratings in the CMS are intentionally
+// not rendered — see docs/superpowers/specs/2026-11-21-visual-refresh-design.md.
 export default function AppSections({
   sections,
   lang,
@@ -34,20 +41,19 @@ export default function AppSections({
             return (
               <section key={s._key} className="section surface" id="how-it-works">
                 <div className="wrap">
-                  <div className="section-head center">
-                    <p className="eyebrow blue">{pick(s.eyebrow, lang)}</p>
-                    <h2 className="h2">{pick(s.heading, lang)}</h2>
-                  </div>
-                  <div className="fp-steps">
-                    {(s.steps ?? []).map((step, i) => (
-                      <div key={i} className="fp-step">
-                        <div className="fp-step-num" style={{ background: STEP_COLORS[i % STEP_COLORS.length] }}>
-                          {i + 1}
-                        </div>
-                        <h3 className="fp-step-title">{pick(step.title, lang)}</h3>
-                        <p className="fp-step-desc">{pick(step.desc, lang)}</p>
-                      </div>
-                    ))}
+                  <SectionHead eyebrow={pick(s.eyebrow, lang)} heading={pick(s.heading, lang)} />
+                  <div className="indent">
+                    <ol className="fp-steps">
+                      {(s.steps ?? []).map((step, i) => (
+                        <li key={i} className="fp-step">
+                          <span className="fp-step-num" aria-hidden="true">
+                            {i + 1}
+                          </span>
+                          <h3 className="fp-step-title">{pick(step.title, lang)}</h3>
+                          <p className="fp-step-desc">{pick(step.desc, lang)}</p>
+                        </li>
+                      ))}
+                    </ol>
                   </div>
                 </div>
               </section>
@@ -57,16 +63,25 @@ export default function AppSections({
             return (
               <section key={s._key} className="section white">
                 <div className="wrap">
-                  <div className="fp-stat-band">
-                    <div className="fp-stat-number">{s.number}</div>
-                    <p className="fp-stat-label">{pick(s.label, lang)}</p>
-                    {appStoreUrl ? (
-                      <a className="btn btn-primary" href={appStoreUrl} target="_blank" rel="noopener noreferrer">
-                        {downloadLabel}
-                      </a>
-                    ) : (
-                      <AppStoreBadge />
-                    )}
+                  <div className="indent">
+                    <div className="fp-stat-band">
+                      <div>
+                        <div className="fp-stat-number">{s.number}</div>
+                        <p className="fp-stat-label">{pick(s.label, lang)}</p>
+                      </div>
+                      {appStoreUrl ? (
+                        <a
+                          className="btn btn-primary"
+                          href={appStoreUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {downloadLabel}
+                        </a>
+                      ) : (
+                        <AppStoreBadge />
+                      )}
+                    </div>
                   </div>
                 </div>
               </section>
@@ -74,22 +89,18 @@ export default function AppSections({
 
           case "featuresSection":
             return (
-              <section key={s._key} className="section surface">
+              <section key={s._key} className="section white">
                 <div className="wrap">
-                  <div className="section-head center">
-                    <p className="eyebrow coral">{pick(s.eyebrow, lang)}</p>
-                    <h2 className="h2">{pick(s.heading, lang)}</h2>
-                  </div>
-                  <div className="grid grid-3 mt-32">
-                    {(s.items ?? []).map((f, i) => (
-                      <div key={i} className="info-card">
-                        <div className="ic" style={{ background: "var(--surface)" }}>
-                          {f.icon}
+                  <SectionHead eyebrow={pick(s.eyebrow, lang)} heading={pick(s.heading, lang)} />
+                  <div className="indent">
+                    <div className="grid grid-3 fp-grid">
+                      {(s.items ?? []).map((f, i) => (
+                        <div key={i} className="info-card">
+                          <h3>{pick(f.title, lang)}</h3>
+                          <p>{pick(f.desc, lang)}</p>
                         </div>
-                        <h3>{pick(f.title, lang)}</h3>
-                        <p>{pick(f.desc, lang)}</p>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 </div>
               </section>
@@ -97,20 +108,18 @@ export default function AppSections({
 
           case "articlesSection":
             return (
-              <section key={s._key} className="section white">
+              <section key={s._key} className="section surface">
                 <div className="wrap">
-                  <div className="section-head center">
-                    <p className="eyebrow orange">{pick(s.eyebrow, lang)}</p>
-                    <h2 className="h2">{pick(s.heading, lang)}</h2>
-                  </div>
-                  <div className="grid grid-3 mt-32">
-                    {(s.items ?? []).map((a, i) => (
-                      <div key={i} className="fp-article-card">
-                        <div className="fp-article-icon">{a.icon}</div>
-                        <h3 className="fp-article-title">{pick(a.title, lang)}</h3>
-                        <p className="fp-article-excerpt">{pick(a.excerpt, lang)}</p>
-                      </div>
-                    ))}
+                  <SectionHead eyebrow={pick(s.eyebrow, lang)} heading={pick(s.heading, lang)} />
+                  <div className="indent">
+                    <div className="grid grid-3 fp-grid">
+                      {(s.items ?? []).map((a, i) => (
+                        <article key={i} className="fp-article-card">
+                          <h3 className="fp-article-title">{pick(a.title, lang)}</h3>
+                          <p className="fp-article-excerpt">{pick(a.excerpt, lang)}</p>
+                        </article>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </section>
@@ -118,31 +127,20 @@ export default function AppSections({
 
           case "testimonialsSection":
             return (
-              <section key={s._key} className="section surface">
+              <section key={s._key} className="section white">
                 <div className="wrap">
-                  <div className="section-head center">
-                    <p className="eyebrow purple">{pick(s.eyebrow, lang)}</p>
-                    <h2 className="h2">{pick(s.heading, lang)}</h2>
-                  </div>
-                  <div className="grid grid-3 mt-32">
-                    {(s.items ?? []).map((item, i) => {
-                      const name = item.name ?? "";
-                      return (
-                        <div key={i} className="fp-quote-card">
-                          <div className="fp-quote-stars">★★★★★</div>
-                          <p className="fp-quote-text">&ldquo;{pick(item.quote, lang)}&rdquo;</p>
-                          <div className="fp-quote-who">
-                            <div
-                              className="fp-quote-av"
-                              style={{ background: STEP_COLORS[i % STEP_COLORS.length] }}
-                            >
-                              {name.charAt(0)}
-                            </div>
-                            <strong>{name}</strong>
-                          </div>
-                        </div>
-                      );
-                    })}
+                  <SectionHead eyebrow={pick(s.eyebrow, lang)} heading={pick(s.heading, lang)} />
+                  <div className="indent">
+                    <div className="grid grid-3 fp-grid">
+                      {(s.items ?? []).map((item, i) => (
+                        <figure key={i} className="fp-quote">
+                          <blockquote className="fp-quote-text">
+                            &ldquo;{pick(item.quote, lang)}&rdquo;
+                          </blockquote>
+                          {item.name ? <figcaption className="fp-quote-who">{item.name}</figcaption> : null}
+                        </figure>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </section>
@@ -150,16 +148,15 @@ export default function AppSections({
 
           case "faqSection":
             return (
-              <section key={s._key} className="section white">
+              <section key={s._key} className="section surface">
                 <div className="wrap">
-                  <div className="fp-faq-layout">
-                    <div>
-                      <p className="eyebrow green">{pick(s.eyebrow, lang)}</p>
-                      <h2 className="h2">{pick(s.heading, lang)}</h2>
+                  <SectionHead eyebrow={pick(s.eyebrow, lang)} heading={pick(s.heading, lang)} />
+                  <div className="indent">
+                    <div className="fp-faq">
+                      <FaqAccordion
+                        items={(s.items ?? []).map((f) => ({ q: pick(f.q, lang), a: pick(f.a, lang) }))}
+                      />
                     </div>
-                    <FaqAccordion
-                      items={(s.items ?? []).map((f) => ({ q: pick(f.q, lang), a: pick(f.a, lang) }))}
-                    />
                   </div>
                 </div>
               </section>
@@ -167,15 +164,13 @@ export default function AppSections({
 
           case "ctaSection":
             return (
-              <section key={s._key} className="section surface">
+              <section key={s._key} className="section white">
                 <div className="wrap">
-                  <div className="cta-band accent">
-                    <h2 className="h2" style={{ color: "#fff" }}>
-                      {pick(s.heading, lang)}
-                    </h2>
-                    <div className="btn-row center mt-32">
+                  <div className="cta-band">
+                    <h2 className="h2">{renderAccent(pick(s.heading, lang))}</h2>
+                    <div className="btn-row">
                       <AppStoreBadge href={appStoreUrl} />
-                      <Link className="btn btn-ghost" href="/contact" style={{ color: "rgba(255,255,255,0.9)" }}>
+                      <Link className="btn btn-ghost" href="/contact">
                         {contactLabel}
                       </Link>
                     </div>
@@ -191,30 +186,29 @@ export default function AppSections({
             const ctaLabel = pick(s.ctaLabel, lang);
             return (
               <section key={s._key} className="section white">
-                <div className="wrap fp-free">
-                  {(eyebrow || heading) && (
-                    <div className="section-head center">
-                      {eyebrow && <p className="eyebrow blue">{eyebrow}</p>}
-                      {heading && <h2 className="h2">{renderAccent(heading)}</h2>}
+                <div className="wrap">
+                  <SectionHead eyebrow={eyebrow} heading={heading} />
+                  <div className="indent">
+                    <div className="fp-free">
+                      {s.mediaUrl && (
+                        <div className="fp-free-media">
+                          <HeroMedia url={s.mediaUrl} mime={s.mediaMime} />
+                        </div>
+                      )}
+                      {blocks.length > 0 && (
+                        <div className="fp-free-body">
+                          <PortableText value={blocks} />
+                        </div>
+                      )}
+                      {ctaLabel && s.ctaUrl && (
+                        <div className="btn-row fp-free-cta">
+                          <a className="btn btn-primary" href={s.ctaUrl}>
+                            {ctaLabel}
+                          </a>
+                        </div>
+                      )}
                     </div>
-                  )}
-                  {s.mediaUrl && (
-                    <div className="fp-free-media">
-                      <HeroMedia url={s.mediaUrl} mime={s.mediaMime} />
-                    </div>
-                  )}
-                  {blocks.length > 0 && (
-                    <div className="fp-free-body">
-                      <PortableText value={blocks} />
-                    </div>
-                  )}
-                  {ctaLabel && s.ctaUrl && (
-                    <div className="btn-row center mt-32">
-                      <a className="btn btn-primary" href={s.ctaUrl}>
-                        {ctaLabel}
-                      </a>
-                    </div>
-                  )}
+                  </div>
                 </div>
               </section>
             );

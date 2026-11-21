@@ -76,11 +76,11 @@ export default async function MorePage({
       {/* ── HEADER ── */}
       <section className="section white page-hero more-hero">
         <div className="wrap">
-          <p className="eyebrow blue">{pickOr(more?.heroEyebrow, lang, t("eyebrow"))}</p>
+          <p className="eyebrow">{pickOr(more?.heroEyebrow, lang, t("eyebrow"))}</p>
           <h1 className="h1 page-h1">
             {moreHeading ? renderAccent(moreHeading) : t("h1")}
           </h1>
-          <p className="lead more-intro">{pickOr(more?.heroIntro, lang, t("intro"))}</p>
+          <p className="lead">{pickOr(more?.heroIntro, lang, t("intro"))}</p>
         </div>
       </section>
 
@@ -104,12 +104,11 @@ export default async function MorePage({
                             rel="noopener noreferrer"
                           >
                             {link.label}
-                            <span className="arr">→</span>
+                            <span className="more-ext" aria-hidden="true">↗</span>
                           </a>
                         ) : (
                           <Link href={link.href} className="more-link">
                             {link.label}
-                            <span className="arr">→</span>
                           </Link>
                         )}
                       </li>

@@ -45,7 +45,7 @@ export default async function SupportPage({ params }: { params: Params }) {
     <div>
       <section className="section white page-hero">
         <div className="wrap">
-          <p className="eyebrow blue">{appName}</p>
+          <p className="eyebrow">{appName}</p>
           <h1 className="h1 page-h1">{t("title")}</h1>
           <p className="lead support-intro">{t("intro")}</p>
         </div>
@@ -53,16 +53,18 @@ export default async function SupportPage({ params }: { params: Params }) {
 
       {faq.length > 0 && (
         <section className="section surface">
-          <div className="wrap support-faq">
-            <h2 className="h2">{t("faqHeading")}</h2>
-            <FaqAccordion items={faq} />
+          <div className="wrap">
+            <h2 className="h2 section-head">{t("faqHeading")}</h2>
+            <div className="support-faq">
+              <FaqAccordion items={faq} />
+            </div>
           </div>
         </section>
       )}
 
       <section className={`section ${faq.length > 0 ? "white" : "surface"}`}>
         <div className="wrap">
-          <h2 className="h2 support-contact-h">{t("contactHeading")}</h2>
+          <h2 className="h2 section-head">{t("contactHeading")}</h2>
           <ContactForm strings={strings} email={brand.email} appOptions={appOptions} defaultApp={appName} />
         </div>
       </section>
