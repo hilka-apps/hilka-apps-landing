@@ -24,7 +24,7 @@ function renderSections(sections: AppSection[], appStoreUrl?: string) {
         sections={sections}
         lang="en"
         appStoreUrl={appStoreUrl}
-        downloadLabel="Get the App"
+        downloadLabel="Get the app"
         contactLabel="Contact us"
         launchLabel="Hear about the launch"
       />
@@ -57,7 +57,7 @@ describe("AppSections after release", () => {
 
   it("keeps the download button in the stat band", () => {
     renderSections([stat], "https://apps.apple.com/app/id1");
-    expect(screen.getByRole("link", { name: "Get the App" })).toHaveAttribute("href", "https://apps.apple.com/app/id1");
+    expect(screen.getByRole("link", { name: "Get the app" })).toHaveAttribute("href", "https://apps.apple.com/app/id1");
   });
 });
 

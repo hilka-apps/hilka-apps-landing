@@ -65,7 +65,7 @@ Lime is never text, never a focus colour and never the only mark of a selected
 state (too light on white). Selected / current states always add a non-colour cue:
 weight 600, an ink underline or an ink outline.
 Per-app accent (Sanity) → `accentTint()` in `src/lib/accent.ts`: a **solid** tint used
-on the home icon tile and the app-page phone screen.
+on the home icon tile and the app-page hero tile / phone screen.
 
 ### 1.3 Highlighter (`*accent*`)
 
@@ -84,7 +84,8 @@ per heading.
 | App icons | ~22.5% of size (iOS) |
 | Language toggle | full pill (the only one) |
 
-Spacing: 4 / 8 / 12 / 16 / 24 / 32 / 48 / 72. Sections 72px (48px mobile).
+Spacing: 4 / 8 / 12 / 16 / 24 / 32 / 48 / 72. Sections 72px (48px mobile) — the
+`--section-y` token, also used by the app hero (`.fp-hero`).
 Content width 1120px (`--maxw` includes gutters), gutters 20px mobile / 40px desktop.
 Shadows: none, except under app icons and the phone mockup.
 
@@ -92,8 +93,12 @@ Shadows: none, except under app icons and the phone mockup.
 
 - **Buttons:** `.btn-primary` ink fill; `.btn-secondary` ink outline; `.btn-ghost` underlined
   text. Min height 48px. No arrows in labels, no hover lift.
-- **App Store:** Apple's black badge only for released apps; otherwise `.appstore-soon`
-  (dashed outline status, same height).
+- **App Store / release state:** Apple's black badge only for released apps (a real
+  App Store URL). Before release there is no store action anywhere: a small
+  `.status-tag` "Coming soon" (`--paper-2` fill, 8px radius, 14px, no border) sits by
+  the app name in the hero, "How it works" becomes the `.btn-primary`, the stat band has
+  no action, and CTA bands (app closing CTA, home CTA) show a `.btn-primary` to
+  `/contact`: "Hear about the launch" / "Дізнатися про запуск".
 - **Section head:** `.section-split` puts the CMS eyebrow as a caption in a 220px left
   column and the heading on the right (stacked under 960px). Content below lines up via
   `.indent`.
@@ -103,11 +108,30 @@ Shadows: none, except under app icons and the phone mockup.
   description, chips, "Learn more". One link, no `aria-label` override (its whole text
   is read); the store status appears once (the tag — no badge inside the card). `.teaser` = dashed empty slot.
 - **CTA panel:** `.cta-band` — `--paper-2` panel, heading left, action right.
-- **FAQ:** hairline accordion, ink plus/minus.
-- **Forms:** segmented control for intent (selected = white tile with a 1.5px ink
-  outline), 48px inputs with `--line-input` borders, ink focus outline, errors in
-  `--danger` text under the field. On `/contact` the intro and the form share one
-  centred 640px column; field labels stay left-aligned.
+- **App hero visual:** with a CMS screenshot/video (`screenMedia`) → the phone frame
+  around it. Without one → the app icon (44% of the tile) on a square accent-tinted
+  tile (`.fp-tile`, 16px radius), like the home card. The CMS text-mockup fields are not
+  displayed.
+- **Testimonials (app page):** one large serif quote (`.fp-quote-big`, Literata
+  22→28px, line-height 1.35, max 30ch), author below. Only the first CMS testimonial
+  is shown.
+- **Stat:** the number is re-formatted for the page locale when it is a plain number
+  (`formatStat`: "12,000+" → "12 000+" in uk); anything else renders as typed.
+- **Legal documents:** same left edge as every page (`.wrap`); only the reading column is
+  limited to 720px. When the body falls back to the other language it is wrapped in
+  `lang="…"` with a note above it ("available in English only").
+- **404:** `[locale]/not-found.tsx` inside the site layout — "Nothing here." /
+  "Тут нічого немає.", a lead, a primary home link and links to the visible apps.
+- **FAQ:** hairline accordion, ink plus/minus; on the app page it spans the full
+  `.indent` column, like the grids above it.
+- **Forms:** intent = a native radio group styled as a segmented control ("Idea" /
+  "Problem"; selected = white tile with a 1.5px ink outline; arrow keys move it). Default
+  intent: Idea on `/contact`, Problem on an app's support page. 48px inputs with
+  `--line-input` borders, ink focus outline, errors in `--danger` text under the field,
+  linked with `aria-describedby`; an invalid submit focuses the first invalid field.
+  Sending → "Sending…" + `aria-busy`; success replaces the form in a focused
+  `role="status"`, failure is a `role="alert"`. On `/contact` the intro and the form
+  share one centred 640px column; field labels stay left-aligned.
 - **App tabs** (`AppTabs`): on every per-app page (overview, legal docs, support), right
   under the header: `<App name>:  Overview  <doc titles…>  Support`. Each tab is a real
   link to its own page (URLs are fixed — they are entered in App Store Connect). Doc
@@ -120,15 +144,22 @@ Shadows: none, except under app icons and the phone mockup.
 
 ### 1.6 Header & footer
 
-- **Header:** sticky, solid white, hairline bottom, 64px. Logo + name left; nav right in
+- **Skip link:** "Skip to content" / "Перейти до змісту" is the first focusable element,
+  hidden until focused, targeting `<main id="main">`.
+- **Header:** sticky, solid white, hairline bottom, 64px. Logo (translated label) + name
+  left; nav (Apps · About · Contact — "More" lives in the footer only) right in
   `--ink-2`, current page in `--ink`, weight 600, with a 2px ink underline; nav
   labelled `header.navLabel`. Language toggle **EN / УКР** (each label in its own
   language, no flags; the accessible name is the visible label, the group label and
   `lang` give context). Under 920px: toggle + menu button; under 360px the toggle is
-  hidden so the header fits 320px. The full-screen drawer lists the nav in the serif
+  hidden so the header fits 320px. Switching language keeps the path, query and #hash.
+  The menu button has `aria-expanded` / `aria-controls`; closing the drawer (Esc, ✕, a
+  link) returns focus to it. The full-screen drawer lists the nav in the serif
   (current item underlined in ink) and the two languages by full name.
 - **Footer:** ink background, logo + tagline, columns Apps / Company / Legal
-  (sentence-case titles), bottom row with copyright and note.
+  (sentence-case titles; Apps and Legal only when they have links), bottom row with
+  copyright and note. The email sits in Company and never breaks mid-address
+  (one column under 400px).
 
 ### 1.7 Motion
 

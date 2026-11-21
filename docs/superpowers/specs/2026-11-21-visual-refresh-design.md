@@ -133,7 +133,8 @@ Schema is untouched; nothing in Sanity was edited.
 - Page structure, section order, routes, CMS queries, i18n setup, contact API.
 - Apple's official badge for released apps (it's Apple's artwork; only its container
   styling changed).
-- The phone mockup on app pages — it's the slot for real screenshots.
+- The phone mockup on app pages — it's the slot for real screenshots (since §8 it is shown
+  only around a real screenshot).
 - Copy. Fallback strings stay as they were except "LIVE" → "On the App Store" and the
   new short "Coming soon" status. Suggested copy edits for Studio are below.
 - Dark mode: not added. Light theme is primary and a correct dark theme would double
@@ -177,3 +178,44 @@ borders; non-colour cues on every selected state (header nav, drawer, contact in
 tabs); h1–h4 wrap long words (`overflow-wrap: break-word`, `hyphens: manual`); header
 language toggle hidden under 360px (the drawer has it); translated nav label; Literata
 italic no longer loaded; home app cards read in full with one store status.
+
+## 8. Round 2: QA / design review and owner decisions
+
+**Owner decisions (A–E).**
+
+- **A. Release state.** Until an app has a real App Store URL nothing on the site looks
+  like a store button. The dashed "Coming soon to the App Store" box is gone: a small
+  `.status-tag` "Coming soon" sits by the app name in the hero; "How it works" becomes
+  the primary button; the stat band drops its action; the app closing CTA and the home
+  CTA band show a primary "Hear about the launch" → `/contact`. With a real URL,
+  Apple's badge returns everywhere as before.
+- **B. Register and copy.** Ukrainian UI strings address the reader formally (ви), use
+  ’ (U+2019) for the apostrophe, say "застосунок" (never "додаток"/"апка") and are
+  gender-neutral. Label headings ("Наші цінності", "What we stand for") take no full
+  stop. English strings were reread as native copy. `src/i18n/messages.test.ts`
+  enforces the Ukrainian rules. CMS copy that still uses "ти" is listed for the owner
+  (not edited here).
+- **C. Nav.** "More" left the header nav and drawer; the page and its footer link stay.
+- **D. Testimonials.** One large serif quote with the author below, instead of a grid of
+  three. If the CMS has several, only the **first** is shown — reorder them in Studio
+  to choose.
+- **E. App hero without a screenshot.** No empty phone frame: the app icon on a square
+  accent-tinted tile, as on the home card. With `screenMedia` the phone stays. The
+  text-mockup fields (`screenLabel`/`screenValue`/`screenSub`) are not displayed.
+- Not chosen (unchanged): the highlighter in every heading level; app tint colours.
+
+**Fixes.** Headings no longer auto-hyphenate (`hyphens: manual`; Ukrainian
+auto-hyphenation split words oddly), long words still wrap. Localised 404 inside the site
+layout for unknown paths and `notFound()`. Skip link; menu button state and focus
+return; translated logo label. Contact form: errors linked to fields, focus on the
+first invalid field, live status/alert, translated sending state, radio-group intent
+("Idea"/"Problem"), Problem preselected on support pages, `name@example.com`
+placeholder, "Ел. пошта". Legal docs falling back to English carry `lang="en"` and a
+note. Footer email on one line in Company. Language switch keeps the #hash. Legal docs
+share the site's left edge; app FAQ spans the content column; app hero on the
+`--section-y` token. Stat numbers are formatted for the locale.
+
+**Left in the CMS (owner to edit in Studio).** Focusly's FAQ eyebrow is "FAQ" in the
+Ukrainian field and its heading "Часті запитання." has a full stop. CMS values also
+override several fallbacks edited here (about CTA heading, values, home teaser).
+
