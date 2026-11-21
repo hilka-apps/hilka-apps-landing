@@ -27,7 +27,7 @@ test.describe("mobile menu", () => {
   test("switches language from the drawer", async ({ page }) => {
     await page.goto("/en/about");
     await page.locator(".hamburger").click();
-    await page.locator(".drawer-langs button", { hasText: "UK" }).click();
+    await page.locator(".drawer-langs button", { hasText: "Українська" }).click();
     await expect(page).toHaveURL(/\/uk\/about$/);
   });
 });
