@@ -6,6 +6,7 @@ import HeroMedia from "@/components/HeroMedia";
 import type { AppSection } from "@/sanity/lib/queries";
 import { pick } from "@/lib/i18n";
 import { renderAccent } from "@/lib/accentText";
+import { formatStat } from "@/lib/stat";
 
 /** Caption in the margin + heading. Renders nothing for empty CMS fields. */
 function SectionHead({ eyebrow, heading }: { eyebrow?: string; heading?: string }) {
@@ -66,7 +67,7 @@ export default function AppSections({
                   <div className="indent">
                     <div className="fp-stat-band">
                       <div>
-                        <div className="fp-stat-number">{s.number}</div>
+                        <div className="fp-stat-number">{formatStat(s.number ?? "", lang)}</div>
                         <p className="fp-stat-label">{pick(s.label, lang)}</p>
                       </div>
                       {appStoreUrl ? (
