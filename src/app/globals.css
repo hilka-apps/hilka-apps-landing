@@ -12,6 +12,8 @@
   --ink-2: #565b48;
   --line: #dcdfd2;
   --line-strong: #b9bdab;
+  /* form-field borders: 3.96:1 on white (WCAG 1.4.11 needs 3:1) */
+  --line-input: #7d8270;
   --lime: #e3ef7e;
   --link: #3d5a12;
   --danger: #b3261e;
@@ -132,6 +134,9 @@ h4 {
   letter-spacing: -0.01em;
   text-wrap: balance;
   font-optical-sizing: auto;
+  /* long Ukrainian words must wrap, not widen the page on 320px screens */
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .h1 {
@@ -144,11 +149,6 @@ h4 {
   line-height: 1.12;
   letter-spacing: -0.015em;
 }
-.h3 {
-  font-size: clamp(20px, 2vw, 22px);
-  line-height: 1.25;
-}
-
 /* page-title h1s (about / contact / more / support / legal) */
 .page-h1 {
   margin: 0 0 16px;
@@ -258,10 +258,6 @@ h4 {
   .indent {
     margin-left: calc(220px + 48px);
   }
-}
-
-.center {
-  text-align: center;
 }
 
 /* flash a section reached via an in-page anchor ("How it works") */
@@ -471,18 +467,19 @@ a.appstore:hover {
 .nav a:hover {
   color: var(--ink);
 }
+/* current page: ink, heavier and underlined — never colour alone */
 .nav a.active {
   color: var(--ink);
+  font-weight: 600;
 }
 .nav a.active::after {
   content: "";
   position: absolute;
   left: 12px;
   right: 12px;
-  bottom: 2px;
-  height: 4px;
-  border-radius: 2px;
-  background: var(--lime);
+  bottom: 3px;
+  height: 2px;
+  background: var(--ink);
 }
 
 .header-right {
@@ -517,6 +514,12 @@ a.appstore:hover {
   background: var(--ink);
   color: var(--paper);
   cursor: default;
+}
+/* too narrow for logo + toggle + menu button: the drawer has the languages */
+@media (max-width: 359px) {
+  .lang-switch {
+    display: none;
+  }
 }
 
 .hamburger {
@@ -631,10 +634,9 @@ a.appstore:hover {
 }
 .drawer nav a[aria-current="page"] {
   text-decoration: underline;
-  text-decoration-color: var(--lime);
-  text-decoration-thickness: 6px;
-  text-underline-offset: 2px;
-  text-decoration-skip-ink: none;
+  text-decoration-color: var(--ink);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
 }
 .drawer-foot {
   margin-top: auto;

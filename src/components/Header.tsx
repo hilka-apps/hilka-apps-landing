@@ -122,7 +122,7 @@ export default function Header({
       <div className="wrap">
         <Brand siteName={siteName} logoUrl={logoUrl} />
 
-        <nav className="nav" aria-label="Primary">
+        <nav className="nav" aria-label={t("header.navLabel")}>
           {NAV.map((it) => {
             const active = isActive(it.href);
             return (
@@ -145,7 +145,6 @@ export default function Header({
                 key={loc}
                 type="button"
                 lang={loc}
-                aria-label={LANG_LABEL[loc].full}
                 aria-pressed={loc === locale}
                 onClick={() => switchLocale(loc)}
               >
@@ -166,9 +165,9 @@ export default function Header({
       </div>
     </header>
 
-      {/* Mobile drawer — kept OUTSIDE <header>: the header's backdrop-filter
-          would otherwise become the containing block for these fixed elements
-          (iOS Safari anchors them to the 66px header box, not the viewport). */}
+      {/* Mobile drawer — kept OUTSIDE <header> so the fixed overlay and drawer are
+          positioned against the viewport even if the sticky header ever gains a
+          filter/transform (those make it the containing block for fixed children). */}
       <div
         className={`drawer-overlay${drawerOpen ? " open" : ""}`}
         onClick={() => setDrawerOpen(false)}
@@ -194,7 +193,7 @@ export default function Header({
             </svg>
           </button>
         </div>
-        <nav aria-label="Primary">
+        <nav aria-label={t("header.navLabel")}>
           {NAV.map((it) => (
             <Link
               key={it.id}

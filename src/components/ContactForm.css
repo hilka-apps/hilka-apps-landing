@@ -30,10 +30,11 @@
 .cf-tab:hover {
   color: var(--ink);
 }
+/* selected: white tile with an ink outline — not colour alone */
 .cf-tab.sel {
   background: var(--paper);
   color: var(--ink);
-  box-shadow: 0 0 0 1px var(--line-strong);
+  box-shadow: 0 0 0 1.5px var(--ink);
 }
 
 .cf-form {
@@ -95,7 +96,7 @@
 .cf-field textarea,
 .cf-field select {
   background: var(--paper);
-  border: 1.5px solid var(--line-strong);
+  border: 1.5px solid var(--line-input);
   border-radius: var(--r-input);
   font-family: var(--sans);
   font-size: 17px;

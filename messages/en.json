@@ -17,7 +17,8 @@
     "cta": "Get the App",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
-    "language": "Language"
+    "language": "Language",
+    "navLabel": "Main menu"
   },
   "footer": {
     "tagline": "Small, considered iOS apps.",
