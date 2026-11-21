@@ -7,7 +7,6 @@ import { Commissioner, Literata } from "next/font/google";
 export const serif = Literata({
   subsets: ["latin", "cyrillic"],
   weight: "variable",
-  style: ["normal", "italic"],
   axes: ["opsz"],
   variable: "--font-serif",
   display: "swap",

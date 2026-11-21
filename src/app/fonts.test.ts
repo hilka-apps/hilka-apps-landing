@@ -15,4 +15,7 @@ describe("web fonts", () => {
     expect(subsets.length).toBeGreaterThan(0);
     for (const list of subsets) expect(list).toContain('"cyrillic"');
   });
+  it("loads no italic styles (nothing on the site is set in italic)", () => {
+    expect(src).not.toMatch(/italic/);
+  });
 });
