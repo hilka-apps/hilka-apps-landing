@@ -1,93 +1,122 @@
 # Hilka Apps Landing — DESIGN.md
 
-> Step-2 deliverable. Defines the design system (from **pasteapp.io**) and the page
-> structure/layout (from **nomly.space** + **dream.nomly.space/en**) for the apps
-> marketing site. Hand this to the design/prototyping step to iterate a prototype.
+> Defines the design system (§1) and the page structure (§2) of the apps marketing site.
 >
-> **Decision (locked):** visual language follows **Paste** (light, Apple-style).
-> **Structure/layout** follows **nomly**. Where dream.nomly.space/en is referenced it
-> supplies the *section breakdown and order* of the product page — not its dark styling.
+> **Visual language:** the studio's own (2026-11-21 refresh, §1) — replaces the earlier
+> Paste/Apple-style system. **Structure/layout** still follows **nomly**; where
+> dream.nomly.space/en is referenced it supplies the *section breakdown and order* of the
+> product page — not its styling.
 
 ---
 
-## 1. Design System (source: pasteapp.io)
+## 1. Design System
+
+> Rebuilt on 2026-11-21 (visual refresh). Rationale, rejected patterns and the list of
+> CMS fields that are no longer rendered:
+> [superpowers/specs/2026-11-21-visual-refresh-design.md](superpowers/specs/2026-11-21-visual-refresh-design.md).
+> Tokens live in `src/app/globals.css` (`:root`), fonts in `src/app/fonts.ts`.
+
+**Idea:** calm white pages, one dark olive ink, one chartreuse highlighter — all taken
+from the logo (an olive twig on a chartreuse tile; "гілка" = twig). A book serif for
+headings, a warm sans for reading. No gradients, no ambient motion, no emoji icons.
 
 ### 1.1 Typography
 
-**Font families**
-- **Headings & UI:** native system stack — `system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif` (San Francisco on Apple). No custom web font required.
-- **Body:** same system stack.
-- Rationale: Paste ships no custom web font; the Apple-style feel comes from SF + heavy weights + tight line-height.
+Both families cover Ukrainian Cyrillic (ґ є і ї). Loaded via `next/font/google` with
+`subsets: ["latin", "cyrillic"]` — `src/app/fonts.test.ts` fails if a font loses Cyrillic.
 
-**Scale** (desktop; scale down ~0.6–0.7× on mobile)
+| Role | Family | CSS var |
+|---|---|---|
+| Headings, big numerals, About story, drawer nav | **Literata** (variable wght + opsz) | `--serif` |
+| Body, UI, buttons, forms, captions | **Commissioner** (variable wght) | `--sans` |
 
-| Token | Size | Weight | Line-height | Letter-spacing | Use |
-|-------|------|--------|-------------|----------------|-----|
-| `display` / H1 | 60px | 700 | 62px | +0.6px | Hero headline |
-| H2 | 54px | 700 | ~52px | +0.6px | Section headings |
-| H3 | 40px | 700 | 42px | +0.4px | Sub-section / card titles |
-| Eyebrow | 16px | 700 | — | +1px, UPPERCASE | Colored label above each section heading |
-| Body L | 20px | 400–600 | ~1.5 | — | Lead paragraphs |
-| Body | 18px | 400 | ~1.6 | — | Default copy |
-| Small | 14–16px | 400–600 | — | — | Captions, footer, legal |
+| Token / class | Size (desktop → mobile) | Weight | Line-height |
+|---|---|---|---|
+| Home hero `.lp-h1` | 68 → 40 | 600 serif | 1.06 |
+| App hero `.fp-h1` | 64 → 38 | 600 serif | 1.06 |
+| `.h1` (page titles) | 56 → 36 | 600 serif | 1.08 |
+| `.h2` | 40 → 28 | 600 serif | 1.12 |
+| `.h3` / card titles | 20–22 | 600 serif | 1.25–1.3 |
+| `.lead` | 20 → 18 | 400 sans, `--ink-2` | 1.55 |
+| Body | 17 | 400 sans | 1.6 |
+| `.eyebrow` (caption) | 15 | 600 sans, `--ink-2` | 1.4 |
 
-Headings are heavy (700), tight line-height, slightly **positive** letter-spacing — very Apple.
+Rules: sentence case everywhere (no uppercase labels), tracking only on the biggest
+sizes (≤ −0.025em), leads ≤ 34em, documents ≤ 68ch.
 
-### 1.2 Color scheme
+### 1.2 Color
 
-| Role | Value | Notes |
-|------|-------|-------|
-| Primary / CTA | `#0088FF` | Solid blue pill buttons |
-| Text (near-black) | `#101010` | Default body/heading text |
-| Pure black | `#000000` | |
-| Surface (light gray) | `#F5F5F7` | Alternating section backgrounds |
-| White | `#FFFFFF` | Default page background |
-| Footer background | `#0D0D0D` / `#101010` | Dark footer |
-| Accent — green | `#34C759` | iOS green eyebrow (default) |
-| Muted text | `#ABABB0`, `#999999` | Secondary copy, footer links |
-| Decorative accents | yellow/orange, coral `#E5544B`, blue | Per-card / per-section color pops |
+| Token | Hex | Use |
+|---|---|---|
+| `--paper` | `#FFFFFF` | Page |
+| `--paper-2` | `#F3F4EE` | Alternate bands, chips, CTA panels |
+| `--ink` | `#23261A` | Text, primary buttons, footer, focus ring |
+| `--ink-2` | `#565B48` | Secondary text (7:1 on white) |
+| `--line` / `--line-strong` | `#DCDFD2` / `#B9BDAB` | Hairlines / input borders, dashed outlines |
+| `--lime` | `#E3EF7E` | Highlighter, selection, active nav mark, "On the App Store" tag |
+| `--link` | `#3D5A12` | Inline links (8:1 on white) |
+| `--danger` / `--ok` | `#B3261E` / `#2F6B2F` | Form states |
+| `--on-ink` / `--on-ink-2` | `#F1F2EA` / `#B4B8A4` | Text on the ink footer |
 
-**Eyebrow color is per-section** (green seen live; treat each section's eyebrow as an
-opportunity for its own accent). Define a small palette of eyebrow accents and rotate.
+Lime is never text and never a focus colour (too light on white).
+Per-app accent (Sanity) → `accentTint()` in `src/lib/accent.ts`: a **solid** tint used
+on the home icon tile and the app-page phone screen.
 
-### 1.3 Corner radius
+### 1.3 Highlighter (`*accent*`)
+
+Any `*words*` in a CMS heading render as `<span class="hl">` (`renderAccent`): a lime
+marker band behind the lower half of the letters, `box-decoration-break: clone` so it
+wraps cleanly. This is the one decorative gesture on the site — keep it to one accent
+per heading.
+
+### 1.4 Shape, spacing, elevation
 
 | Element | Radius |
-|---------|--------|
-| Cards / images | 16px |
-| Buttons / pills | 30px → 100px (fully rounded pill) |
-| Small chips / inputs | 10px |
+|---|---|
+| Chips, status tags | 8px (`--r-chip`) |
+| Buttons, inputs, App Store badge | 10px (`--r-btn`, `--r-input`) |
+| Cards, CTA panels, media | 16px (`--r-card`) |
+| App icons | ~22.5% of size (iOS) |
+| Language toggle | full pill (the only one) |
 
-### 1.4 Buttons
+Spacing: 4 / 8 / 12 / 16 / 24 / 32 / 48 / 72. Sections 72px (48px mobile).
+Content width 1120px (`--maxw` includes gutters), gutters 20px mobile / 40px desktop.
+Shadows: none, except under app icons and the phone mockup.
 
-- **Primary:** solid `#0088FF`, white text, fully-rounded pill (radius 100px), padding ~8px 20px.
-- **Secondary:** white bg, thin 1px border, pill shape, optional leading icon (e.g. Apple logo).
-- **App Store badge:** official black "Download on the App Store" badge where appropriate.
+### 1.5 Components
 
-### 1.5 Header (layout)
+- **Buttons:** `.btn-primary` ink fill; `.btn-secondary` ink outline; `.btn-ghost` underlined
+  text. Min height 48px. No arrows in labels, no hover lift.
+- **App Store:** Apple's black badge only for released apps; otherwise `.appstore-soon`
+  (dashed outline status, same height).
+- **Section head:** `.section-split` puts the CMS eyebrow as a caption in a 220px left
+  column and the heading on the right (stacked under 960px). Content below lines up via
+  `.indent`.
+- **Lists of items** (features, values, steps, articles): `.info-card` = 2px ink rule on
+  top + serif title + text. No card box, no icon. Steps are numbered (they are a sequence).
+- **App card (home):** `a.appcard` — tinted icon tile | name, status tag, kicker,
+  description, chips, "Learn more". `.teaser` = dashed empty slot.
+- **CTA panel:** `.cta-band` — `--paper-2` panel, heading left, action right.
+- **FAQ:** hairline accordion, ink plus/minus.
+- **Forms:** segmented control for intent, 48px inputs with `--line-strong` borders,
+  ink focus outline, errors in `--danger` text under the field.
+- **Focus:** `:focus-visible` → 2px ink outline, 2px offset (lime on the dark footer).
 
-- Sticky, white / light translucent (`backdrop-blur`) background, thin bottom border.
-- **Left:** logo mark (rounded-square) + wordmark (dark).
-- **Center:** primary nav links (+ optional ⌄ dropdown for grouped items).
-- **Right:** language switcher + primary blue pill CTA.
-- **Consistent across every page** (hard requirement from brief).
+### 1.6 Header & footer
 
-### 1.6 Footer (layout)
+- **Header:** sticky, solid white, hairline bottom, 64px. Logo + name left; nav right in
+  `--ink-2`, current page in `--ink` with a lime bar; language toggle **EN / УКР**
+  (each label in its own language, no flags). Under 920px: toggle + menu button; the
+  full-screen drawer lists the nav in the serif and the two languages by full name.
+- **Footer:** ink background, logo + tagline, columns Apps / Company / Legal
+  (sentence-case titles), bottom row with copyright and note.
 
-- Dark background (`#0D0D0D`/`#101010`), logo mark top-left.
-- **Multi-column** (Paste uses 4; we use 3 — no social column). Our columns below.
-- Thin divider above the bottom row.
-- **Bottom row:** copyright left (`© 2026 … All rights reserved.`), legal note right.
+### 1.7 Motion
 
-### 1.7 Overall feel
+Only in response to the user: drawer fade, FAQ expand, anchor-target flash.
+`prefers-reduced-motion` disables those. No ambient or scroll-triggered animation.
 
-Clean Apple-style marketing site: white / light-gray surfaces, big bold system-font
-headings, colorful rounded cards floating on neutral backgrounds, fully-rounded blue
-CTAs, colored uppercase eyebrows per section, dark multi-column footer.
-
-> **Theme decision (locked): light "Paste" system only.** No dark variant.
-> The dream.nomly.space/en page is used **only as a structural reference** (what sections
-> exist and in what order — see §2.2); its dark lavender styling is **not** adopted.
+> **Theme:** light only. Dark mode was considered and left out (see the spec).
 
 ---
 
@@ -103,7 +132,8 @@ CTAs, colored uppercase eyebrows per section, dark multi-column footer.
 Top-to-bottom:
 
 1. **Header** (consistent — §1.5).
-2. **Hero** — eyebrow + big headline + subheading + primary CTA. Brand/value statement for
+2. **Hero** — caption + headline + subheading + primary CTA (text only; compact so the
+   first app card is visible on a laptop screen). Brand/value statement for
    the studio's apps (no metrics, no "building in public" framing).
 3. **Apps grid** — the core. Responsive grid of **app cards**, currently **one card**. Each card holds:
    - **Promotional screenshot** (16px radius) *and/or* app icon
@@ -125,7 +155,7 @@ Top-to-bottom:
 Reusable product-page template. Sections in live order:
 
 1. **Header** (consistent).
-2. **Hero** — eyebrow pill (short tagline), H1 headline, sub-copy, App
+2. **Hero** — app icon + name + kicker, H1 headline, sub-copy, App
    Store CTA + "How It Works" anchor button, app icon/visual.
 3. **How It Works** — 3-step row (STEP 01 · 02 · 03), each = icon + H3 + blurb.
 4. **Interactive try / lead capture** — prompt heading + free-text input
@@ -198,7 +228,7 @@ framework-agnostic.
 
 **Locked (2026-06-08):**
 - Brand name: **Hilka Apps**.
-- Theme: light "Paste" system only (no dark variant).
+- Theme: light only (no dark variant). Visual system replaced on 2026-11-21 (§1).
 - Locales: EN (default) + UK.
 - Scope: **one app** — currently the **mock example "Focusly"** (placeholder content, to be replaced). Landing card + one full product page. More apps later.
 - **No social media** (no footer social column).
@@ -213,6 +243,6 @@ framework-agnostic.
 ---
 
 ### Capture provenance
-- Paste design system: extracted previously via Chrome extension + computed styles (pasteapp.io blog/home/pricing).
+- Paste design system (superseded 2026-11-21): extracted previously via Chrome extension + computed styles (pasteapp.io).
 - dream.nomly.space/en: section order read live via DOM (structure reference only — not our content/styling).
 - nomly.space homepage: apps-grid **layout** captured via WebFetch as a structural reference. The apps listed there belong to nomly, not to us.
