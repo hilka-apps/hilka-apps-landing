@@ -5,7 +5,7 @@ import AppStoreBadge from "@/components/AppStoreBadge";
 import AppSections from "@/components/AppSections";
 import AnchorLink from "@/components/AnchorLink";
 import { getApp, getAllApps, getAppLegalDocs, getBrand } from "@/sanity/lib/queries";
-import { Link } from "@/i18n/navigation";
+import AppTabs from "@/components/AppTabs";
 import { preserveCase } from "@/lib/text";
 import { pick } from "@/lib/i18n";
 import { accentTint } from "@/lib/accent";
@@ -66,6 +66,7 @@ export default async function AppPage({
 
   return (
     <div className="fp-page">
+      <AppTabs appName={pick(app.name, lang)} slug={slug} docs={legalDocs} current="overview" lang={lang} />
       {/* Hidden apps aren't linked anywhere — this direct URL is the preview. */}
       {app.hidden ? (
         <div className="fp-preview-flag" role="status">
@@ -137,16 +138,6 @@ export default async function AppPage({
         downloadLabel={tHeader("cta")}
         contactLabel={t("contact")}
       />
-
-      {/* Support + this app's own legal docs (only filled-in ones are linked). */}
-      <nav className="fp-links" aria-label={t("linksLabel")}>
-        <Link href={`/apps/${slug}/support`}>{t("support")}</Link>
-        {legalDocs.map((doc) => (
-          <Link key={doc.slug} href={`/apps/${slug}/${doc.slug}`}>
-            {pick(doc.title, lang)}
-          </Link>
-        ))}
-      </nav>
     </div>
   );
 }

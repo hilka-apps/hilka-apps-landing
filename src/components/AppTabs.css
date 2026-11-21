@@ -1,0 +1,64 @@
+/* Per-app tab row (Overview · docs · Support), directly under the site header. */
+.app-tabs {
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+/* One row that scrolls inside itself on narrow screens — never wraps, never widens
+   the page. */
+.app-tabs-row {
+  display: flex;
+  align-items: stretch;
+  gap: 20px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  white-space: nowrap;
+}
+.app-tabs-row::-webkit-scrollbar {
+  display: none;
+}
+.app-tabs-name {
+  display: flex;
+  align-items: center;
+  flex: none;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.app-tabs-list {
+  display: flex;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.app-tabs-list li {
+  display: flex;
+  flex: none;
+}
+.app-tabs-list a {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 10px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink-2);
+  /* the current-tab underline sits on the row's hairline */
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.app-tabs-list a:hover {
+  color: var(--ink);
+  border-bottom-color: var(--line);
+}
+/* Current tab: ink text, weight and an ink underline — not colour alone. */
+.app-tabs-list a[aria-current="page"] {
+  color: var(--ink);
+  font-weight: 600;
+  border-bottom-color: var(--ink);
+}
+.app-tabs-list a:focus-visible {
+  outline-offset: -2px;
+}

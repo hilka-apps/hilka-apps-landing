@@ -292,34 +292,6 @@
   margin-top: 24px;
 }
 
-/* Support / Privacy / Terms */
-.fp-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 28px;
-  max-width: var(--maxw);
-  width: 100%;
-  margin: 0 auto;
-  padding: 8px var(--pad-x) 48px;
-  font-size: 15px;
-}
-@media (min-width: 768px) {
-  .fp-links {
-    padding-left: var(--pad-x-d);
-    padding-right: var(--pad-x-d);
-  }
-}
-.fp-links a {
-  color: var(--ink-2);
-  text-decoration: underline;
-  text-decoration-color: var(--line-strong);
-  text-underline-offset: 4px;
-}
-.fp-links a:hover {
-  color: var(--ink);
-  text-decoration-color: var(--ink);
-}
-
 /* ── Responsive ── */
 @media (max-width: 900px) {
   .fp-hero-grid {

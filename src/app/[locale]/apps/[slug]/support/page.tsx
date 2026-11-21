@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import AppTabs from "@/components/AppTabs";
 import ContactForm from "@/components/ContactForm";
 import FaqAccordion from "@/components/FaqAccordion";
 import { getContactStrings } from "@/components/contactStrings";
-import { getAllApps, getApp, getBrand } from "@/sanity/lib/queries";
+import { getAllApps, getApp, getAppLegalDocs, getBrand } from "@/sanity/lib/queries";
 import { pick, type Lang } from "@/lib/i18n";
 import { collectFaq } from "@/lib/faq";
 import "./support.css";
@@ -31,7 +32,12 @@ export default async function SupportPage({ params }: { params: Params }) {
   setRequestLocale(locale);
   const lang = locale as Lang;
 
-  const [app, apps, brand] = await Promise.all([getApp(slug), getAllApps(), getBrand()]);
+  const [app, apps, brand, legalDocs] = await Promise.all([
+    getApp(slug),
+    getAllApps(),
+    getBrand(),
+    getAppLegalDocs(slug),
+  ]);
   if (!app) notFound();
 
   const t = await getTranslations("support");
@@ -43,6 +49,7 @@ export default async function SupportPage({ params }: { params: Params }) {
 
   return (
     <div>
+      <AppTabs appName={appName} slug={slug} docs={legalDocs} current="support" lang={lang} />
       <section className="section white page-hero">
         <div className="wrap">
           <p className="eyebrow">{appName}</p>
