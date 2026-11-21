@@ -152,11 +152,9 @@ export default function AppSections({
                 <div className="wrap">
                   <SectionHead eyebrow={pick(s.eyebrow, lang)} heading={pick(s.heading, lang)} />
                   <div className="indent">
-                    <div className="fp-faq">
-                      <FaqAccordion
-                        items={(s.items ?? []).map((f) => ({ q: pick(f.q, lang), a: pick(f.a, lang) }))}
-                      />
-                    </div>
+                    <FaqAccordion
+                      items={(s.items ?? []).map((f) => ({ q: pick(f.q, lang), a: pick(f.a, lang) }))}
+                    />
                   </div>
                 </div>
               </section>

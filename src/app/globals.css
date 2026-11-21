@@ -37,6 +37,8 @@
   --pad-x: 20px;
   --pad-x-d: 40px;
   --header-h: 64px;
+  /* vertical padding of a page section (72px from 768px up) */
+  --section-y: 48px;
 
   /* ---- Fonts (injected by next/font in src/app/fonts.ts) ---- */
   --sans: var(--font-sans), system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -237,13 +239,13 @@ h4 {
   }
 }
 
-.section {
-  padding: 48px 0;
-}
 @media (min-width: 768px) {
-  .section {
-    padding: 72px 0;
+  :root {
+    --section-y: 72px;
   }
+}
+.section {
+  padding: var(--section-y) 0;
 }
 .section.surface {
   background: var(--paper-2);

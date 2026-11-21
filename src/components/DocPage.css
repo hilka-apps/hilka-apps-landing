@@ -7,8 +7,9 @@
 .doc-layout > section:not(.doc-header) {
   padding-top: 40px;
 }
-.doc-wrap {
-  max-width: calc(var(--maxw-doc) + 2 * var(--pad-x-d));
+/* same left edge as every other page; only the reading column is narrowed */
+.doc-wrap > * {
+  max-width: var(--maxw-doc);
 }
 .doc-updated {
   font-size: 15px;

@@ -17,7 +17,7 @@
 
 /* ── Hero ── */
 .fp-hero {
-  padding: clamp(40px, 6vw, 80px) 0 clamp(48px, 7vw, 88px);
+  padding: var(--section-y) 0;
 }
 .fp-hero-grid {
   display: grid;
@@ -242,10 +242,6 @@
 }
 
 /* ── FAQ ── */
-.fp-faq {
-  max-width: 46rem;
-}
-
 /* ── Free section (CMS rich text) ── */
 .fp-free {
   max-width: 42rem;
