@@ -129,21 +129,22 @@ export default function AppSections({
             );
 
           case "testimonialsSection": {
-            // One large quote reads as a voice; a grid of three reads as filler.
-            // Only the first CMS testimonial is shown (see the visual-refresh spec).
-            const first = (s.items ?? [])[0];
-            if (!first) return null;
+            const items = s.items ?? [];
+            if (items.length === 0) return null;
             return (
               <section key={s._key} className="section white">
                 <div className="wrap">
                   <SectionHead eyebrow={pick(s.eyebrow, lang)} heading={pick(s.heading, lang)} />
-                  <div className="indent">
-                    <figure className="fp-quote-big">
-                      <blockquote className="fp-quote-big-text">
-                        &ldquo;{pick(first.quote, lang)}&rdquo;
-                      </blockquote>
-                      {first.name ? <figcaption className="fp-quote-who">{first.name}</figcaption> : null}
-                    </figure>
+                  <div className="grid grid-3 fp-quotes">
+                    {items.map((item, i) => (
+                      <figure key={i} className="fp-quote-card">
+                        <span className="fp-quote-stars" role="img" aria-label="5/5">
+                          {"★★★★★"}
+                        </span>
+                        <blockquote className="fp-quote-text">&ldquo;{pick(item.quote, lang)}&rdquo;</blockquote>
+                        {item.name ? <figcaption className="fp-quote-who">{item.name}</figcaption> : null}
+                      </figure>
+                    ))}
                   </div>
                 </div>
               </section>

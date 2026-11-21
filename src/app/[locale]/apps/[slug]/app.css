@@ -224,20 +224,31 @@
 }
 
 /* ── Testimonials ── */
-/* One large quote (the first CMS testimonial) */
-.fp-quote-big {
-  margin: 0;
-  max-width: 30ch;
+.fp-quotes {
+  margin-top: 32px;
 }
-.fp-quote-big-text {
+.fp-quote-card {
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 24px;
+  background: var(--paper-2);
+  border-radius: 14px;
+}
+.fp-quote-stars {
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: var(--ink);
+}
+.fp-quote-text {
+  margin: 0;
+  flex: 1;
   font-family: var(--serif);
-  font-size: clamp(22px, 2.6vw, 28px);
-  font-weight: 500;
-  line-height: 1.35;
+  font-size: 18px;
+  line-height: 1.5;
 }
 .fp-quote-who {
-  margin-top: 20px;
   font-size: 15px;
   font-weight: 600;
   color: var(--ink-2);

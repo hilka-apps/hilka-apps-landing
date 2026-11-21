@@ -115,7 +115,7 @@
 .cf-field textarea,
 .cf-field select {
   background: var(--paper);
-  border: 1.5px solid var(--line-input);
+  border: 1px solid var(--line-input);
   border-radius: var(--r-input);
   font-family: var(--sans);
   font-size: 17px;

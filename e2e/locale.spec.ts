@@ -16,9 +16,8 @@ test("language switch keeps the #hash", async ({ page }) => {
   await expect(page.locator("html")).toHaveAttribute("lang", "uk");
 });
 
-test("More is not in the header nav but the page and its footer link stay", async ({ page }) => {
+test("More is linked from neither the header nav nor the footer", async ({ page }) => {
   await page.goto("/en");
   await expect(page.locator(".site-header a[href$='/more'], .drawer a[href$='/more']")).toHaveCount(0);
-  await expect(page.locator(".site-footer a[href='/en/more']")).toHaveCount(1);
-  expect((await page.goto("/en/more"))?.status()).toBe(200);
+  await expect(page.locator("footer a[href$='/more']")).toHaveCount(0);
 });

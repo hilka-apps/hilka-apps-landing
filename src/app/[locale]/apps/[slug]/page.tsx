@@ -65,7 +65,7 @@ export default async function AppPage({
 
   return (
     <div className="fp-page">
-      <AppTabs appName={pick(app.name, lang)} slug={slug} docs={legalDocs} current="overview" lang={lang} />
+      <AppTabs slug={slug} docs={legalDocs} current="overview" lang={lang} />
       {/* Hidden apps aren't linked anywhere — this direct URL is the preview. */}
       {app.hidden ? (
         <div className="fp-preview-flag" role="status">

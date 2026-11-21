@@ -57,9 +57,6 @@ export default async function Footer({
                 <Link href="/about">{t("links.about")}</Link>
               </li>
               <li>
-                <Link href="/more">{t("links.more")}</Link>
-              </li>
-              <li>
                 <Link href="/contact">{t("links.contact")}</Link>
               </li>
               <li>

@@ -49,7 +49,7 @@ export default async function SupportPage({ params }: { params: Params }) {
 
   return (
     <div>
-      <AppTabs appName={appName} slug={slug} docs={legalDocs} current="support" lang={lang} />
+      <AppTabs slug={slug} docs={legalDocs} current="support" lang={lang} />
       <section className="section white page-hero">
         <div className="wrap">
           <p className="eyebrow">{appName}</p>

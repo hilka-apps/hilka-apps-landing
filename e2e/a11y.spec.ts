@@ -16,11 +16,12 @@ function contrastOnWhite(rgb: string): number {
 const hasNoPageScrollX = (page: Page) =>
   page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth);
 
-test("form inputs have a 3:1 boundary against white (WCAG 1.4.11)", async ({ page }) => {
+test("form inputs have a thin 3:1 boundary against white (WCAG 1.4.11)", async ({ page }) => {
   await page.goto("/en/contact");
   for (const id of ["#cf-name", "#cf-email", "#cf-message"]) {
     const border = await page.locator(id).evaluate((el) => getComputedStyle(el).borderTopColor);
     expect(contrastOnWhite(border), `${id} border ${border}`).toBeGreaterThanOrEqual(3);
+    expect(await page.locator(id).evaluate((el) => getComputedStyle(el).borderTopWidth)).toBe("1px");
   }
 });
 

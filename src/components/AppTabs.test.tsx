@@ -17,7 +17,6 @@ function renderTabs(
   return render(
     <NextIntlClientProvider locale={locale} messages={locale === "en" ? en : uk}>
       <AppTabs
-        appName="Focusly"
         slug="focusly"
         docs={withDocs ? docs : []}
         current={current}

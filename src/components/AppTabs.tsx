@@ -11,13 +11,11 @@ import "./AppTabs.css";
 // filled-in legal docs, Support. Each tab is its own page; these URLs are entered in
 // App Store Connect, so they must stay /apps/<slug>, /apps/<slug>/<doc>, /apps/<slug>/support.
 export default function AppTabs({
-  appName,
   slug,
   docs,
   current,
   lang,
 }: {
-  appName: string;
   slug: string;
   docs: SanityLegalLink[];
   /** "overview", "support" or the current doc's slug */
@@ -47,7 +45,6 @@ export default function AppTabs({
   return (
     <nav className="app-tabs" aria-label={t("linksLabel")}>
       <div className="wrap app-tabs-row" ref={scrollerRef}>
-        <span className="app-tabs-name">{appName}:</span>
         <ul className="app-tabs-list">
           {tabs.map((tab) => {
             const isCurrent = tab.id === current;

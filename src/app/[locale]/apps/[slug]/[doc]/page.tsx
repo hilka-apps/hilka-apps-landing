@@ -41,7 +41,7 @@ export default async function AppLegalPage({ params }: { params: Params }) {
   const updated = doc.updatedAt ? `${t("updated")} ${doc.updatedAt}` : "";
   return (
     <div>
-      <AppTabs appName={pick(app.name, lang)} slug={slug} docs={legalDocs} current={docSlug} lang={lang} />
+      <AppTabs slug={slug} docs={legalDocs} current={docSlug} lang={lang} />
       <DocPage
         h1={`${pick(doc.title, lang)} — ${pick(app.name, lang)}`}
         updated={updated}

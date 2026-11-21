@@ -47,7 +47,7 @@ test("e2e server cannot send real email", async ({ request }) => {
 
 test.describe("contact page layout", () => {
   for (const locale of ["en", "uk"] as const) {
-    test(`form and intro are centred in ${locale}`, async ({ page }) => {
+    test(`form is centred, intro stays left-aligned in ${locale}`, async ({ page }) => {
       await page.goto(`/${locale}/contact`);
       const viewportCentre = page.viewportSize()!.width / 2;
       const centreOf = async (selector: string) => {
@@ -56,8 +56,9 @@ test.describe("contact page layout", () => {
       };
       expect(Math.abs((await centreOf(".cf-form")) - viewportCentre)).toBeLessThanOrEqual(8);
       expect(Math.abs((await centreOf(".cf-tabs")) - viewportCentre)).toBeLessThanOrEqual(8);
-      expect(Math.abs((await centreOf("h1")) - viewportCentre)).toBeLessThanOrEqual(8);
-      await expect(page.locator("h1")).toHaveCSS("text-align", "center");
+      await expect(page.locator("h1")).toHaveCSS("text-align", /start|left/);
+      const h1Left = (await page.locator("h1").boundingBox())!.x;
+      expect(h1Left).toBeLessThan((await page.locator(".cf-form").boundingBox())!.x + 1);
       // the form is a column, not the full content width
       expect((await page.locator(".cf-form").boundingBox())!.width).toBeLessThanOrEqual(640);
       // field labels stay left-aligned

@@ -62,12 +62,12 @@ describe("AppSections after release", () => {
 });
 
 describe("testimonials", () => {
-  it("shows the first quote large, with its author", () => {
+  it("shows every quote as a card with a five-star rating and its author", () => {
     const { container } = renderSections([quotes]);
-    expect(container.querySelectorAll("blockquote")).toHaveLength(1);
+    expect(container.querySelectorAll(".fp-quote-card")).toHaveLength(2);
     expect(screen.getByText(/First quote\./)).toBeInTheDocument();
+    expect(screen.getByText(/Second quote\./)).toBeInTheDocument();
     expect(screen.getByText("Ann")).toBeInTheDocument();
-    expect(screen.queryByText(/Second quote\./)).toBeNull();
-    expect(container.querySelector(".fp-quote-big")).not.toBeNull();
+    expect(screen.getAllByRole("img", { name: /5/ })).toHaveLength(2);
   });
 });
