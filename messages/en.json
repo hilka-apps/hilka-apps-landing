@@ -195,5 +195,12 @@
     "intro": "Answers to common questions, and a direct line to us if you need more help.",
     "faqHeading": "Frequently asked questions",
     "contactHeading": "Still need help? Write to us."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "h1": "Nothing here.",
+    "lead": "The page you were looking for doesn't exist or has moved.",
+    "home": "Go to the home page",
+    "apps": "Or open one of our apps:"
   }
 }

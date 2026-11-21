@@ -820,3 +820,22 @@ a.appstore:hover {
 .section.surface .cta-band {
   background: var(--paper);
 }
+
+/* ============================================================
+   404
+   ============================================================ */
+.nf-actions {
+  margin-top: 28px;
+}
+.nf-apps-label {
+  margin: 40px 0 8px;
+  color: var(--ink-2);
+}
+.nf-apps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+}
