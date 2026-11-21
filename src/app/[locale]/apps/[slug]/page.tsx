@@ -56,12 +56,11 @@ export default async function AppPage({
   const appStoreUrl = resolveStoreUrl(app.appStoreUrl);
   const heroH1 = pick(app.heroH1, lang);
 
-  // Hero phone mockup — each part renders only when filled in. The floating
-  // heroChips are intentionally not rendered (decorative; see the visual-refresh spec).
-  const screenLabel = pick(app.screenLabel, lang);
-  const screenValue = pick(app.screenValue, lang);
-  const screenSub = pick(app.screenSub, lang);
-  const screenBg = accentTint(app.accent, 30);
+  // Hero visual: the phone only frames a real screenshot/video (screenMedia). Without
+  // one, the app icon sits on an accent-tinted tile, like the home card. The floating
+  // heroChips and the screen text fields are not rendered (see the visual-refresh spec).
+  const tint = accentTint(app.accent, 30);
+  const appName = pick(app.name, lang);
   const hasHowItWorks = (app.sections ?? []).some((s) => s._type === "howItWorksSection");
 
   return (
@@ -83,7 +82,7 @@ export default async function AppPage({
                 <img className="fp-icon" src={app.iconUrl} alt="" width={40} height={40} />
               ) : null}
               <span>
-                <span className="fp-name">{pick(app.name, lang)}</span>
+                <span className="fp-name">{appName}</span>
                 <span className="fp-kicker">{preserveCase(pick(app.kicker, lang))}</span>
               </span>
               {!appStoreUrl && <span className="status-tag">{t("comingSoon")}</span>}
@@ -108,31 +107,29 @@ export default async function AppPage({
           </div>
 
           <div className="fp-stage">
-            <div className="fp-phone">
-              <div
-                className="fp-screen"
-                style={screenBg ? { background: screenBg } : undefined}
-              >
-                <div className="fp-notch" />
-                {app.screenMedia?.url ? (
+            {app.screenMedia?.url ? (
+              <div className="fp-phone">
+                <div className="fp-screen" style={tint ? { background: tint } : undefined}>
+                  <div className="fp-notch" />
                   <HeroMedia
                     url={app.screenMedia.url}
                     mime={app.screenMedia.mime}
                     className="fp-screen-media"
                   />
-                ) : screenLabel || screenValue || screenSub ? (
-                  <div className="fp-phone-inner">
-                    {screenLabel && <div className="fp-phone-label">{screenLabel}</div>}
-                    {screenValue && <div className="fp-phone-time">{screenValue}</div>}
-                    {screenSub && <div className="fp-phone-sub">{screenSub}</div>}
-                  </div>
-                ) : app.iconUrl ? (
-                  // Nothing for the screen yet → the app icon, like a launch screen.
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img className="fp-screen-icon" src={app.iconUrl} alt="" width={96} height={96} />
-                ) : null}
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="fp-tile" style={tint ? { background: tint } : undefined}>
+                {app.iconUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img className="fp-tile-icon" src={app.iconUrl} alt="" width={160} height={160} />
+                ) : (
+                  <span className="fp-tile-icon fp-tile-letter" aria-hidden="true">
+                    {appName.charAt(0)}
+                  </span>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </section>

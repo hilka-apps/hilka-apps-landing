@@ -27,3 +27,18 @@ test("the home closing CTA asks to hear about the launch before release", async 
   await expect(page.locator(".cta-band a.btn-primary[href='/en/contact']")).toHaveText("Hear about the launch");
   await expect(page.locator(".appstore, .appstore-soon")).toHaveCount(0);
 });
+
+test("an app without a screenshot shows its icon on a tinted tile, not an empty phone", async ({ page }) => {
+  const app = (await cmsApps()).find((a) => !a.hasScreenMedia);
+  test.skip(!app, "every app has a screenshot");
+  await page.goto(`/en/apps/${app!.slug}`);
+  await expect(page.locator(".fp-phone")).toHaveCount(0);
+  await expect(page.locator(".fp-stage .fp-tile")).toBeVisible();
+});
+
+test("an app with a screenshot keeps the phone", async ({ page }) => {
+  const app = (await cmsApps()).find((a) => a.hasScreenMedia);
+  test.skip(!app, "no app has a screenshot");
+  await page.goto(`/en/apps/${app!.slug}`);
+  await expect(page.locator(".fp-phone .fp-screen-media")).toBeVisible();
+});

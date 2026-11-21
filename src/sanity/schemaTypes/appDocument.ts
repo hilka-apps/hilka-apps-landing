@@ -282,7 +282,7 @@ export const appDocument = defineType({
     { ...locText("heroSubtitle", "Subtitle"), group: "page", fieldset: "hero" },
 
     // ════ Tab: App page · Phone mockup ════
-    { ...mediaField("screenMedia", "Phone screen — image / GIF", "A real screenshot or animated GIF. Empty → the text mockup below is shown instead."), group: "page", fieldset: "mockup" },
+    { ...mediaField("screenMedia", "Phone screen — image / GIF", "A real screenshot or animated GIF, shown in a phone frame. Empty → the app icon on a tinted tile (the text mockup below is not displayed in the current design)."), group: "page", fieldset: "mockup" },
     { ...locString("screenLabel", "Text mockup — label (e.g. Deep work)"), group: "page", fieldset: "mockup" },
     { ...locString("screenValue", "Text mockup — big value (e.g. 24:00)"), group: "page", fieldset: "mockup" },
     { ...locString("screenSub", "Text mockup — subtitle (e.g. Session · in flow)"), group: "page", fieldset: "mockup" },

@@ -74,7 +74,7 @@
   margin-top: clamp(24px, 3vw, 32px);
 }
 
-/* Phone mockup: the slot for a real screenshot (app.screenMedia) */
+/* Phone mockup: only around a real screenshot/video (app.screenMedia) */
 .fp-stage {
   display: grid;
   place-items: center;
@@ -117,32 +117,31 @@
   height: 100%;
   object-fit: cover;
 }
-.fp-screen-icon {
-  width: 30%;
+
+/* No screenshot yet: the app icon on an accent-tinted tile (as on the home card) */
+.fp-tile {
+  display: grid;
+  place-items: center;
+  width: clamp(220px, 28vw, 360px);
+  aspect-ratio: 1;
+  border-radius: var(--r-card);
+  background: var(--paper-2);
+}
+.fp-tile-icon {
+  width: 44%;
   height: auto;
   aspect-ratio: 1;
   border-radius: 22.5%;
-  box-shadow: 0 8px 20px -8px rgba(35, 38, 26, 0.35);
+  object-fit: cover;
+  box-shadow: 0 1px 2px rgba(35, 38, 26, 0.12), 0 12px 28px -10px rgba(35, 38, 26, 0.4);
 }
-.fp-phone-inner {
-  text-align: center;
-  padding: 0 16px;
-}
-.fp-phone-label {
-  font-size: 14px;
-  font-weight: 600;
-}
-.fp-phone-time {
+.fp-tile-letter {
+  display: grid;
+  place-items: center;
+  background: var(--paper);
   font-family: var(--serif);
+  font-size: clamp(48px, 5vw, 72px);
   font-weight: 600;
-  font-size: clamp(44px, 4.6vw, 56px);
-  line-height: 1.1;
-  font-variant-numeric: tabular-nums;
-}
-/* ink, not ink-2: the screen is an accent tint, where ink-2 can drop below 4.5:1 */
-.fp-phone-sub {
-  font-size: 13px;
-  color: var(--ink);
 }
 
 /* ── How it works: a real sequence, so it is numbered ── */
