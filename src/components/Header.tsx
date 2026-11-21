@@ -5,9 +5,9 @@ import { useLocale, useTranslations } from "next-intl";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 
+// "More" is reachable from the footer only (owner decision, 2026-11-21).
 const NAV = [
   { id: "apps", key: "apps", href: "/#apps" },
-  { id: "more", key: "more", href: "/more" },
   { id: "about", key: "about", href: "/about" },
   { id: "contact", key: "contact", href: "/contact" },
 ] as const;

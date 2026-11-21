@@ -15,3 +15,10 @@ test("language switch keeps the #hash", async ({ page }) => {
   await expect(page).toHaveURL(/\/uk#apps$/);
   await expect(page.locator("html")).toHaveAttribute("lang", "uk");
 });
+
+test("More is not in the header nav but the page and its footer link stay", async ({ page }) => {
+  await page.goto("/en");
+  await expect(page.locator(".site-header a[href$='/more'], .drawer a[href$='/more']")).toHaveCount(0);
+  await expect(page.locator(".site-footer a[href='/en/more']")).toHaveCount(1);
+  expect((await page.goto("/en/more"))?.status()).toBe(200);
+});
