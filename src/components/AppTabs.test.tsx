@@ -29,10 +29,10 @@ function renderTabs(
 const tabLinks = () => within(screen.getByRole("navigation")).getAllByRole("link");
 
 describe("AppTabs", () => {
-  it("is a nav labelled in the page language and names the app", () => {
+  it("is a nav labelled in the page language, without repeating the app name", () => {
     renderTabs("overview");
     const nav = screen.getByRole("navigation", { name: en.appPage.linksLabel });
-    expect(nav).toHaveTextContent("Focusly");
+    expect(nav).not.toHaveTextContent("Focusly");
   });
 
   it("lists Overview, the app's filled-in docs in order, then Support", () => {
