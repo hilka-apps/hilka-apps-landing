@@ -139,9 +139,10 @@
   line-height: 1.1;
   font-variant-numeric: tabular-nums;
 }
+/* ink, not ink-2: the screen is an accent tint, where ink-2 can drop below 4.5:1 */
 .fp-phone-sub {
   font-size: 13px;
-  color: var(--ink-2);
+  color: var(--ink);
 }
 
 /* ── How it works: a real sequence, so it is numbered ── */
