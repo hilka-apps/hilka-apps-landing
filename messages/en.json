@@ -188,7 +188,9 @@
     "sendAnother": "Send another"
   },
   "legal": {
-    "updated": "Last updated:"
+    "updated": "Last updated:",
+    "onlyEnglish": "This document is available in English only.",
+    "onlyUkrainian": "This document is available in Ukrainian only."
   },
   "support": {
     "meta": {

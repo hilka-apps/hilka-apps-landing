@@ -35,10 +35,16 @@ export default function DocPage({
   h1,
   updated,
   markdown,
+  bodyLang,
+  note,
 }: {
   h1: string;
   updated: string;
   markdown: string;
+  /** Set when the body is not in the page language (a fallback): marks it with `lang`. */
+  bodyLang?: string;
+  /** Shown above a fallback body, e.g. "available in English only". */
+  note?: string;
 }) {
   const intro = markdown.split(/^## /m)[0].trim();
   const sections = parseMarkdown(markdown);
@@ -54,15 +60,18 @@ export default function DocPage({
 
       <section className="section white">
         <div className="wrap doc-wrap">
-          {intro && <p className="doc-intro">{intro}</p>}
-          {sections.map((sec, i) => (
-            <div key={i} className="doc-section">
-              <h2 className="doc-h2">{sec.heading}</h2>
-              {sec.body.map((line, j) => (
-                <p key={j}>{renderLine(line)}</p>
-              ))}
-            </div>
-          ))}
+          {note && <p className="doc-lang-note">{note}</p>}
+          <div lang={bodyLang}>
+            {intro && <p className="doc-intro">{intro}</p>}
+            {sections.map((sec, i) => (
+              <div key={i} className="doc-section">
+                <h2 className="doc-h2">{sec.heading}</h2>
+                {sec.body.map((line, j) => (
+                  <p key={j}>{renderLine(line)}</p>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       </section>
     </div>

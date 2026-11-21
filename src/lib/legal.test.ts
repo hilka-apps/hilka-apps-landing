@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { hasContent, isReservedAppDocSlug, onlyFilled, pickDocContent } from "./legal";
+import { hasContent, isReservedAppDocSlug, onlyFilled, pickDocBody, pickDocContent } from "./legal";
 
 describe("pickDocContent", () => {
   it("returns the requested language", () => {
@@ -42,5 +42,18 @@ describe("isReservedAppDocSlug", () => {
   it("reserves 'support' — /apps/<app>/support is the support page", () => {
     expect(isReservedAppDocSlug("support")).toBe(true);
     expect(isReservedAppDocSlug("privacy")).toBe(false);
+  });
+});
+
+describe("pickDocBody", () => {
+  it("says which language the body is in", () => {
+    expect(pickDocBody({ contentEn: "E", contentUk: "U" }, "uk")).toEqual({ markdown: "U", lang: "uk" });
+  });
+  it("reports the fallback language when the requested one is blank", () => {
+    expect(pickDocBody({ contentEn: "E", contentUk: " " }, "uk")).toEqual({ markdown: "E", lang: "en" });
+    expect(pickDocBody({ contentUk: "U" }, "en")).toEqual({ markdown: "U", lang: "uk" });
+  });
+  it("is null for an empty document", () => {
+    expect(pickDocBody({}, "uk")).toBeNull();
   });
 });

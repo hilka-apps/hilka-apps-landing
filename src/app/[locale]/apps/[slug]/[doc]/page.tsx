@@ -5,7 +5,7 @@ import AppTabs from "@/components/AppTabs";
 import DocPage from "@/components/DocPage";
 import { getApp, getAppLegalDoc, getAppLegalDocs } from "@/sanity/lib/queries";
 import { pick, type Lang } from "@/lib/i18n";
-import { pickDocContent } from "@/lib/legal";
+import { pickDocBody } from "@/lib/legal";
 
 // An app's own legal document (Privacy Policy, Terms of Use…), e.g. /uk/apps/<app>/privacy.
 // These are the URLs entered in App Store Connect. Rendered on demand; Sanity fetches
@@ -33,8 +33,9 @@ export default async function AppLegalPage({ params }: { params: Params }) {
     getAppLegalDoc(slug, docSlug),
     getAppLegalDocs(slug),
   ]);
-  const markdown = pickDocContent(doc, lang);
-  if (!app || !doc || !markdown) notFound();
+  const body = pickDocBody(doc, lang);
+  if (!app || !doc || !body) notFound();
+  const fallback = body.lang !== lang;
 
   const t = await getTranslations("legal");
   const updated = doc.updatedAt ? `${t("updated")} ${doc.updatedAt}` : "";
@@ -44,7 +45,9 @@ export default async function AppLegalPage({ params }: { params: Params }) {
       <DocPage
         h1={`${pick(doc.title, lang)} — ${pick(app.name, lang)}`}
         updated={updated}
-        markdown={markdown}
+        markdown={body.markdown}
+        bodyLang={fallback ? body.lang : undefined}
+        note={fallback ? t(body.lang === "en" ? "onlyEnglish" : "onlyUkrainian") : undefined}
       />
     </div>
   );

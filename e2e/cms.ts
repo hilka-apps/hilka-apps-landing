@@ -22,6 +22,28 @@ function publicSanityEnv(): { projectId?: string; dataset: string } {
   return { projectId, dataset: dataset || "production" };
 }
 
+async function query<T>(groq: string): Promise<T | undefined> {
+  const { projectId, dataset } = publicSanityEnv();
+  if (!projectId) return undefined;
+  const url = `https://${projectId}.apicdn.sanity.io/v2024-01-01/data/query/${dataset}?query=${encodeURIComponent(groq)}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Sanity query failed: ${res.status}`);
+  return (await res.json()).result as T;
+}
+
+// Site-wide legal docs (no app) and which languages have a body.
+export type CmsSiteDoc = { slug: string; hasEn: boolean; hasUk: boolean };
+
+export async function cmsSiteDocs(): Promise<CmsSiteDoc[]> {
+  return (
+    (await query<CmsSiteDoc[]>(`*[_type == "legalDoc" && !defined(app) && defined(slug.current)]{
+      "slug": slug.current,
+      "hasEn": length(coalesce(contentEn, "")) > 0,
+      "hasUk": length(coalesce(contentUk, "")) > 0
+    }`)) ?? []
+  );
+}
+
 let cache: Promise<CmsApp[]> | undefined;
 
 export function cmsApps(): Promise<CmsApp[]> {

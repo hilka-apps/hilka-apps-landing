@@ -6,13 +6,26 @@ const filled = (s?: string | null) => (s && s.trim() ? s : null);
 
 /**
  * Markdown for a legal document in the requested language, falling back to the
- * other language. `null` means the document is empty and must not be shown —
- * we render a 404 rather than placeholder text (App Review opens these URLs).
+ * other language, plus the language the body is actually in (so a fallback can be
+ * marked with `lang` and a note). `null` means the document is empty and must not be
+ * shown — we render a 404 rather than placeholder text (App Review opens these URLs).
  */
-export function pickDocContent(doc: DocContent | null | undefined, lang: Lang): string | null {
+export function pickDocBody(
+  doc: DocContent | null | undefined,
+  lang: Lang
+): { markdown: string; lang: Lang } | null {
   if (!doc) return null;
-  const [first, second] = lang === "uk" ? [doc.contentUk, doc.contentEn] : [doc.contentEn, doc.contentUk];
-  return filled(first) ?? filled(second);
+  const other: Lang = lang === "uk" ? "en" : "uk";
+  const text = (l: Lang) => filled(l === "uk" ? doc.contentUk : doc.contentEn);
+  const own = text(lang);
+  if (own) return { markdown: own, lang };
+  const fallback = text(other);
+  return fallback ? { markdown: fallback, lang: other } : null;
+}
+
+/** Just the markdown of `pickDocBody`. */
+export function pickDocContent(doc: DocContent | null | undefined, lang: Lang): string | null {
+  return pickDocBody(doc, lang)?.markdown ?? null;
 }
 
 export function hasContent(doc: DocContent | null | undefined): boolean {
