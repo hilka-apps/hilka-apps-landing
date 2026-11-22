@@ -5,16 +5,18 @@ import { useLocale, useTranslations } from "next-intl";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 
+// "More" is linked from neither the header nor the footer (owner decision, 2026-11-22).
 const NAV = [
   { id: "apps", key: "apps", href: "/#apps" },
-  { id: "more", key: "more", href: "/more" },
   { id: "about", key: "about", href: "/about" },
   { id: "contact", key: "contact", href: "/contact" },
 ] as const;
 
-const LANG_LABEL: Record<string, { flag: string; short: string; full: string }> = {
-  en: { flag: "🇬🇧", short: "EN", full: "English" },
-  uk: { flag: "🇺🇦", short: "UK", full: "Українська" },
+// Each language is labelled in its own language. "УКР", not "UK" (which reads as
+// "United Kingdom"), and no flags: flags are countries, not languages.
+const LANG_LABEL: Record<string, { short: string; full: string }> = {
+  en: { short: "EN", full: "English" },
+  uk: { short: "УКР", full: "Українська" },
 };
 
 function Brand({
@@ -26,8 +28,9 @@ function Brand({
   logoUrl: string | null;
   onClick?: () => void;
 }) {
+  const t = useTranslations("header");
   return (
-    <Link className="brand" href="/" aria-label={`${siteName} home`} onClick={onClick}>
+    <Link className="brand" href="/" aria-label={t("home", { site: siteName })} onClick={onClick}>
       {logoUrl ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img className="logo-mark" src={logoUrl} alt="" width={28} height={28} />
@@ -51,17 +54,22 @@ export default function Header({
   const pathname = usePathname();
   const router = useRouter();
 
-  const [langOpen, setLangOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const drawerRef = useRef<HTMLElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const wasOpen = useRef(false);
+  const navigating = useRef(false);
 
-  // close the language menu on any outside click
+  // Closing the drawer (Esc, ✕, overlay, a language) returns focus to the menu button.
+  // Closing it by following a nav link moves focus to the new page's <main> instead.
   useEffect(() => {
-    if (!langOpen) return;
-    const close = () => setLangOpen(false);
-    document.addEventListener("click", close);
-    return () => document.removeEventListener("click", close);
-  }, [langOpen]);
+    if (wasOpen.current && !drawerOpen) {
+      if (navigating.current) document.getElementById("main")?.focus({ preventScroll: true });
+      else menuButtonRef.current?.focus();
+      navigating.current = false;
+    }
+    wasOpen.current = drawerOpen;
+  }, [drawerOpen]);
 
   // lock scroll while the drawer is open
   useEffect(() => {
@@ -110,14 +118,12 @@ export default function Header({
   }, [drawerOpen]);
 
   const switchLocale = (next: string) => {
-    setLangOpen(false);
     setDrawerOpen(false);
     if (next === locale) return;
-    // preserve the current path, swap the locale
-    router.replace(pathname, { locale: next });
+    // preserve the current path, query and #hash; swap the locale
+    const { search, hash } = window.location;
+    router.replace(`${pathname}${search}${hash}`, { locale: next });
   };
-
-  const cur = LANG_LABEL[locale] ?? LANG_LABEL.en;
 
   // highlight the nav item for the current page (pathname is locale-stripped)
   const isActive = (href: string) => {
@@ -132,7 +138,7 @@ export default function Header({
       <div className="wrap">
         <Brand siteName={siteName} logoUrl={logoUrl} />
 
-        <nav className="nav" aria-label="Primary">
+        <nav className="nav" aria-label={t("header.navLabel")}>
           {NAV.map((it) => {
             const active = isActive(it.href);
             return (
@@ -149,48 +155,27 @@ export default function Header({
         </nav>
 
         <div className="header-right">
-          <div className={`lang${langOpen ? " open" : ""}`}>
-            <button
-              type="button"
-              className="lang-btn"
-              aria-haspopup="true"
-              aria-expanded={langOpen}
-              aria-label={t("header.language")}
-              onClick={(e) => {
-                e.stopPropagation();
-                setLangOpen((o) => !o);
-              }}
-            >
-              <span className="flag">{cur.flag}</span>
-              <span>{cur.short}</span>
-              <svg className="chev" width="12" height="12" viewBox="0 0 12 12" fill="none">
-                <path
-                  d="M3 4.5L6 7.5L9 4.5"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
-            <div className="lang-menu" role="menu">
-              {routing.locales.map((loc) => (
-                <button
-                  key={loc}
-                  type="button"
-                  className={loc === locale ? "sel" : ""}
-                  onClick={() => switchLocale(loc)}
-                >
-                  <span className="flag">{LANG_LABEL[loc].flag}</span> {LANG_LABEL[loc].full}
-                </button>
-              ))}
-            </div>
+          <div className="lang-switch" role="group" aria-label={t("header.language")}>
+            {routing.locales.map((loc) => (
+              <button
+                key={loc}
+                type="button"
+                lang={loc}
+                aria-pressed={loc === locale}
+                onClick={() => switchLocale(loc)}
+              >
+                {LANG_LABEL[loc].short}
+              </button>
+            ))}
           </div>
 
           <button
+            ref={menuButtonRef}
             type="button"
             className="hamburger"
             aria-label={t("header.openMenu")}
+            aria-expanded={drawerOpen}
+            aria-controls="site-drawer"
             onClick={() => setDrawerOpen(true)}
           >
             <span></span>
@@ -199,14 +184,15 @@ export default function Header({
       </div>
     </header>
 
-      {/* Mobile drawer — kept OUTSIDE <header>: the header's backdrop-filter
-          would otherwise become the containing block for these fixed elements
-          (iOS Safari anchors them to the 66px header box, not the viewport). */}
+      {/* Mobile drawer — kept OUTSIDE <header> so the fixed overlay and drawer are
+          positioned against the viewport even if the sticky header ever gains a
+          filter/transform (those make it the containing block for fixed children). */}
       <div
         className={`drawer-overlay${drawerOpen ? " open" : ""}`}
         onClick={() => setDrawerOpen(false)}
       />
       <aside
+        id="site-drawer"
         ref={drawerRef}
         className={`drawer${drawerOpen ? " open" : ""}`}
         aria-hidden={!drawerOpen}
@@ -222,26 +208,37 @@ export default function Header({
             aria-label={t("header.closeMenu")}
             onClick={() => setDrawerOpen(false)}
           >
-            ✕
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+              <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+            </svg>
           </button>
         </div>
-        <nav>
+        <nav aria-label={t("header.navLabel")}>
           {NAV.map((it) => (
-            <Link key={it.id} href={it.href} onClick={() => setDrawerOpen(false)}>
+            <Link
+              key={it.id}
+              href={it.href}
+              aria-current={isActive(it.href) ? "page" : undefined}
+              onClick={() => {
+                navigating.current = true;
+                setDrawerOpen(false);
+              }}
+            >
               {t(`nav.${it.key}`)}
             </Link>
           ))}
         </nav>
         <div className="drawer-foot">
-          <div className="drawer-langs">
+          <div className="drawer-langs" role="group" aria-label={t("header.language")}>
             {routing.locales.map((loc) => (
               <button
                 key={loc}
                 type="button"
-                className={loc === locale ? "sel" : ""}
+                lang={loc}
+                aria-pressed={loc === locale}
                 onClick={() => switchLocale(loc)}
               >
-                {LANG_LABEL[loc].flag} {LANG_LABEL[loc].short}
+                {LANG_LABEL[loc].full}
               </button>
             ))}
           </div>

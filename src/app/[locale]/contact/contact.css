@@ -1,9 +1,9 @@
-.contact-intro {
-  max-width: 48ch;
+/* Contact page: the intro stays left-aligned like other pages; only the form
+   column is centred. Field labels inside the form stay left-aligned. */
+.contact-form-col {
+  max-width: 640px;
+  margin: 0 auto;
 }
-.contact-serif {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-style: italic;
-  color: var(--acc-green);
+.contact-form-col .cf-wrap {
+  max-width: none;
 }

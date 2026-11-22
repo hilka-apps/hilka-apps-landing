@@ -3,9 +3,9 @@ import { describe, expect, it } from "vitest";
 import { renderAccent } from "./accentText";
 
 describe("renderAccent", () => {
-  it("wraps *starred* words in a serif span", () => {
+  it("wraps *starred* words in a highlight span", () => {
     const { container } = render(<h1>{renderAccent("Made with *care*.")}</h1>);
-    const spans = container.querySelectorAll("span.serif");
+    const spans = container.querySelectorAll("span.hl");
     expect(spans).toHaveLength(1);
     expect(spans[0]).toHaveTextContent("care");
     expect(container).toHaveTextContent("Made with care.");

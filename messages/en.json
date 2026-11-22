@@ -1,7 +1,6 @@
 {
   "nav": {
     "apps": "Apps",
-    "more": "More",
     "about": "About",
     "contact": "Contact"
   },
@@ -10,13 +9,19 @@
     "contact": "Contact us",
     "hiddenPreview": "Preview — this app is hidden from the site.",
     "support": "Support",
-    "linksLabel": "App information"
+    "linksLabel": "App information",
+    "overview": "Overview",
+    "comingSoon": "Coming soon",
+    "launch": "Hear about the launch"
   },
   "header": {
-    "cta": "Get the App",
+    "cta": "Get the app",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
-    "language": "Language"
+    "language": "Language",
+    "navLabel": "Main menu",
+    "skip": "Skip to content",
+    "home": "{site} home"
   },
   "footer": {
     "tagline": "Small, considered iOS apps.",
@@ -27,7 +32,6 @@
     },
     "links": {
       "about": "About",
-      "more": "More",
       "contact": "Contact"
     },
     "copyright": "© 2026 Hilka Apps · All rights reserved.",
@@ -39,15 +43,15 @@
       "description": "Hilka Apps — small, considered iOS apps."
     },
     "eyebrow": "Indie iOS studio",
-    "h1": "Small apps, made with <serif>care</serif>.",
-    "sub": "Hilka Apps builds focused, beautifully simple iOS apps that do one thing well — no clutter, no noise.",
-    "cta1": "Explore the App",
+    "h1": "Small apps, made with <hl>care</hl>.",
+    "sub": "Hilka Apps makes focused, simple iOS apps that do one thing well — no clutter, no noise.",
+    "cta1": "See the apps",
     "cta2": "About us",
-    "scrollCue": "Our apps",
     "apps": {
       "eyebrow": "Our apps",
       "h2": "One app, done right.",
-      "live": "LIVE",
+      "live": "On the App Store",
+      "soon": "Coming soon",
       "learnMore": "Learn more",
       "teaser": {
         "kicker": "In the works",
@@ -63,8 +67,7 @@
   },
   "appstore": {
     "small": "Download on the",
-    "big": "App Store",
-    "soon": "Coming soon to the App Store"
+    "big": "App Store"
   },
   "about": {
     "meta": {
@@ -72,11 +75,11 @@
       "description": "Hilka Apps is a tiny studio making focused iOS apps for everyday life."
     },
     "eyebrow": "About",
-    "h1": "An indie iOS <serif>studio.</serif>",
+    "h1": "An indie iOS <hl>studio.</hl>",
     "lead": "Hilka Apps is a tiny studio making focused iOS apps for everyday life.",
     "story": "We believe the best software does less, better. Every Hilka app starts with one clear job and a calm, uncluttered interface — then we sweat the details until it feels effortless. No dark patterns, no noise, no upsell maze. Just small, honest tools we'd want to use ourselves.",
     "values": {
-      "h2": "What we stand for.",
+      "h2": "What we stand for",
       "items": [
         {
           "icon": "✦",
@@ -91,7 +94,7 @@
         {
           "icon": "🤍",
           "title": "Made with care",
-          "desc": "Every detail sweated until it feels effortless."
+          "desc": "We sweat every detail until it feels effortless."
         }
       ],
       "eyebrow": "Our values"
@@ -99,7 +102,7 @@
     "cta": {
       "h2": "See what we've built.",
       "cta": "Explore Focusly",
-      "sub": "One focused app, already live. More on the way."
+      "sub": "One focused app so far, with more on the way."
     }
   },
   "more": {
@@ -154,44 +157,54 @@
       "description": "Get in touch with Hilka Apps — we'd love your feedback."
     },
     "eyebrow": "Get in touch",
-    "h1": "We'd love your <serif>feedback.</serif>",
+    "h1": "We'd love your <hl>feedback.</hl>",
     "intro": "Have an idea or hit a snag? Tell us — we read everything.",
     "tabs": {
-      "suggestion": "Suggest a feature",
-      "complaint": "Report a problem"
+      "label": "Type of message",
+      "suggestion": "Idea",
+      "complaint": "Problem"
     },
     "form": {
       "name": "Name",
       "namePlaceholder": "Your name",
       "email": "Email",
-      "emailPlaceholder": "you@example.com",
+      "emailPlaceholder": "name@example.com",
       "subject": "Subject",
       "subjectPlaceholder": "Short summary (optional)",
       "app": "App",
-      "appPlaceholder": "General — not app-specific",
+      "appPlaceholder": "General (not about a specific app)",
       "message": "Message",
       "messagePlaceholder": "Tell us more…",
       "submit": "Send message",
+      "sending": "Sending…",
       "charCount": "{count}/500",
       "required": "Required",
       "invalidEmail": "Enter a valid email address"
     },
-    "success": "Thanks! Your message is on its way to us.",
+    "success": "Thanks! Your message is on its way.",
     "error": "Something went wrong — please try again or email {email}.",
     "emailLine": "Prefer email? Reach us at",
     "sendAnother": "Send another"
   },
   "legal": {
-    "updated": "Last updated:"
+    "updated": "Last updated:",
+    "onlyEnglish": "This document is available in English only.",
+    "onlyUkrainian": "This document is available in Ukrainian only."
   },
   "support": {
     "meta": {
       "title": "Support · {app}",
-      "description": "Answers and help for {app}."
+      "description": "Help and answers for {app}."
     },
     "title": "Support",
     "intro": "Answers to common questions, and a direct line to us if you need more help.",
     "faqHeading": "Frequently asked questions",
     "contactHeading": "Still need help? Write to us."
+  },
+  "notFound": {
+    "h1": "Nothing here.",
+    "lead": "The page you were looking for doesn't exist or has moved.",
+    "home": "Go to the home page",
+    "apps": "Or open one of our apps:"
   }
 }

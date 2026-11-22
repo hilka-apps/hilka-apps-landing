@@ -4,7 +4,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import DocPage from "@/components/DocPage";
 import { getLegalDoc, getAllLegalDocs, getBrand } from "@/sanity/lib/queries";
 import { pick, type Lang } from "@/lib/i18n";
-import { pickDocContent } from "@/lib/legal";
+import { pickDocBody } from "@/lib/legal";
 
 // Site-wide documents only (no app). App documents live at /apps/<app>/<slug>.
 export async function generateStaticParams() {
@@ -37,9 +37,18 @@ export default async function LegalPage({
 
   const doc = await getLegalDoc(slug);
   // Empty (or missing) document → 404. Never placeholder text.
-  const markdown = pickDocContent(doc, lang);
-  if (!doc || !markdown) notFound();
+  const body = pickDocBody(doc, lang);
+  if (!doc || !body) notFound();
 
   const updated = doc.updatedAt ? `${t("updated")} ${doc.updatedAt}` : "";
-  return <DocPage h1={pick(doc.title, lang)} updated={updated} markdown={markdown} />;
+  const fallback = body.lang !== lang;
+  return (
+    <DocPage
+      h1={pick(doc.title, lang)}
+      updated={updated}
+      markdown={body.markdown}
+      bodyLang={fallback ? body.lang : undefined}
+      note={fallback ? t(body.lang === "en" ? "onlyEnglish" : "onlyUkrainian") : undefined}
+    />
+  );
 }

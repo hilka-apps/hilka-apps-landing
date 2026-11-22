@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import AppTabs from "@/components/AppTabs";
 import ContactForm from "@/components/ContactForm";
 import FaqAccordion from "@/components/FaqAccordion";
 import { getContactStrings } from "@/components/contactStrings";
-import { getAllApps, getApp, getBrand } from "@/sanity/lib/queries";
+import { getAllApps, getApp, getAppLegalDocs, getBrand } from "@/sanity/lib/queries";
 import { pick, type Lang } from "@/lib/i18n";
 import { collectFaq } from "@/lib/faq";
 import "./support.css";
@@ -31,7 +32,12 @@ export default async function SupportPage({ params }: { params: Params }) {
   setRequestLocale(locale);
   const lang = locale as Lang;
 
-  const [app, apps, brand] = await Promise.all([getApp(slug), getAllApps(), getBrand()]);
+  const [app, apps, brand, legalDocs] = await Promise.all([
+    getApp(slug),
+    getAllApps(),
+    getBrand(),
+    getAppLegalDocs(slug),
+  ]);
   if (!app) notFound();
 
   const t = await getTranslations("support");
@@ -43,9 +49,10 @@ export default async function SupportPage({ params }: { params: Params }) {
 
   return (
     <div>
+      <AppTabs slug={slug} docs={legalDocs} current="support" lang={lang} />
       <section className="section white page-hero">
         <div className="wrap">
-          <p className="eyebrow blue">{appName}</p>
+          <p className="eyebrow">{appName}</p>
           <h1 className="h1 page-h1">{t("title")}</h1>
           <p className="lead support-intro">{t("intro")}</p>
         </div>
@@ -53,17 +60,25 @@ export default async function SupportPage({ params }: { params: Params }) {
 
       {faq.length > 0 && (
         <section className="section surface">
-          <div className="wrap support-faq">
-            <h2 className="h2">{t("faqHeading")}</h2>
-            <FaqAccordion items={faq} />
+          <div className="wrap">
+            <h2 className="h2 section-head">{t("faqHeading")}</h2>
+            <div className="support-faq">
+              <FaqAccordion items={faq} />
+            </div>
           </div>
         </section>
       )}
 
       <section className={`section ${faq.length > 0 ? "white" : "surface"}`}>
         <div className="wrap">
-          <h2 className="h2 support-contact-h">{t("contactHeading")}</h2>
-          <ContactForm strings={strings} email={brand.email} appOptions={appOptions} defaultApp={appName} />
+          <h2 className="h2 section-head">{t("contactHeading")}</h2>
+          <ContactForm
+            strings={strings}
+            email={brand.email}
+            appOptions={appOptions}
+            defaultApp={appName}
+            defaultIntent="complaint"
+          />
         </div>
       </section>
     </div>

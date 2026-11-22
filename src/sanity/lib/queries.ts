@@ -13,7 +13,7 @@ export type AppSection =
   | { _type: "statSection"; _key: string; number?: string; label?: Loc }
   | { _type: "featuresSection"; _key: string; eyebrow?: Loc; heading?: Loc; items?: { icon?: string; title?: Loc; desc?: Loc }[] }
   | { _type: "articlesSection"; _key: string; eyebrow?: Loc; heading?: Loc; items?: { icon?: string; title?: Loc; excerpt?: Loc }[] }
-  | { _type: "testimonialsSection"; _key: string; eyebrow?: Loc; heading?: Loc; items?: { quote?: Loc; name?: string }[] }
+  | { _type: "testimonialsSection"; _key: string; eyebrow?: Loc; heading?: Loc; items?: { quote?: Loc; name?: string; rating?: number }[] }
   | { _type: "faqSection"; _key: string; eyebrow?: Loc; heading?: Loc; items?: { q?: Loc; a?: Loc }[] }
   | { _type: "ctaSection"; _key: string; heading?: Loc }
   | {

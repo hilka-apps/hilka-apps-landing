@@ -6,6 +6,7 @@ export async function getContactStrings(email: string): Promise<ContactStrings> 
   const t = await getTranslations("contact");
   return {
     tabs: {
+      label: t("tabs.label"),
       suggestion: t("tabs.suggestion"),
       complaint: t("tabs.complaint"),
     },
@@ -21,6 +22,7 @@ export async function getContactStrings(email: string): Promise<ContactStrings> 
       message: t("form.message"),
       messagePlaceholder: t("form.messagePlaceholder"),
       submit: t("form.submit"),
+      sending: t("form.sending"),
       required: t("form.required"),
       invalidEmail: t("form.invalidEmail"),
     },

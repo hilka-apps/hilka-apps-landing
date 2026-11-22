@@ -5,10 +5,10 @@ import AppStoreBadge from "@/components/AppStoreBadge";
 import AppSections from "@/components/AppSections";
 import AnchorLink from "@/components/AnchorLink";
 import { getApp, getAllApps, getAppLegalDocs, getBrand } from "@/sanity/lib/queries";
-import { Link } from "@/i18n/navigation";
+import AppTabs from "@/components/AppTabs";
 import { preserveCase } from "@/lib/text";
 import { pick } from "@/lib/i18n";
-import { accentGradient } from "@/lib/accent";
+import { accentTint } from "@/lib/accent";
 import { renderAccent } from "@/lib/accentText";
 import HeroMedia from "@/components/HeroMedia";
 import { resolveStoreUrl } from "@/config/site";
@@ -52,20 +52,20 @@ export default async function AppPage({
   const t = await getTranslations("appPage");
   const tHeader = await getTranslations("header");
 
-  // No real URL → undefined → "Coming soon" instead of Apple's badge.
+  // No real URL → undefined → a "Coming soon" tag and launch CTAs, never Apple's badge.
   const appStoreUrl = resolveStoreUrl(app.appStoreUrl);
   const heroH1 = pick(app.heroH1, lang);
 
-  // Hero phone mockup + floating chips — each part renders only when filled in.
-  const screenLabel = pick(app.screenLabel, lang);
-  const screenValue = pick(app.screenValue, lang);
-  const screenSub = pick(app.screenSub, lang);
-  const chips = (app.heroChips ?? []).slice(0, 2);
-  const CHIP_POS = ["fp-float-streak", "fp-float-today"] as const;
-  const screenBg = accentGradient(app.accent, 172);
+  // Hero visual: the phone only frames a real screenshot/video (screenMedia). Without
+  // one, the app icon sits on an accent-tinted tile, like the home card. The floating
+  // heroChips and the screen text fields are not rendered (see the visual-refresh spec).
+  const tint = accentTint(app.accent, 30);
+  const appName = pick(app.name, lang);
+  const hasHowItWorks = (app.sections ?? []).some((s) => s._type === "howItWorksSection");
 
   return (
     <div className="fp-page">
+      <AppTabs slug={slug} docs={legalDocs} current="overview" lang={lang} />
       {/* Hidden apps aren't linked anywhere — this direct URL is the preview. */}
       {app.hidden ? (
         <div className="fp-preview-flag" role="status">
@@ -76,62 +76,60 @@ export default async function AppPage({
       <section className="fp-hero">
         <div className="fp-hero-grid wrap">
           <div className="fp-copy">
-            <span className="fp-eyebrow">
-              <span
-                className="fp-dot"
-                style={
-                  app.accent
-                    ? { background: app.accent, boxShadow: `0 0 0 4px ${app.accent}2e` }
-                    : undefined
-                }
-              />
-              {preserveCase(pick(app.kicker, lang))}
-            </span>
-            <h1 className="fp-h1">{renderAccent(heroH1, "fp-serif")}</h1>
+            <p className="eyebrow fp-eyebrow">
+              {app.iconUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img className="fp-icon" src={app.iconUrl} alt="" width={40} height={40} />
+              ) : null}
+              <span>
+                <span className="fp-name">{appName}</span>
+                <span className="fp-kicker">{preserveCase(pick(app.kicker, lang))}</span>
+              </span>
+              {!appStoreUrl && <span className="status-tag">{t("comingSoon")}</span>}
+            </p>
+            <h1 className="fp-h1">{renderAccent(heroH1)}</h1>
             <p className="fp-sub">{pick(app.heroSubtitle, lang)}</p>
-            <div className="fp-cta-row">
-              <AppStoreBadge href={appStoreUrl} />
-              <AnchorLink className="btn btn-secondary" href="#how-it-works">
-                {t("howItWorks")} ↓
-              </AnchorLink>
-            </div>
+            {(appStoreUrl || hasHowItWorks) && (
+              <div className="fp-cta-row">
+                <AppStoreBadge href={appStoreUrl} />
+                {/* only when the target exists, or the link would go nowhere; it is the
+                    main action until the app is in the store */}
+                {hasHowItWorks && (
+                  <AnchorLink
+                    className={`btn ${appStoreUrl ? "btn-secondary" : "btn-primary"}`}
+                    href="#how-it-works"
+                  >
+                    {t("howItWorks")}
+                  </AnchorLink>
+                )}
+              </div>
+            )}
           </div>
 
           <div className="fp-stage">
-            <div className="fp-phone">
-              <div
-                className="fp-screen"
-                style={screenBg ? { background: screenBg } : undefined}
-              >
-                <div className="fp-notch" />
-                {app.screenMedia?.url ? (
+            {app.screenMedia?.url ? (
+              <div className="fp-phone">
+                <div className="fp-screen" style={tint ? { background: tint } : undefined}>
+                  <div className="fp-notch" />
                   <HeroMedia
                     url={app.screenMedia.url}
                     mime={app.screenMedia.mime}
                     className="fp-screen-media"
                   />
+                </div>
+              </div>
+            ) : (
+              <div className="fp-tile" style={tint ? { background: tint } : undefined}>
+                {app.iconUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img className="fp-tile-icon" src={app.iconUrl} alt="" width={160} height={160} />
                 ) : (
-                  <div className="fp-phone-inner">
-                    {screenLabel && <div className="fp-phone-label">{screenLabel}</div>}
-                    {screenValue && <div className="fp-phone-time">{screenValue}</div>}
-                    {screenSub && <div className="fp-phone-sub">{screenSub}</div>}
-                  </div>
+                  <span className="fp-tile-icon fp-tile-letter" aria-hidden="true">
+                    {appName.charAt(0)}
+                  </span>
                 )}
               </div>
-            </div>
-            {chips.map((c, i) => {
-              const bg = accentGradient(c.accent, 150);
-              return (
-                <div
-                  key={i}
-                  className={`fp-float ${CHIP_POS[i]}`}
-                  style={bg ? { background: bg } : undefined}
-                >
-                  <div className="fk">{pick(c.label, lang)}</div>
-                  <div className="fv">{pick(c.value, lang)}</div>
-                </div>
-              );
-            })}
+            )}
           </div>
         </div>
       </section>
@@ -143,17 +141,8 @@ export default async function AppPage({
         appStoreUrl={appStoreUrl}
         downloadLabel={tHeader("cta")}
         contactLabel={t("contact")}
+        launchLabel={t("launch")}
       />
-
-      {/* Support + this app's own legal docs (only filled-in ones are linked). */}
-      <nav className="fp-links" aria-label={t("linksLabel")}>
-        <Link href={`/apps/${slug}/support`}>{t("support")}</Link>
-        {legalDocs.map((doc) => (
-          <Link key={doc.slug} href={`/apps/${slug}/${doc.slug}`}>
-            {pick(doc.title, lang)}
-          </Link>
-        ))}
-      </nav>
     </div>
   );
 }

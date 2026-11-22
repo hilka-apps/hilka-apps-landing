@@ -5,9 +5,11 @@ test.describe("contact form", () => {
     await page.goto("/en/contact");
   });
 
-  test("shows required errors on empty submit", async ({ page }) => {
+  test("shows required errors on empty submit and focuses the first field", async ({ page }) => {
+    await expect(page.locator('.cf-tabs input[value="suggestion"]')).toBeChecked();
     await page.locator(".cf-form button[type=submit]").click();
     await expect(page.locator(".cf-error")).toHaveCount(3);
+    await expect(page.locator("#cf-name")).toBeFocused();
   });
 
   test("flags a malformed email", async ({ page }) => {
@@ -41,4 +43,26 @@ test("e2e server cannot send real email", async ({ request }) => {
     data: { name: "e2e", email: "e2e@example.com", message: "guard", type: "suggestion" },
   });
   expect(res.status()).toBe(503);
+});
+
+test.describe("contact page layout", () => {
+  for (const locale of ["en", "uk"] as const) {
+    test(`form is centred, intro stays left-aligned in ${locale}`, async ({ page }) => {
+      await page.goto(`/${locale}/contact`);
+      const viewportCentre = page.viewportSize()!.width / 2;
+      const centreOf = async (selector: string) => {
+        const box = (await page.locator(selector).first().boundingBox())!;
+        return box.x + box.width / 2;
+      };
+      expect(Math.abs((await centreOf(".cf-form")) - viewportCentre)).toBeLessThanOrEqual(8);
+      expect(Math.abs((await centreOf(".cf-tabs")) - viewportCentre)).toBeLessThanOrEqual(8);
+      await expect(page.locator("h1")).toHaveCSS("text-align", /start|left/);
+      const h1Left = (await page.locator("h1").boundingBox())!.x;
+      expect(h1Left).toBeLessThan((await page.locator(".cf-form").boundingBox())!.x + 1);
+      // the form is a column, not the full content width
+      expect((await page.locator(".cf-form").boundingBox())!.width).toBeLessThanOrEqual(640);
+      // field labels stay left-aligned
+      await expect(page.locator(".cf-field label").first()).toHaveCSS("text-align", /start|left/);
+    });
+  }
 });

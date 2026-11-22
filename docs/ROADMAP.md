@@ -21,19 +21,19 @@ Visible on the live site: footer copyright and the home `<title>`/description.
 - [x] P0 `src/config/site.ts`: `brand.name`, `emailFrom` display name; `src/sanity/schemaTypes/siteSettings.ts` `initialValue`
 - [x] P1 Bundled legal fallbacks (deleted), `scripts/seed-pages.mjs`, `globals.css` header comment, docs
 - [ ] P0 Apply the CMS rename: `node scripts/rename-brand.mjs` (dry run shows before/after) → `--apply` after the owner's yes (7 docs incl. the open `drafts.homeContent`)
-- [ ] P1 Decide the studio domain (none owned in Vercel; `hilka.app` belongs to another developer) — blocks F2.1
+- [ ] P1 Studio domain: owner is buying one (decision 2026-11-21) — connect it in Vercel before App Store Connect URLs are entered; blocks F2.1
 
 ### F1.2 Cyrillic typography · P0 (audience is Ukrainian)
 `Bricolage_Grotesque` and `Instrument_Serif` are loaded with `subsets: ["latin"]` in
 `src/app/[locale]/layout.tsx`. Confirmed from next/font data: Bricolage Grotesque has
 latin/latin-ext/vietnamese, Instrument Serif latin/latin-ext — no Cyrillic, so `/uk` headings
 fall back to system fonts and look different from `/en`.
-- [ ] P0 Pick display + serif fonts with Cyrillic (or a per-locale pairing), update layout + `DESIGN.md`
-- [ ] P0 Add a Playwright check that `/uk` `h1` computed `font-family` resolves to the display font
+- [x] P0 Pick display + serif fonts with Cyrillic (or a per-locale pairing), update layout + `DESIGN.md` — Literata + Commissioner in `src/app/fonts.ts`
+- [x] P0 Add a Playwright check that `/uk` `h1` computed `font-family` resolves to the display font — `e2e/fonts.spec.ts`
 
 ### F1.3 Small UI defects · P1
 - [x] P1 `AppSections.tsx` `statSection`: download button renders `<a>` without `href` when the App Store URL is unset — now a "Coming soon" pill
-- [ ] P1 Testimonials always show ★★★★★ (hardcoded) — make rating a CMS field or drop stars
+- [x] P1 Testimonials always showed ★★★★★ (hardcoded) — now an optional `rating` (1–5) per testimonial in Studio; no rating → no stars (2026-11-22)
 - [ ] P2 `global-error.tsx` is English-only — localise via `navigator.language` or neutral bilingual copy
 - [ ] P2 Header has no primary CTA ("Get the App") that `STRUCTURE.md §A.1` specifies — decide: add or update the spec
 
@@ -48,6 +48,7 @@ fall back to system fonts and look different from `/en`.
 
 ### F2.1 Production email sending · P0
 - [ ] P0 Verify the sending domain in Resend; switch `emailFrom` off `onboarding@resend.dev` (test sender only delivers to the Resend account owner)
+- [ ] P0 Contact/support messages must reach `hilka.apps@gmail.com` (owner decision 2026-11-21); today they go to a personal inbox. Needs the domain above verified first — with the test sender a different recipient is rejected
 - [ ] P0 Move `notifyEmails` (personal address, public repo) to env `CONTACT_NOTIFY_EMAILS`; document in `.env.local.example`
 
 ### F2.2 `/api/contact` hardening · P0
@@ -77,7 +78,7 @@ fall back to system fonts and look different from `/en`.
 - [ ] P2 JSON-LD `SoftwareApplication` on app pages, `Organization` on home
 
 ### F3.3 Not found · P1
-- [ ] P1 Localised `src/app/[locale]/not-found.tsx` (today Next's default 404)
+- [x] P1 Localised `src/app/[locale]/not-found.tsx` (today Next's default 404) — visual refresh
 
 ---
 
@@ -85,8 +86,8 @@ fall back to system fonts and look different from `/en`.
 
 ### F4.1 Accessibility · P1
 - [ ] P1 Add `@axe-core/playwright` scan to e2e for home, app, contact (both locales)
-- [ ] P1 Language dropdown: `role="menu"` without `menuitem`s, no Esc / arrow-key support (`Header.tsx`)
-- [ ] P2 Respect `prefers-reduced-motion` for floating plates and autoplay videos (`HeroMedia`)
+- [x] P1 Language dropdown: `role="menu"` without `menuitem`s, no Esc / arrow-key support (`Header.tsx`) — replaced by an EN/УКР toggle
+- [ ] P2 Respect `prefers-reduced-motion` for autoplay videos (`HeroMedia`); floating plates are no longer rendered
 
 ### F4.2 Performance · P1
 - [ ] P1 Replace raw `<img>` (eslint-disabled) with `next/image` for Sanity assets (icons, logos, plates)
@@ -104,7 +105,8 @@ fall back to system fonts and look different from `/en`.
 
 ### F5.2 Editor experience · P2
 - [ ] P2 Live preview / draft mode for Studio editors
-- [ ] P2 Clean up the hidden mock app `focusly` in the dataset (content task)
+- [ ] P2 Delete the hidden mock apps `focusly` and `arttick` from the dataset once the real app is published (content task; e2e support/doc specs use the first app until then)
+- [x] P1 Legal documents grouped per app in Studio: Apps → <app> → App details / Legal documents (`app` pre-filled and read-only); Site content → Legal documents holds site docs only; no Legal document in the top-bar "+"
 
 ---
 
@@ -152,12 +154,22 @@ fall back to system fonts and look different from `/en`.
 - [x] P0 Per-app legal docs `/apps/<app>/<slug>` via `legalDoc.app`; empty → 404, no placeholders
 
 ### F9.2 Owner / content tasks · P0
-- [ ] P0 Hide Arttick and Focusly in Studio (eye toggle) once the new app is added
-- [ ] P0 Add the new app in Studio (EN + UK), its FAQ section, then Privacy/Terms docs with `App` set
-- [ ] P0 Site legal docs in Studio (`/legal/privacy`, `/legal/terms`, `App` empty) still hold prototype placeholder text ("This is placeholder text…", "Focusly stores…") and are linked in every footer — replace with real text or clear both languages (empty → 404 and the footer link disappears) before App Review
-- [ ] P0 Check the "Hilka" name conflict (another Apple developer at `hilka.app`) before Apple Developer enrollment
+- [x] P0 Hide Arttick and Focusly in Studio (both mock apps, never released)
+- [ ] P0 Add the new app in Studio (EN + UK), its FAQ section, then Privacy/Terms in Apps → <app> → Legal documents
+- [x] P0 Site Terms of Use dropped (no accounts or purchases on the site): body cleared → `/legal/terms` is 404, footer link gone
+- [ ] P0 Site Privacy (`/legal/privacy`) still holds prototype placeholder text and is linked in every footer — replace with the site's real policy (contact form: name, email, message → email via Resend) before App Review
+- [ ] P0 Studio copy still promises a released app: Home hero plates (Arttick sketching theme + the 🎨 plate's hardcoded "LIVE"), Home `ctaSub` "One focused app live today", About `ctaLabel` "Explore Focusly" / `ctaSub` "already live"
+- [ ] P2 "Hilka" name conflict (another developer at `hilka.app`): owner enrolls in Apple Developer as an individual (2026-11-21), so the App Store seller is her own name and Hilka is only the site brand — low risk, revisit if registering a company
 
 ### F9.3 Follow-ups
-- [ ] P1 "Unofficial app, not affiliated with MVS/HSC" disclaimer field on the app page (+ source of rules/questions)
+- [x] P1 Visual refresh (`feat/visual-refresh`): Literata + Commissioner, olive/lime palette, EN/УКР toggle, app tab row (Overview · legal docs · Support), centred contact form, soft borders — owner-approved 2026-11-22
+- [ ] P1 Remove the orphaned `/more` page (no longer linked from header or footer) or give it real content
+- [ ] P2 Form field borders are softer than WCAG 1.4.11 (3:1) by owner choice; focus state is ink + lime ring
+- [ ] P2 "Hear about the launch" CTA opens the plain contact form — preselect the app (and intent) via `/contact?app=<slug>`, or reword
+- [ ] P2 `legalDoc` app-published validation queries Sanity on every keystroke — cache per `_ref` or check on publish only
+- [ ] P2 Unit test that `DocPage` shows the "English only" note when the UK body falls back
+- [ ] P2 `DocPage` markdown links: allow only `https:`, `mailto:` and relative hrefs
+- [ ] P2 404 `<title>` is language-neutral ("404 · Hilka Apps"): reading the locale in not-found metadata turns SSG pages dynamic (500)
+- [ ] ~~P1 "Unofficial app, not affiliated with MVS/HSC" disclaimer field on the app page~~ — owner declined (2026-11-21)
 - [ ] P2 Smart App Banner (`apple-itunes-app` meta) once the app has a store ID
 - [ ] P2 Store links in the support page header once live

@@ -40,7 +40,19 @@ export const legalDoc = defineType({
       type: "reference",
       to: [{ type: "app" }],
       description:
-        "The app this document belongs to (its Privacy Policy, Terms of Use…) — shown at /apps/<app>/<slug> and linked from that app's page. Leave empty for a document of the website itself (/legal/<slug>, linked in the footer).",
+        "Set by the folder you created the document in: Apps → <app> → Legal documents (shown at /apps/<app>/<slug>). Site documents (Site content → Legal documents, /legal/<slug>) have no app.",
+      // The folder decides the owner; site documents don't show the empty field at all.
+      readOnly: true,
+      hidden: ({ document }) => !document?.app,
+      // A published document can't strongly reference an unpublished app.
+      validation: (r) =>
+        r.custom(async (value: { _ref?: string } | undefined, context) => {
+          if (!value?._ref) return true;
+          const published = await context
+            .getClient({ apiVersion: "2025-02-19" })
+            .fetch<number>(`count(*[_id == $id])`, { id: value._ref }, { perspective: "raw" });
+          return published > 0 ? true : "Publish the app first, then this document.";
+        }),
     }),
     defineField({
       name: "slug",

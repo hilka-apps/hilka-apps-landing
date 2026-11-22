@@ -11,6 +11,6 @@ for (const locale of ["en", "uk"] as const) {
     await expect(page.locator("html")).toHaveAttribute("lang", locale);
     await expect(page.locator(".fp-h1")).toBeVisible();
     await expect(page.locator(".fp-h1")).not.toBeEmpty();
-    await expect(page.locator(`.fp-links a[href$='/apps/${app!.slug}/support']`)).toBeVisible();
+    await expect(page.locator(`nav.app-tabs a[href$='/apps/${app!.slug}/support']`)).toBeVisible();
   });
 }

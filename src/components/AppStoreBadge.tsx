@@ -7,37 +7,20 @@ const AppleGlyph = () => (
 );
 
 /**
- * App Store badge, three states:
- * - `href`  → Apple's badge as a link to the store;
- * - `inert` → Apple's badge as a plain span (inside another link, e.g. the app card);
- * - neither → a "coming soon" pill. Apple's badge is never shown for an app that
- *   is not in the store yet.
+ * Apple's App Store badge, linking to the store. Renders nothing without a link:
+ * Apple's badge is never shown for an app that is not in the store yet (callers show
+ * a "Coming soon" tag or a launch CTA instead).
  */
-export default function AppStoreBadge({ href, inert }: { href?: string; inert?: boolean }) {
+export default function AppStoreBadge({ href }: { href?: string }) {
   const t = useTranslations("appstore");
-  if (!href && !inert) {
-    return <span className="appstore-soon">{t("soon")}</span>;
-  }
-  const inner = (
-    <>
+  if (!href) return null;
+  return (
+    <a className="appstore" href={href} target="_blank" rel="noopener noreferrer">
       <AppleGlyph />
       <span className="as-txt">
         <span className="as-small">{t("small")}</span>
         <span className="as-big">{t("big")}</span>
       </span>
-    </>
-  );
-
-  if (href) {
-    return (
-      <a className="appstore" href={href} target="_blank" rel="noopener noreferrer">
-        {inner}
-      </a>
-    );
-  }
-  return (
-    <span className="appstore" role="img" aria-label={`${t("small")} ${t("big")}`}>
-      {inner}
-    </span>
+    </a>
   );
 }

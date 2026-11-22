@@ -15,6 +15,7 @@ export default async function Footer({
   logoUrl: string | null;
 }) {
   const t = await getTranslations("footer");
+  const tHeader = await getTranslations("header");
   const locale = (await getLocale()) as "en" | "uk";
   const [apps, legalDocs] = await Promise.all([getAllApps(), getAllLegalDocs()]);
 
@@ -23,7 +24,7 @@ export default async function Footer({
       <div className="wrap">
         <div className="footer-grid">
           <div className="footer-brand">
-            <Link className="brand" href="/" aria-label={`${siteName} home`}>
+            <Link className="brand" href="/" aria-label={tHeader("home", { site: siteName })}>
               {logoUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img className="logo-mark" src={logoUrl} alt="" width={28} height={28} />
@@ -56,27 +57,29 @@ export default async function Footer({
                 <Link href="/about">{t("links.about")}</Link>
               </li>
               <li>
-                <Link href="/more">{t("links.more")}</Link>
+                <Link href="/contact">{t("links.contact")}</Link>
               </li>
               <li>
-                <Link href="/contact">{t("links.contact")}</Link>
+                <a className="footer-email" href={`mailto:${email}`}>
+                  {email}
+                </a>
               </li>
             </ul>
           </div>
 
-          <div className="footer-col">
-            <h4>{t("cols.legal")}</h4>
-            <ul>
-              {legalDocs.map((doc) => (
-                <li key={doc.slug}>
-                  <Link href={`/legal/${doc.slug}`}>{pick(doc.title, locale)}</Link>
-                </li>
-              ))}
-              <li>
-                <a href={`mailto:${email}`}>{email}</a>
-              </li>
-            </ul>
-          </div>
+          {/* No published site documents → no empty "Legal" heading. */}
+          {legalDocs.length > 0 && (
+            <div className="footer-col">
+              <h4>{t("cols.legal")}</h4>
+              <ul>
+                {legalDocs.map((doc) => (
+                  <li key={doc.slug}>
+                    <Link href={`/legal/${doc.slug}`}>{pick(doc.title, locale)}</Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
 

@@ -36,24 +36,26 @@ export default async function ContactPage({
   return (
     <div>
       {/* ── HEADER ── */}
-      <section className="section white page-hero">
+      <section className="section white page-hero contact-hero">
         <div className="wrap">
-          <p className="eyebrow green">{pickOr(contact?.heroEyebrow, lang, t("eyebrow"))}</p>
+          <p className="eyebrow">{pickOr(contact?.heroEyebrow, lang, t("eyebrow"))}</p>
           <h1 className="h1 page-h1">
             {contactHeading
-              ? renderAccent(contactHeading, "contact-serif")
+              ? renderAccent(contactHeading)
               : t.rich("h1", {
-                  serif: (chunks) => <span className="contact-serif">{chunks}</span>,
+                  hl: (chunks) => <span className="hl">{chunks}</span>,
                 })}
           </h1>
-          <p className="lead contact-intro">{pickOr(contact?.heroIntro, lang, t("intro"))}</p>
+          <p className="lead">{pickOr(contact?.heroIntro, lang, t("intro"))}</p>
         </div>
       </section>
 
       {/* ── FORM ── */}
       <section className="section surface">
         <div className="wrap">
-          <ContactForm strings={strings} email={email} appOptions={appOptions} />
+          <div className="contact-form-col">
+            <ContactForm strings={strings} email={email} appOptions={appOptions} />
+          </div>
         </div>
       </section>
     </div>
