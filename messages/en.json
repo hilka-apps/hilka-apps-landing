@@ -32,7 +32,6 @@
     },
     "links": {
       "about": "About",
-      "more": "More",
       "contact": "Contact"
     },
     "copyright": "© 2026 Hilka Apps · All rights reserved.",
@@ -203,7 +202,6 @@
     "contactHeading": "Still need help? Write to us."
   },
   "notFound": {
-    "title": "Page not found",
     "h1": "Nothing here.",
     "lead": "The page you were looking for doesn't exist or has moved.",
     "home": "Go to the home page",

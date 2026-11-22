@@ -33,7 +33,7 @@ fall back to system fonts and look different from `/en`.
 
 ### F1.3 Small UI defects · P1
 - [x] P1 `AppSections.tsx` `statSection`: download button renders `<a>` without `href` when the App Store URL is unset — now a "Coming soon" pill
-- [ ] P1 Testimonials show ★★★★★ (hardcoded) — the owner asked for star cards back (2026-11-22). Make rating a CMS field, or remove stars/testimonials for an unreleased app before App Review (fake reviews)
+- [x] P1 Testimonials always showed ★★★★★ (hardcoded) — now an optional `rating` (1–5) per testimonial in Studio; no rating → no stars (2026-11-22)
 - [ ] P2 `global-error.tsx` is English-only — localise via `navigator.language` or neutral bilingual copy
 - [ ] P2 Header has no primary CTA ("Get the App") that `STRUCTURE.md §A.1` specifies — decide: add or update the spec
 
@@ -165,6 +165,11 @@ fall back to system fonts and look different from `/en`.
 - [x] P1 Visual refresh (`feat/visual-refresh`): Literata + Commissioner, olive/lime palette, EN/УКР toggle, app tab row (Overview · legal docs · Support), centred contact form, soft borders — owner-approved 2026-11-22
 - [ ] P1 Remove the orphaned `/more` page (no longer linked from header or footer) or give it real content
 - [ ] P2 Form field borders are softer than WCAG 1.4.11 (3:1) by owner choice; focus state is ink + lime ring
+- [ ] P2 "Hear about the launch" CTA opens the plain contact form — preselect the app (and intent) via `/contact?app=<slug>`, or reword
+- [ ] P2 `legalDoc` app-published validation queries Sanity on every keystroke — cache per `_ref` or check on publish only
+- [ ] P2 Unit test that `DocPage` shows the "English only" note when the UK body falls back
+- [ ] P2 `DocPage` markdown links: allow only `https:`, `mailto:` and relative hrefs
+- [ ] P2 404 `<title>` is language-neutral ("404 · Hilka Apps"): reading the locale in not-found metadata turns SSG pages dynamic (500)
 - [ ] ~~P1 "Unofficial app, not affiliated with MVS/HSC" disclaimer field on the app page~~ — owner declined (2026-11-21)
 - [ ] P2 Smart App Banner (`apple-itunes-app` meta) once the app has a store ID
 - [ ] P2 Store links in the support page header once live

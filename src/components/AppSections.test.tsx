@@ -12,7 +12,7 @@ const quotes: AppSection = {
   _key: "t",
   heading: { en: "What people say" },
   items: [
-    { quote: { en: "First quote." }, name: "Ann" },
+    { quote: { en: "First quote." }, name: "Ann", rating: 4 },
     { quote: { en: "Second quote." }, name: "Bo" },
   ],
 } as AppSection;
@@ -62,12 +62,17 @@ describe("AppSections after release", () => {
 });
 
 describe("testimonials", () => {
-  it("shows every quote as a card with a five-star rating and its author", () => {
+  it("shows every quote as a card with its author", () => {
     const { container } = renderSections([quotes]);
     expect(container.querySelectorAll(".fp-quote-card")).toHaveLength(2);
     expect(screen.getByText(/First quote\./)).toBeInTheDocument();
     expect(screen.getByText(/Second quote\./)).toBeInTheDocument();
     expect(screen.getByText("Ann")).toBeInTheDocument();
-    expect(screen.getAllByRole("img", { name: /5/ })).toHaveLength(2);
+  });
+  it("shows stars only for a quote with a CMS rating, and the rating it has", () => {
+    renderSections([quotes]);
+    const stars = screen.getAllByRole("img", { name: /\/5$/ });
+    expect(stars).toHaveLength(1);
+    expect(stars[0]).toHaveAccessibleName("4/5");
   });
 });

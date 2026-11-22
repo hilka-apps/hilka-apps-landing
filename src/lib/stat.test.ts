@@ -12,7 +12,7 @@ describe("formatStat", () => {
   });
   it("keeps a prefix and a decimal part", () => {
     expect(formatStat("4.8", "uk")).toBe("4,8");
-    expect(formatStat("~1500 hours", "en")).toBe("~1,500 hours");
+    expect(formatStat("~1500 hours", "en")).toBe("~1500 hours"); // 4 digits stay ungrouped
   });
   it("leaves values that are not a plain number alone", () => {
     expect(formatStat("24/7", "uk")).toBe("24/7");

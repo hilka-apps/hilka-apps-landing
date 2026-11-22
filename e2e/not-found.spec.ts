@@ -2,10 +2,10 @@ import { expect, test } from "@playwright/test";
 import { cmsApps } from "./cms";
 
 const cases = [
-  { path: "/uk/nope", lang: "uk", h1: "Тут нічого немає.", title: /^Сторінку не знайдено/ },
-  { path: "/en/nope/deeper", lang: "en", h1: "Nothing here.", title: /^Page not found/ },
-  { path: "/en/apps/does-not-exist", lang: "en", h1: "Nothing here.", title: /^Page not found/ },
-  { path: "/uk/apps/does-not-exist", lang: "uk", h1: "Тут нічого немає.", title: /^Сторінку не знайдено/ },
+  { path: "/uk/nope", lang: "uk", h1: "Тут нічого немає.", title: /^404 · / },
+  { path: "/en/nope/deeper", lang: "en", h1: "Nothing here.", title: /^404 · / },
+  { path: "/en/apps/does-not-exist", lang: "en", h1: "Nothing here.", title: /^404 · / },
+  { path: "/uk/apps/does-not-exist", lang: "uk", h1: "Тут нічого немає.", title: /^404 · / },
 ] as const;
 
 for (const c of cases) {
@@ -30,3 +30,19 @@ test("the 404 page links to the visible apps", async ({ page }) => {
     await expect(page.locator(`main a[href='/uk/apps/${app.slug}']`)).toBeVisible();
   }
 });
+
+// The server HTML (what crawlers read) must carry the 404 title, once — not the home title.
+for (const [, path] of [
+  ["uk", "/uk/nope"],
+  ["en", "/en/apps/no-such-app"],
+  ["uk", "/uk/apps/no-such-app/support"],
+  ["en", "/en/legal/no-such-doc"],
+] as const) {
+  test(`server HTML of ${path} has only the 404 <title>`, async ({ request }) => {
+    const res = await request.get(path, { headers: { "user-agent": "Googlebot/2.1" } });
+    expect(res.status()).toBe(404);
+    const titles = (await res.text()).match(/<title>[^<]*<\/title>/g) ?? [];
+    expect(titles.length).toBeGreaterThan(0);
+    for (const t of titles) expect(t).toMatch(/<title>404 · /);
+  });
+}

@@ -18,6 +18,8 @@ export function formatStat(value: string, lang: Lang): string {
   const formatted = new Intl.NumberFormat(lang, {
     minimumFractionDigits: digits,
     maximumFractionDigits: digits,
-  }).format(n);
+    // group only 5+ digit numbers, so years ("Since 2019") stay as written
+    useGrouping: "min2",
+  } as Intl.NumberFormatOptions).format(n);
   return `${prefix}${formatted}${suffix}`;
 }

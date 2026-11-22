@@ -138,9 +138,13 @@ export default function AppSections({
                   <div className="grid grid-3 fp-quotes">
                     {items.map((item, i) => (
                       <figure key={i} className="fp-quote-card">
-                        <span className="fp-quote-stars" role="img" aria-label="5/5">
-                          {"★★★★★"}
-                        </span>
+                        {item.rating ? (
+                          // Only a real CMS rating is shown (no hardcoded 5/5).
+                          <span className="fp-quote-stars" role="img" aria-label={`${item.rating}/5`}>
+                            {"★".repeat(item.rating)}
+                            <span className="fp-quote-stars-off">{"★".repeat(5 - item.rating)}</span>
+                          </span>
+                        ) : null}
                         <blockquote className="fp-quote-text">&ldquo;{pick(item.quote, lang)}&rdquo;</blockquote>
                         {item.name ? <figcaption className="fp-quote-who">{item.name}</figcaption> : null}
                       </figure>

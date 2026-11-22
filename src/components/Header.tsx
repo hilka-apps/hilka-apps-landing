@@ -5,7 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 
-// "More" is reachable from the footer only (owner decision, 2026-11-21).
+// "More" is linked from neither the header nor the footer (owner decision, 2026-11-22).
 const NAV = [
   { id: "apps", key: "apps", href: "/#apps" },
   { id: "about", key: "about", href: "/about" },
@@ -58,10 +58,16 @@ export default function Header({
   const drawerRef = useRef<HTMLElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const wasOpen = useRef(false);
+  const navigating = useRef(false);
 
-  // closing the drawer (Esc, ✕, a link, a language) returns focus to the menu button
+  // Closing the drawer (Esc, ✕, overlay, a language) returns focus to the menu button.
+  // Closing it by following a nav link moves focus to the new page's <main> instead.
   useEffect(() => {
-    if (wasOpen.current && !drawerOpen) menuButtonRef.current?.focus();
+    if (wasOpen.current && !drawerOpen) {
+      if (navigating.current) document.getElementById("main")?.focus({ preventScroll: true });
+      else menuButtonRef.current?.focus();
+      navigating.current = false;
+    }
     wasOpen.current = drawerOpen;
   }, [drawerOpen]);
 
@@ -213,7 +219,10 @@ export default function Header({
               key={it.id}
               href={it.href}
               aria-current={isActive(it.href) ? "page" : undefined}
-              onClick={() => setDrawerOpen(false)}
+              onClick={() => {
+                navigating.current = true;
+                setDrawerOpen(false);
+              }}
             >
               {t(`nav.${it.key}`)}
             </Link>

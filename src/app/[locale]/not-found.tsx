@@ -1,7 +1,16 @@
+import type { Metadata } from "next";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getAllApps, getBrand } from "@/sanity/lib/queries";
 import { pick, type Lang } from "@/lib/i18n";
+
+// Without this the server HTML (what crawlers read) carries the layout's home title.
+// Language-neutral on purpose: reading the locale here (headers) would turn the
+// statically generated app/legal pages dynamic and make their 404s fail with a 500.
+export async function generateMetadata(): Promise<Metadata> {
+  const brand = await getBrand();
+  return { title: `404 · ${brand.siteName}`, robots: { index: false, follow: false } };
+}
 
 // Localised 404 for unknown paths (via [...rest]) and notFound() in any [locale] page.
 export default async function NotFound() {
@@ -11,8 +20,9 @@ export default async function NotFound() {
 
   return (
     <div>
-      {/* React hoists <title> into <head>; not-found has no generateMetadata */}
-      <title>{`${t("title")} · ${brand.siteName}`}</title>
+      {/* Same title again for the browser: after hydration the client applies the
+          layout's metadata, and React hoists this <title> back over it. */}
+      <title>{`404 · ${brand.siteName}`}</title>
       <section className="section white page-hero">
         <div className="wrap">
           <h1 className="h1 page-h1">{t("h1")}</h1>

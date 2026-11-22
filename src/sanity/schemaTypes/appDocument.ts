@@ -127,6 +127,13 @@ const testimonialsSection = defineArrayMember({
           fields: [
             locText("quote", "Quote"),
             defineField({ name: "name", title: "Author name", type: "string" }),
+            defineField({
+              name: "rating",
+              title: "Rating (1–5)",
+              type: "number",
+              description: "Stars shown on the card. Leave empty to show no stars — only use a real rating.",
+              validation: (r) => r.integer().min(1).max(5),
+            }),
           ],
           preview: { select: { title: "name" } },
         }),

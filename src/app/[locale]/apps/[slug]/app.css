@@ -241,6 +241,9 @@
   letter-spacing: 2px;
   color: var(--ink);
 }
+.fp-quote-stars-off {
+  color: var(--line-strong);
+}
 .fp-quote-text {
   margin: 0;
   flex: 1;

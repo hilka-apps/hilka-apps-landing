@@ -48,14 +48,22 @@ test.describe("mobile menu focus", () => {
     await expect(button).toHaveAttribute("aria-expanded", "true");
   });
 
-  for (const how of ["Escape", "close button", "link"] as const) {
+  test("after tapping a drawer link, focus starts at the new page's content", async ({ page }) => {
+    await page.goto("/en");
+    await page.locator(".hamburger").click();
+    await page.locator(".drawer nav a[href$='/about']").click();
+    await expect(page).toHaveURL(/\/en\/about$/);
+    await expect(page.locator(".drawer.open")).toHaveCount(0);
+    await expect(page.locator("main#main")).toBeFocused();
+  });
+
+  for (const how of ["Escape", "close button"] as const) {
     test(`focus returns to the menu button after closing with ${how}`, async ({ page }) => {
       await page.goto("/en");
       await page.locator(".hamburger").click();
       await expect(page.locator(".drawer.open")).toBeVisible();
       if (how === "Escape") await page.keyboard.press("Escape");
       if (how === "close button") await page.locator(".drawer-close").click();
-      if (how === "link") await page.locator(".drawer nav a[href$='/about']").click();
       await expect(page.locator(".drawer.open")).toHaveCount(0);
       await expect(page.locator(".hamburger")).toBeFocused();
     });

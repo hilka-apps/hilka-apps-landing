@@ -38,7 +38,8 @@ export function onlyFilled<T extends DocContent>(docs: T[]): T[] {
 }
 
 // Static routes under /apps/<app>/ win over the [doc] route, so these slugs could never be opened.
-const RESERVED_APP_DOC_SLUGS = new Set(["support"]);
+// "overview" would collide with the Overview tab in the app tab row.
+const RESERVED_APP_DOC_SLUGS = new Set(["support", "overview"]);
 
 export function isReservedAppDocSlug(slug: string): boolean {
   return RESERVED_APP_DOC_SLUGS.has(slug);

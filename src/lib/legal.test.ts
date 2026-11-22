@@ -39,6 +39,9 @@ describe("onlyFilled", () => {
 });
 
 describe("isReservedAppDocSlug", () => {
+  it("reserves 'overview' — it would double-highlight the Overview tab", () => {
+    expect(isReservedAppDocSlug("overview")).toBe(true);
+  });
   it("reserves 'support' — /apps/<app>/support is the support page", () => {
     expect(isReservedAppDocSlug("support")).toBe(true);
     expect(isReservedAppDocSlug("privacy")).toBe(false);
